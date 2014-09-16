@@ -1,0 +1,52 @@
+<?php
+/**
+ * partial loop of Users
+ * Users
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->UserId;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Password;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Email;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->LastName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->FirstName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->UserName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->IsDisabled;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->LastLogin;?>
+    </td>
+    
+    <td>
+        <a href="/users/update-users/id/<?php echo $dataRow->UserId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/users/delete-users/id/<?php echo $dataRow->UserId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

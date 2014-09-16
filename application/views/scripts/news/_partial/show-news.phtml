@@ -1,0 +1,56 @@
+<?php
+/**
+ * partial loop of News
+ * News
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->NewsId;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Title;?>
+    </td>
+
+    <!-- <td> -->
+        <?php //echo $dataRow->Summary;?>
+    <!-- </td> -->
+
+    <!-- <td> -->
+        <?php //echo $dataRow->UserId;?>
+    <!-- </td> -->
+
+    <!-- <td> -->
+        <?php //echo $dataRow->Content;?>
+    <!-- </td> -->
+
+    <!-- <td> -->
+        <?php //echo $dataRow->ImageUrl;?>
+    <!-- </td> -->
+
+    <td>
+        <?php echo $dataRow->CreatedDate;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->IsPrivate;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->NewsCategoryId;?>
+    </td>
+    
+    <td>
+        <a href="/news/update-news/id/<?php echo $dataRow->NewsId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/news/delete-news/id/<?php echo $dataRow->NewsId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

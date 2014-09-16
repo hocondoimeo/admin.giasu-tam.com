@@ -1,0 +1,40 @@
+<?php
+/**
+ * partial loop of NewsCategories
+ * NewsCategories
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->NewsCategoryId;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->NewsCategoryName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->NewsCategoryCode;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->CreatedDate;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->IsDisabled;?>
+    </td>
+    
+    <td>
+        <a href="/news-categories/update-news-categories/id/<?php echo $dataRow->NewsCategoryId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/news-categories/delete-news-categories/id/<?php echo $dataRow->NewsCategoryId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

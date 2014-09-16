@@ -1,0 +1,10 @@
+
+    
+    
+
+Document Root: C:/wamp/www/admin.giasu-tam.com/public
+
+<br/>
+
+Server Name: admin.giasu-tam.com
+    
