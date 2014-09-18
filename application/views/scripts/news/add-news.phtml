@@ -1,6 +1,6 @@
 <?php 
     $form = $this->form;
-    $label = $form->getElement('Submit')->getLabel();
+    $label = $form->getElement('Save')->getLabel();
     $title = ($label == 'Delete')? 'Delete' : 'Update' ;
     if($label == 'Add') $title = 'Add';
 ?>
@@ -31,28 +31,80 @@
 <?php endif;?>
 </div>
 
+<?php
+						$imageUrl = trim($form->ImageUrl->getValue());
+                        if(!empty($imageUrl)){
+                            $filename = IMAGE_UPLOAD_PATH.$imageUrl;
+                            $imageStyle = 'width="200" height="200"';
+                            if(file_exists($filename)){
+                                $imageInfo = getimagesize($filename);
+                                $imageSize = number_format(filesize($filename)/1024, 1.,'.', ',').' kB';
+                                $imageDimension = $imageInfo[0].' x '.$imageInfo[1].' px';
+//                                if($imageInfo[0] < 200 && $imageInfo[1] < 200)
+//                                    $imageStyle = 'width="'.$imageInfo[0].'" height="'.$imageInfo[1].'"';
+                            }
+                        }
+                    ?>
+
 <div class="row-fluid">
     <div class="span12">
-        <form class="" method="post" action="">
+        <form class="" method="post" action="" id="frmImage">
         <div class="form-horizontal">
 	        <div class="row-fluid">
 	            <div class="span8">
 		            <fieldset class="form-vertical">
-		                <?php //echo $this->renderFormElement($form->NewsId, 1);?>
+		                <?php echo $this->renderFormElement($form->NewsId, 1);?>
 		                <?php echo $this->renderFormElement($form->Title, 1);?>
 		                <?php  echo $this->renderFormElement($form->Summary, 1);?>
-		                <?php //echo $this->renderFormElement($form->UserId);?>
 		                <?php echo $this->renderFormElement($form->Content, 1);?>
-		                <?php echo $this->renderFormElement($form->Submit);?>
+		                <?php echo $this->renderFormElement($form->Save);?>
 		                <?php echo $this->renderFormElement($form->Reset);?>
 		                </fieldset>
 	              </div>
 		           <div class="span4">
 			            <fieldset class="form-vertical">
-			                <?php echo $this->renderFormElement($form->ImageUrl, 1);?>
-			                <?php //echo $this->renderFormElement($form->CreatedDate);?>
-			                <?php echo $this->renderFormElement($form->IsPrivate, 1);?>
 			                <?php echo $this->renderFormElement($form->NewsCategoryId, 1);?>
+			                <?php echo $this->renderFormElement($form->IsDisabled);?>
+			                <?php echo $this->renderFormElement($form->IsPrivate);?>
+			                <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate, 1);?>
+			                
+			                <div class="control-group">
+			                	<label for="ImageUrl" class="control-label">Image Upload</label>
+	                            <label class="control-label view-label" for="inputEmail"> </label>
+	                            <div class="controls" style="position: relative;">
+	                              <div id="file-uploader"></div><img id="progress-img" src="/scripts/upload/loading.gif"/>
+	                            </div>
+	                          </div>
+	                        <div class="control-group">
+	                            <div class="controls">
+	                                Drop image here to upload<br>
+	                                Accepted extensions: jpg, png, gif. Maximum size: <?php echo IMAGE_SIZE_LIMIT; ?> kB
+	                            </div>
+	                        </div>
+	                        <div class="control-group">
+	                            <label class="control-label view-label" for="inputSection"><strong>Image Name</strong></label>
+	                            <div class="controls">
+	                              <div class="help-inline" id="image-name" old-image-name="<?php echo $imageUrl;?>">
+	                                  <?php echo $imageUrl;?>
+	                              </div>
+	                            </div>
+	                        </div>
+	                        <div class="control-group">
+		                            <label class="control-label view-label" for="inputSection"><strong>Thumb</strong></label>
+		                            <div class="controls">
+		                                <div id="image-thumb">
+		                                    <a class="image-in-modal" url="<?php echo IMAGE_UPLOAD_URI?>" tmpUrl="<?php echo IMAGE_UPLOAD_URI_TMP?>" filename="<?php echo $imageUrl?>" href="#">
+		                                        <img alt="<?php echo $imageUrl?>" title="+" src="<?php echo IMAGE_UPLOAD_URI.$imageUrl?>" <?php echo !empty($imageStyle)?$imageStyle:''?>/>
+		                                    </a>
+		                                </div>
+		                            </div>
+		                        </div>		                        
+		                        <div class="control-group">
+		                            <div class="controls">
+		                              <ul id="separate-list" style="display:none"></ul>
+		                            </div>
+		                          </div>
+			                <?php //echo $this->renderFormElement($form->ImageUrl, 1);?>	
 			            </fieldset>
 		            </div>
 		         </div>
@@ -60,10 +112,8 @@
         </form>
     </div>
 </div>
-<!-- <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script> -->
 <script>
     $(document).ready(function(){
-
     	tinymce.init({
     	    selector: "textarea",
     	    theme: "modern",
@@ -80,60 +130,6 @@
     	        {title: 'Test template 1', content: 'Test 1'},
     	        {title: 'Test template 2', content: 'Test 2'}
     	    ]
-    	});           
-        
-        /*tinyMCE.init({
-            // General options
-            //mode : "textareas",
-            selector: "textarea",
-            theme : "modern",
-            width : "600",
-            height : "200",
-            // Theme options
-            theme_advanced_buttons1 : "bold,removeformat",
-            removeformat_selector : 'div,table,em,i,span,ins,ul,li',
-            theme_advanced_resizing : true,
-            forced_root_block : false,
-            force_br_newlines : true,	
-            force_p_newlines : false,
-            plugins: [
-                      "advlist autolink lists link image charmap print preview anchor",
-                      "searchreplace visualblocks code fullscreen",
-                      "insertdatetime media table contextmenu paste moxiemanager"
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-            onchange_callback: function(editor) {
-                tinyMCE.triggerSave();
-                $("#" + editor.id).valid();
-            }
-        });
-        
-        $(".form-horizontal").submit(
-        function(){
-            tinyMCE.triggerSave();
-        }
-    ).validate({
-            ignore: "",
-            errorElement: "span",
-            errorClass: "help-inline",
-            errorPlacement: function(error, element) {
-                error.appendTo( element.parent() );                
-            },
-            highlight: function(element) {                
-                $(element).parent().parent().addClass('error');
-            },
-            unhighlight: function(element) {                
-                $(element).parent().parent().removeClass('error');
-                
-            },
-            rules: {
-                technology: {
-                    required: true
-                }
-            },
-            messages:{
-                technology:"Please enter Technology"
-            }
-        }); */
+    	});                   
     });
 </script>

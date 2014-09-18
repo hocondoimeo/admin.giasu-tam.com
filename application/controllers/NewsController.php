@@ -33,6 +33,7 @@ class NewsController extends Zend_Controller_Action
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
         $params['perpage'] = $this->_getParam('perpage',NUMBER_OF_ITEM_PER_PAGE);
+        $params['foreign'] = array('table' => 'NewsCategories', 'key' => 'NewsCategoryId', 'cols' => array('NewsCategoryName'));
         
         /*Get all data*/
         $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params));
@@ -59,6 +60,7 @@ class NewsController extends Zend_Controller_Action
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
+            	if(isset($formData['NewsId'])) unset($formData['NewsId']);
                 if($this->_model->add($formData)){
                     $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
@@ -101,12 +103,29 @@ class NewsController extends Zend_Controller_Action
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
-            $formData = $this->_request->getPost();//var_dump($formData);die;
+            $formData = $this->_request->getPost();	
             if($form->isValid($formData)) {
-                if($this->_model->edit($form->getValues())){
-                    $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been updated successfully.');
-                 	$this->_helper->flashMessenger->addMessage($msg);
-                }
+            	$data = $_POST;//var_dump($data);die;
+            	
+            	//$data['IsDisabled'] = isset($_POST['selectStatus'])?1:0;
+            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+            	$data['LastUpdatedBy'] = USER_ID;
+            	
+            	//copy new image from 'tmp' to 'images' folder then remove it
+            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
+            	//copy exist image from 'images' to 'backup' folder then remove it
+            	$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);
+            	
+            	//if($fileName || $fileNameBackup){
+            		if($this->_model->edit($data)){
+            			$msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been updated successfully.');
+                 		$this->_helper->flashMessenger->addMessage($msg);
+            		}else{
+            			unlink(IMAGE_UPLOAD_PATH.$fileName);
+            			$this->_helper->flashMessenger->addMessage(MSG_ERROR_DB);
+            		}
+            	/* }else
+            		$this->_helper->flashMessenger->addMessage(MSG_ERROR_PHP); */
                  	$this->_helper->redirector('show-news');
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
@@ -116,7 +135,6 @@ class NewsController extends Zend_Controller_Action
                  $this->view->message = array($msg);
            }
         }
-            
         $form->populate($row->toArray());
         $this->view->form = $form;
         $this->view->showAllUrl = 'show-news';
@@ -157,6 +175,30 @@ class NewsController extends Zend_Controller_Action
         $this->view->id = $id;
         $this->view->showAllUrl = 'show-news';
     }
+    
+    /**
+     * Function upload image
+     * @return json string
+     * @author
+     */
+    
+    public function ajaxUploadAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    
+    	if ($this->_request->isPost()) {
+	    		// list of valid extensions, ex. array("jpeg", "xml", "bmp")
+	    		$allowedExtensions = unserialize(IMAGE_ALLOWED_EXT);
+	    		// max file size in bytes
+	    		$sizeLimit = IMAGE_SIZE_LIMIT * 1024;
+	    
+	    		$uploader = new Common_FileUploader_qqFileUploader($allowedExtensions, $sizeLimit);
+	    		$result = $uploader->handleUpload(IMAGE_UPLOAD_PATH_TMP, true);
+	    		// to pass data through iframe you will need to encode all html tags
+	    		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+	    	}else
+	    		echo '{success:true}';
+	    }
     
     /**
     * Function show all News

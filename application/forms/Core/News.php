@@ -43,7 +43,7 @@ class Application_Form_Core_News extends Zend_Form
         $this->addElement($content);
 
         $imageUrl = new Zend_Form_Element_Text('ImageUrl');
-        $imageUrl->setLabel('ImageUrl');
+        $imageUrl->setLabel('Image Thumb');
         $imageUrl->addFilter('StringTrim');
         $imageUrl->setRequired(false);
         $imageUrl->setDecorators(array('ViewHelper'));
@@ -53,19 +53,26 @@ class Application_Form_Core_News extends Zend_Form
         $createdDate->setLabel('CreatedDate');
         $createdDate->addFilter('StringTrim');
         $createdDate->addValidator('Date');
-        $createdDate->setRequired(true);
+        $createdDate->setAttrib('disabled', true);
         $createdDate->setDecorators(array('ViewHelper'));
         $this->addElement($createdDate);
+        
+        $updatedDate = new Zend_Form_Element_Text('UpdatedDate');
+        $updatedDate->setLabel('UpdatedDate');
+        $updatedDate->addFilter('StringTrim');
+        $updatedDate->addValidator('Date');
+        $updatedDate->setDecorators(array('ViewHelper'));
+        $this->addElement($updatedDate);
 
-        $isPrivate = new Zend_Form_Element_Text('IsPrivate');
+        $isPrivate = new Zend_Form_Element_Checkbox('IsPrivate');
         $isPrivate->setLabel('IsPrivate');
-        $isPrivate->addFilter('StringTrim');
-        $isPrivate->addValidator('Int');
-        $isPrivate->setRequired(false);
         $isPrivate->setDecorators(array('ViewHelper'));
         $this->addElement($isPrivate);
 
-        
+        $isDisabled = new Zend_Form_Element_Checkbox('IsDisabled');
+        $isDisabled->setLabel('Disable');
+        $isDisabled->setDecorators(array('ViewHelper'));
+        $this->addElement($isDisabled);
         
         $newsCategoryId = new Zend_Form_Element_Select('NewsCategoryId');
         $newsCategoryId->setLabel('NewsCategoryId');
@@ -75,8 +82,8 @@ class Application_Form_Core_News extends Zend_Form
         $newsCategoryId->setDecorators(array('ViewHelper'));
         $this->addElement($newsCategoryId);
         
-        $submit = new Zend_Form_Element_Submit('Submit');
-        $submit->setLabel('Submit');
+        $submit = new Zend_Form_Element_Submit('Save');
+        $submit->setLabel('Save');
         $submit->setAttrib('class', 'btn btn-primary');
         $submit->setDecorators(array('ViewHelper'));
         $this->addElement($submit);
@@ -90,9 +97,9 @@ class Application_Form_Core_News extends Zend_Form
     }
     
     public function changeModeToAdd() {	
-    	//$this->removeElement('UserId');
+    	$this->removeElement('UserId');
     	$this->removeElement('CreatedDate');
-    	$this->getElement('Submit')->setLabel('Add');
+    	$this->getElement('Save')->setLabel('Add');
     	
     	$cateModel =  new Application_Model_Core_NewsCategories();
     	$this->getElement('NewsCategoryId')
@@ -100,8 +107,9 @@ class Application_Form_Core_News extends Zend_Form
     }
     
     public function changeModeToUpdate($cateId) {
-    	$this->removeElement('CreatedDate');
-    	$this->getElement('Submit')->setLabel('Save changes');    
+    	//$this->removeElement('CreatedDate');
+    	$this->removeElement('UpdatedDate');
+    	$this->getElement('Save')->setLabel('Save changes');    
     
     	$cateModel =  new Application_Model_Core_NewsCategories();
     	$this->getElement('NewsCategoryId')

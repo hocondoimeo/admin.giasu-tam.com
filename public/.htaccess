@@ -1,6 +1,18 @@
 RewriteEngine On
+#RewriteRule ^(scripts|css|images)/(.+)\.(.+)\.(js|css|jpg|gif|png)$ $1/$2.$4 [L]
+RewriteBase /
+#RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www\.)?admin\.giasu-tam\.com/ [NC] 
+#RewriteCond %{HTTP_REFERER} !^http://(www\.)?admin\.giasu-tam\.com/.*$ [NC] 
+#RewriteCond %{HTTP_REFERER} !^http://(www\.)?admin\.giasu-tam\.com.*$ / [NC] 
+RewriteRule \.(jpe?g|gif|bmp|png)$ - [F,NC]
+
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
+
+#Options +Indexes FollowSymLinks +ExecCGI
+#Order allow,deny
+#Allow from all

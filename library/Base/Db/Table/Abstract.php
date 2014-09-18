@@ -69,9 +69,13 @@ class Base_Db_Table_Abstract extends Zend_Db_Table {
         }
         $params = array_reverse($params);
         $select = $this->createSQL($_select, $params);
-        //$select->join("Sites", "Sites.SiteId = {$this->_name}.SiteId");
-        //$select->join("SiteLinks", "SiteLinks.SiteLinkId = {$this->_name}.ParentSiteLinkId");
-        $select->setIntegrityCheck(false);//die($select);
+        if(isset($params['foreign']) && is_array($params['foreign'])){
+        	$table = $params['foreign']['table'];
+        	$foreignKey = $params['foreign']['key'];
+        	$cols = isset($params['foreign']['cols']) && is_array($params['foreign']['cols'])?$params['foreign']['cols']:array();
+         	$select->joinLeft("{$table}", "{$this->_name}.{$foreignKey} = {$table}.{$foreignKey}", $cols);
+        }
+        $select->setIntegrityCheck(false);
         return $select;
     }
 

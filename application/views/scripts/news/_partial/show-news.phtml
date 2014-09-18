@@ -14,35 +14,20 @@
     </td>
 
     <td>
-        <?php echo $dataRow->Title;?>
+       <a href="/news/update-news/id/<?php echo $dataRow->NewsId; ?>" class="">
+        	<?php echo $dataRow->Title;?><br/>
+         </a>
+        <span><small>Category: <?php echo $dataRow->NewsCategoryName;?></small></span>
     </td>
-
-    <!-- <td> -->
-        <?php //echo $dataRow->Summary;?>
-    <!-- </td> -->
-
-    <!-- <td> -->
-        <?php //echo $dataRow->UserId;?>
-    <!-- </td> -->
-
-    <!-- <td> -->
-        <?php //echo $dataRow->Content;?>
-    <!-- </td> -->
-
-    <!-- <td> -->
-        <?php //echo $dataRow->ImageUrl;?>
-    <!-- </td> -->
 
     <td>
         <?php echo $dataRow->CreatedDate;?>
     </td>
 
-    <td>
-        <?php echo $dataRow->IsPrivate;?>
-    </td>
-
-    <td>
-        <?php echo $dataRow->NewsCategoryId;?>
+    <td style="vertical-align: middle">
+        <?php //echo $dataRow->IsDisabled;?>
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
     </td>
     
     <td>

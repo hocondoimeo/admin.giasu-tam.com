@@ -23,13 +23,13 @@ $typeSearchs = array(
     'All' => 'All',
     'NewsId'                       => $this->text('NewsId', false),
     'Title'                        => $this->text('Title', false),
-    'Summary'                      => $this->text('Summary', false),
-    'UserId'                      => $this->text('UserId', false),
-    'Content'                      => $this->text('Content', false),
-    'ImageUrl'                     => $this->text('ImageUrl', false),
+    /* 'Summary'                      => $this->text('Summary', false), */
+    /* 'UserId'                      => $this->text('UserId', false), */
+    /* 'Content'                      => $this->text('Content', false), */
+    /* 'ImageUrl'                     => $this->text('ImageUrl', false), */
     'CreatedDate'                  => $this->text('CreatedDate', false),
-    'IsPrivate'                    => $this->text('IsPrivate', false),
-    'NewsCategoryId'               => $this->text('NewsCategoryId', false),
+    /* 'IsPrivate'                    => $this->text('IsPrivate', false), */
+    /* 'NewsCategoryId'               => $this->text('NewsCategoryId', false), */
 );
 $buttons = array(
     "<a class='btn btn-small btn-primary'  
@@ -51,13 +51,9 @@ echo $this->searchBar($typeSearchs, null, $buttons);
                 <tr>
                     <?php $this->renderTh('NewsId'); ?>
                     <?php $this->renderTh('Title'); ?>
-                    <?php //$this->renderTh('Summary'); ?>
-                    <?php //$this->renderTh('UserId'); ?>
-                    <?php //$this->renderTh('Content'); ?>
-                    <?php //$this->renderTh('ImageUrl'); ?>
                     <?php $this->renderTh('CreatedDate'); ?>
-                    <?php $this->renderTh('IsPrivate'); ?>
-                    <?php $this->renderTh('NewsCategoryId'); ?>
+                    <?php $this->renderTh('IsDisabled'); ?>
+                    <?php //$this->renderTh('NewsCategoryId'); ?>
                     
                     <th style="vertical-align: middle;">Actions</th>
                 </tr>

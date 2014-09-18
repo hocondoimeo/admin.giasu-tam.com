@@ -5,7 +5,7 @@ defined('APPLICATION_PATH')
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 require_once APPLICATION_PATH . '/configs/constants.php';
 
@@ -28,8 +28,9 @@ require_once APPLICATION_PATH . '/../library/functions/layout.php';
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
-//     '/../library/',
-//     '/home/web/library/Zend/1.11.7',
+      '/../library',
+     '/../../library',
+     '/home/gia53c14/public_html/library',
     get_include_path(),
 )));
 
