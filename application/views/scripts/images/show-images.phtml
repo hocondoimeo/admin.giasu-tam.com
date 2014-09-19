@@ -11,31 +11,31 @@
 <?php endif;?>
 </div>
 
-<?php 
-    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'NewsCategories'), ' ');
-?>
-
 <div class="row-fluid show-grid">
     <div class="span12">
         <h2>
-            <?php echo $this->text($controller) ?>
+            <?php echo $this->text('Images') ?>
         </h2>
     </div>
 </div>
 <?php
 $typeSearchs = array(
     'All' => 'All',
-    'NewsCategoryId'               => $this->text('News-Category-Id', false),
-    'NewsCategoryName'             => $this->text('News-Category-Name', false),
-    'NewsCategoryCode'             => $this->text('News-Category-Code', false),
-    'CreatedDate'                  => $this->text('Created-Date', false),
-    'IsDisabled'                   => $this->text('Is-Disabled', false),
+    'ImageId'                      => $this->text('ImageId', false),
+    'ImageCode'                    => $this->text('ImageCode', false),
+    'ImageName'                    => $this->text('ImageName', false),
+    'ImageDesc'                    => $this->text('ImageDesc', false),
+    'RecommendWidth'               => $this->text('RecommendWidth', false),
+    'RecommendHeight'              => $this->text('RecommendHeight', false),
+    'Section'                      => $this->text('Section', false),
+    'LastUpdated'                  => $this->text('LastUpdated', false),
+    'LastUpdatedBy'                => $this->text('LastUpdatedBy', false),
 );
 $buttons = array(
     "<a class='btn btn-small btn-primary'  
         href='{$this->url(array('action' => 'add-'. $this->controller))}'>
         <i class='icon-plus'></i>
-        Add {$this->text($controller)}
+        Add {$this->text('Images')}
     </a>"
 );
 echo $this->searchBar($typeSearchs, null, $buttons);
@@ -49,11 +49,15 @@ echo $this->searchBar($typeSearchs, null, $buttons);
 
             <thead>
                 <tr>
-                    <?php $this->renderTh('NewsCategoryId','News Category Id'); ?>
-                    <?php $this->renderTh('NewsCategoryName','News Category Name'); ?>
-                    <?php $this->renderTh('NewsCategoryCode','News Category Code'); ?>
-                    <?php $this->renderTh('CreatedDate','Created Date'); ?>
-                    <?php $this->renderTh('IsDisabled','Is Disabled'); ?>
+                    <?php $this->renderTh('ImageId'); ?>
+                    <?php $this->renderTh('ImageCode'); ?>
+                    <?php $this->renderTh('ImageName'); ?>
+                    <?php $this->renderTh('ImageDesc'); ?>
+                    <?php $this->renderTh('RecommendWidth'); ?>
+                    <?php $this->renderTh('RecommendHeight'); ?>
+                    <?php $this->renderTh('Section'); ?>
+                    <?php $this->renderTh('LastUpdated'); ?>
+                    <?php $this->renderTh('LastUpdatedBy'); ?>
                     
                     <th style="vertical-align: middle;">Actions</th>
                 </tr>
@@ -64,7 +68,7 @@ echo $this->searchBar($typeSearchs, null, $buttons);
                     <?php 
                         foreach ($this->paginator as $row){
     
-                            echo $this->partial('news-categories/_partial/show-news-categories.phtml', array('dataRow'=>$row) );
+                            echo $this->partial('images/_partial/show-images.phtml', array('dataRow'=>$row) );
                         }
                     ?>
                 <?php else : ?>

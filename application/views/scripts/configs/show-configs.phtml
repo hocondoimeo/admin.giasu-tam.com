@@ -12,7 +12,7 @@
 </div>
 
 <?php 
-    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'NewsCategories'), ' ');
+    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'Configs'), ' ');
 ?>
 
 <div class="row-fluid show-grid">
@@ -25,11 +25,14 @@
 <?php
 $typeSearchs = array(
     'All' => 'All',
-    'NewsCategoryId'               => $this->text('News-Category-Id', false),
-    'NewsCategoryName'             => $this->text('News-Category-Name', false),
-    'NewsCategoryCode'             => $this->text('News-Category-Code', false),
-    'CreatedDate'                  => $this->text('Created-Date', false),
-    'IsDisabled'                   => $this->text('Is-Disabled', false),
+    'ConfigId'                     => $this->text('Config-Id', false),
+    'ConfigName'                   => $this->text('Config-Name', false),
+    'ConfigCode'                   => $this->text('Config-Code', false),
+    'ConfigValue'                  => $this->text('Config-Value', false),
+    //'ConfigCategoryId'             => $this->text('Config-Category-Id', false),
+    //'IsDisabled'                   => $this->text('Is-Disabled', false),
+    'LastUpdated'                  => $this->text('Last-Updated', false),
+    //'LastUpdatedBy'                => $this->text('Last-Updated-By', false),
 );
 $buttons = array(
     "<a class='btn btn-small btn-primary'  
@@ -49,11 +52,14 @@ echo $this->searchBar($typeSearchs, null, $buttons);
 
             <thead>
                 <tr>
-                    <?php $this->renderTh('NewsCategoryId','News Category Id'); ?>
-                    <?php $this->renderTh('NewsCategoryName','News Category Name'); ?>
-                    <?php $this->renderTh('NewsCategoryCode','News Category Code'); ?>
-                    <?php $this->renderTh('CreatedDate','Created Date'); ?>
+                    <?php $this->renderTh('ConfigId','Config Id'); ?>
+                    <?php $this->renderTh('ConfigName','Config Name'); ?>
+                    <?php $this->renderTh('ConfigCode','Config Code'); ?>
+                    <?php $this->renderTh('ConfigValue','Config Value'); ?>
+                    <?php //$this->renderTh('ConfigCategoryId','Config Category Id'); ?>
                     <?php $this->renderTh('IsDisabled','Is Disabled'); ?>
+                    <?php $this->renderTh('LastUpdated','Last Updated'); ?>
+                    <?php //$this->renderTh('LastUpdatedBy','Last Updated By'); ?>
                     
                     <th style="vertical-align: middle;">Actions</th>
                 </tr>
@@ -64,7 +70,7 @@ echo $this->searchBar($typeSearchs, null, $buttons);
                     <?php 
                         foreach ($this->paginator as $row){
     
-                            echo $this->partial('news-categories/_partial/show-news-categories.phtml', array('dataRow'=>$row) );
+                            echo $this->partial('configs/_partial/show-configs.phtml', array('dataRow'=>$row) );
                         }
                     ?>
                 <?php else : ?>

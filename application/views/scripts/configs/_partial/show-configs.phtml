@@ -1,0 +1,53 @@
+<?php
+/**
+ * partial loop of Configs
+ * Configs
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->ConfigId;?>
+    </td>
+
+    <td>
+       <a href="/configs/update-configs/id/<?php echo $dataRow->ConfigId; ?>" class="">
+        	<?php echo $dataRow->ConfigName;?><br/>
+         </a>
+        <span><small>Category: <?php echo $dataRow->ConfigCategoryName;?></small></span>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ConfigCode;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ConfigValue;?>
+    </td>
+
+    <td style="vertical-align: middle">
+        <?php //echo $dataRow->IsDisabled;?>
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->LastUpdated;?>
+    </td>
+
+    <!-- <td> -->
+        <?php //echo $dataRow->LastUpdatedBy;?>
+    <!-- </td> -->
+    
+    <td>
+        <a href="/configs/update-configs/id/<?php echo $dataRow->ConfigId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/configs/delete-configs/id/<?php echo $dataRow->ConfigId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

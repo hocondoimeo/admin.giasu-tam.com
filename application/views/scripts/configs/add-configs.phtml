@@ -1,6 +1,6 @@
 <?php 
     $form = $this->form;
-    $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'NewsCategories'), '-');
+    $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Configs'), '-');
     $label = $form->getElement('Save')->getLabel();
     $title = ($label == 'Delete')? 'Delete' : 'Update' ;
     if($label == 'Add') $title = 'Add';
@@ -37,13 +37,16 @@
         <form class="form-horizontal" method="post" action="">
             <fieldset>
                 
-                <?php echo $this->renderFormElement($form->NewsCategoryId);?>
-                <?php echo $this->renderFormElement($form->NewsCategoryName);?>
-                <?php echo $this->renderFormElement($form->NewsCategoryCode);?>
-                <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate);?>
+                <?php echo $this->renderFormElement($form->ConfigId);?>
+                <?php echo $this->renderFormElement($form->ConfigName);?>
+                <?php echo $this->renderFormElement($form->ConfigCode);?>
+                <?php echo $this->renderFormElement($form->ConfigValue);?>
+                <?php echo $this->renderFormElement($form->ConfigCategoryId);?>
                 <?php echo $this->renderFormElement($form->IsDisabled);?>
+                <?php if($label !=='Add') echo $this->renderFormElement($form->LastUpdated);?>
+                <?php //if($label !=='Add') echo $this->renderFormElement($form->LastUpdatedBy);?>
                 <?php echo $this->renderFormElement($form->Save);?>
-		         <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
+		        <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
                                 
             </fieldset>
         </form>

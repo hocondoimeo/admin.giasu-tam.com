@@ -45,11 +45,11 @@ class Zend_View_Helper_RenderFormElement extends Zend_View_Helper_Abstract
         	//$t ='<button type="reset" class="btn"><i class="icon-refresh"></i> '.$element->getLabel().'</button>';
         	$t = '<div class="span2">'.$element.'</div>';
         }else{
-        
+        	$label = trim(preg_replace("/([A-Z])/", " $1", "{$element->getLabel()}"), ' ');
 	        $variables = array(
 	            '%%ERROR_CLASS%%' => $error,
 	            '%%ELEMENT_NAME%%' => $element->getName(),
-	            '%%ELEMENT_LABEL%%' => $element->getLabel(),
+	            '%%ELEMENT_LABEL%%' => $label,
 	            '%%ELEMENT%%' => $element,
 	            '%%HELP_MESSAGE%%' => current($element->getMessages()),
 	        );

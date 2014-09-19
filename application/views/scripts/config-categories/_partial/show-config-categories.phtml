@@ -1,0 +1,44 @@
+<?php
+/**
+ * partial loop of ConfigCategories
+ * ConfigCategories
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->ConfigCategoryId;?>
+    </td>
+
+    <td>
+    	<a href="/config-categories/update-config-categories/id/<?php echo $dataRow->ConfigCategoryId; ?>" class="">
+        	<?php echo $dataRow->ConfigCategoryName;?>
+         </a>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ConfigCategoryCode;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->CreatedDate;?>
+    </td>
+
+    <td style="vertical-align: middle">
+        <?php //echo $dataRow->IsDisabled;?>
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
+    </td>
+    
+    <td>
+        <a href="/config-categories/update-config-categories/id/<?php echo $dataRow->ConfigCategoryId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/config-categories/delete-config-categories/id/<?php echo $dataRow->ConfigCategoryId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

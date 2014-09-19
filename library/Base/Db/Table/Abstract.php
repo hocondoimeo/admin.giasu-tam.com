@@ -45,7 +45,7 @@ class Base_Db_Table_Abstract extends Zend_Db_Table {
         if(count($orWhere)) {
             $select->where(implode(' OR ',$orWhere));
         }
-        //echo '<pre>'; print_r($params); echo $select;
+       //echo '<pre>'; print_r($params); echo $select;
         return $select;
     }
     
@@ -69,11 +69,17 @@ class Base_Db_Table_Abstract extends Zend_Db_Table {
         }
         $params = array_reverse($params);
         $select = $this->createSQL($_select, $params);
+        
         if(isset($params['foreign']) && is_array($params['foreign'])){
         	$table = $params['foreign']['table'];
         	$foreignKey = $params['foreign']['key'];
         	$cols = isset($params['foreign']['cols']) && is_array($params['foreign']['cols'])?$params['foreign']['cols']:array();
          	$select->joinLeft("{$table}", "{$this->_name}.{$foreignKey} = {$table}.{$foreignKey}", $cols);
+        }
+        
+        if(isset($params['where']) && is_array($params['where']) && count($params['where'])){
+        	foreach ($params['where'] as $value)
+        		$select->where($value);
         }
         $select->setIntegrityCheck(false);
         return $select;

@@ -60,8 +60,13 @@ class NewsController extends Zend_Controller_Action
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-            	if(isset($formData['NewsId'])) unset($formData['NewsId']);
-                if($this->_model->add($formData)){
+            	$data = $_POST;
+            	
+            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+            	$data['LastUpdatedBy'] = USER_ID;
+            	if(isset($data['NewsId'])) unset($data['NewsId']);
+            	
+                if($this->_model->add($data)){
                     $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
@@ -105,7 +110,7 @@ class NewsController extends Zend_Controller_Action
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();	
             if($form->isValid($formData)) {
-            	$data = $_POST;//var_dump($data);die;
+            	$data = $_POST;
             	
             	//$data['IsDisabled'] = isset($_POST['selectStatus'])?1:0;
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
@@ -161,11 +166,21 @@ class NewsController extends Zend_Controller_Action
         }
        
         $form = new Application_Form_Core_News();
+        $form->changeModeToDelete($id) ;
+        
+    	foreach($form->getElements() as $element){
+        	if($element instanceof Zend_Form_Element_Text ||
+                 $element instanceof Zend_Form_Element_Checkbox ||
+                 $element instanceof Zend_Form_Element_Select ||
+                 $element instanceof Zend_Form_Element_Textarea)
+        		$element->setAttrib('disabled', true);
+        }
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-           	if($row && $this->_model->deleteRow($id)) {
+            $id = $formData['NewsId'];
+            if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
                     $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
@@ -173,7 +188,10 @@ class NewsController extends Zend_Controller_Action
         }
          
         $this->view->id = $id;
+        $form->populate($row->toArray());
+        $this->view->form = $form;
         $this->view->showAllUrl = 'show-news';
+        $this->_helper->viewRenderer->setRender('add-news');
     }
     
     /**

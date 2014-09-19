@@ -24,6 +24,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	$options = $resource->getOptions();
     	$db = new Zend_Db_Adapter_Pdo_Mysql($options["params"]);
     	Zend_Db_Table_Abstract::setDefaultAdapter($db);
+    	try {
+    		$db->getConnection();
+    	} catch( Exception $e ) {
+    		print_r($e->getMessage());
+    		die;
+    	}
     }    
     
     private function _initSession(){

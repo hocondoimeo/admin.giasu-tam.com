@@ -12,7 +12,7 @@
 </div>
 
 <?php 
-    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'NewsCategories'), ' ');
+    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'ConfigCategories'), ' ');
 ?>
 
 <div class="row-fluid show-grid">
@@ -25,9 +25,9 @@
 <?php
 $typeSearchs = array(
     'All' => 'All',
-    'NewsCategoryId'               => $this->text('News-Category-Id', false),
-    'NewsCategoryName'             => $this->text('News-Category-Name', false),
-    'NewsCategoryCode'             => $this->text('News-Category-Code', false),
+    'ConfigCategoryId'             => $this->text('Config-Category-Id', false),
+    'ConfigCategoryName'           => $this->text('Config-Category-Name', false),
+    'ConfigCategoryCode'           => $this->text('Config-Category-Code', false),
     'CreatedDate'                  => $this->text('Created-Date', false),
     'IsDisabled'                   => $this->text('Is-Disabled', false),
 );
@@ -49,9 +49,9 @@ echo $this->searchBar($typeSearchs, null, $buttons);
 
             <thead>
                 <tr>
-                    <?php $this->renderTh('NewsCategoryId','News Category Id'); ?>
-                    <?php $this->renderTh('NewsCategoryName','News Category Name'); ?>
-                    <?php $this->renderTh('NewsCategoryCode','News Category Code'); ?>
+                    <?php $this->renderTh('ConfigCategoryId','Config Category Id'); ?>
+                    <?php $this->renderTh('ConfigCategoryName','Config Category Name'); ?>
+                    <?php $this->renderTh('ConfigCategoryCode','Config Category Code'); ?>
                     <?php $this->renderTh('CreatedDate','Created Date'); ?>
                     <?php $this->renderTh('IsDisabled','Is Disabled'); ?>
                     
@@ -64,7 +64,7 @@ echo $this->searchBar($typeSearchs, null, $buttons);
                     <?php 
                         foreach ($this->paginator as $row){
     
-                            echo $this->partial('news-categories/_partial/show-news-categories.phtml', array('dataRow'=>$row) );
+                            echo $this->partial('config-categories/_partial/show-config-categories.phtml', array('dataRow'=>$row) );
                         }
                     ?>
                 <?php else : ?>

@@ -2,38 +2,38 @@
 
 
 /**
- * Controller for Users controller
+ * Controller for Configs controller
  *
  * @author  kissconcept
  * @version $Id$
  */
-class UsersController extends Zend_Controller_Action
+class ConfigsController extends Zend_Controller_Action
 {
     /**
      * Init model
      */
     public function init() {
-        $this->_model = new Application_Model_Core_Users();
+        $this->_model = new Application_Model_Core_Configs();
         //$this->_controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
     /**
     * Function show all Sites
     */
     public function indexAction() {
-        $this->_helper->redirector('show-users');
+        $this->_helper->redirector('show-configs');
     }    
     
    /**
-    * Function show all Users
-    * @return list Users
+    * Function show all Configs
+    * @return list Configs
     * @author 
     */
-    public function showUsersAction() {
+    public function showConfigsAction() {
         /*Get parameters filter*/
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
         $params['perpage'] = $this->_getParam('perpage',NUMBER_OF_ITEM_PER_PAGE);
-        $params['where'] = array('UserId != 1');
+        $params['foreign'] = array('table' => 'ConfigCategories', 'key' => 'ConfigCategoryId', 'cols' => array('ConfigCategoryName'));
         
         /*Get all data*/
         $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params));
@@ -47,23 +47,30 @@ class UsersController extends Zend_Controller_Action
     }
     
     /**
-    * Add record Users
+    * Add record Configs
     * @param array $formData
     * @return
     * @author 
     */
-    public function addUsersAction() {
-        $form = new Application_Form_Core_Users();
+    public function addConfigsAction() {
+        $form = new Application_Form_Core_Configs();
+        $form->changeModeToAdd();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-                if($this->_model->add($formData)){
-                    $msg = str_replace(array("{subject}"),array("Users"),'success/The {subject} has been added successfully.');
+            	$data = $_POST;
+            	 
+            	//$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+            	$data['LastUpdatedBy'] = USER_ID;
+            	if(isset($data['ConfigId'])) unset($data['ConfigId']);
+            	
+                if($this->_model->add($data)){
+                    $msg = str_replace(array("{subject}"),array("Configs"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
-                $this->_helper->redirector('show-users');
+                $this->_helper->redirector('show-configs');
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -73,40 +80,46 @@ class UsersController extends Zend_Controller_Action
             }
         }
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-users';
+        $this->view->showAllUrl = 'show-configs';        
     }
     	
     /**
-    * Update record Users.
+    * Update record Configs.
     * @param array $formData
     * @return
     * @author 
     */
-    public function updateUsersAction() {
+    public function updateConfigsAction() {
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-users');
+            $this->_helper->redirector('show-configs');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-users');
+            $this->_helper->redirector('show-configs');
         }
     
-        $form = new Application_Form_Core_Users();
+        $form = new Application_Form_Core_Configs();
+        $form->changeModeToUpdate($id);
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-                if($this->_model->edit($form->getValues())){
-                    $msg = str_replace(array("{subject}"),array("Users"),'success/The {subject} has been updated successfully.');
+            	$data = $_POST;
+            	 
+            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+            	$data['LastUpdatedBy'] = USER_ID;
+            	
+                if($this->_model->edit($data)){
+                    $msg = str_replace(array("{subject}"),array("Configs"),'success/The {subject} has been updated successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
-                 	$this->_helper->redirector('show-users');
+                 	$this->_helper->redirector('show-configs');
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -118,50 +131,63 @@ class UsersController extends Zend_Controller_Action
             
         $form->populate($row->toArray());
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-users';
+        $this->view->showAllUrl = 'show-configs';
+        $this->_helper->viewRenderer->setRender('add-configs');
     }
     
     /**
-    * Delete record Users.
+    * Delete record Configs.
     * @param $id
     * @return
     * @author 
     */
-    public function deleteUsersAction(){
+    public function deleteConfigsAction(){
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-users');
+            $this->_helper->redirector('show-configs');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-users');
+            $this->_helper->redirector('show-configs');
         }
        
-        $form = new Application_Form_Core_Users();
+        $form = new Application_Form_Core_Configs();
+        $form->changeModeToDelete($id) ;
+        
+        foreach($form->getElements() as $element){
+        	if($element instanceof Zend_Form_Element_Text ||
+                 $element instanceof Zend_Form_Element_Checkbox ||
+                 $element instanceof Zend_Form_Element_Select)
+        		$element->setAttrib('disabled', true);
+        }
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-           	if($row && $this->_model->deleteRow($id)) {
-                    $msg = str_replace(array("{subject}"),array("Users"),'success/The {subject} has been deleted successfully.');
+            $id = $formData['ConfigId'];
+            if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
+                    $msg = str_replace(array("{subject}"),array("Configs"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
-                 	 $this->_helper->redirector('show-users');
+                 	 $this->_helper->redirector('show-configs');
         }
          
         $this->view->id = $id;
-        $this->view->showAllUrl = 'show-users';
+        $form->populate($row->toArray());
+        $this->view->form = $form;
+        $this->view->showAllUrl = 'show-configs';
+        $this->_helper->viewRenderer->setRender('add-configs');
     }
     
     /**
-    * Function show all Users
-    * @return list Users
+    * Function show all Configs
+    * @return list Configs
     * @author 
     */
-    public function ajaxShowUsersAction() {
+    public function ajaxShowConfigsAction() {
         $this->_helper->layout->disableLayout();
         
         /*Get parameters filter*/
@@ -180,15 +206,15 @@ class UsersController extends Zend_Controller_Action
     }
     
    /**
-    * Add record Users
+    * Add record Configs
     * @param array $formData
     * @author 
     */
-    public function ajaxAddUsersAction() {
+    public function ajaxAddConfigsAction() {
     
         $this->_helper->layout->disableLayout();
         
-        $form = new Application_Form_Core_Users();
+        $form = new Application_Form_Core_Configs();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -204,11 +230,11 @@ class UsersController extends Zend_Controller_Action
     }
     
    /**
-    * Update record Users
+    * Update record Configs
     * @param array $formData
     * @author 
     */
-    public function ajaxUpdateUsersAction() {
+    public function ajaxUpdateConfigsAction() {
     
         $this->_helper->layout->disableLayout();
         
@@ -222,12 +248,12 @@ class UsersController extends Zend_Controller_Action
             die('0');
         }
     
-        $form = new Application_Form_Core_Users();
+        $form = new Application_Form_Core_Configs();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $formData['UserId'] = $id;
+            $formData['ConfigId'] = $id;
             if($form->isValid($formData)) {
                 if($this->_model->edit($form->getValues())){
                     die('1');
@@ -239,11 +265,11 @@ class UsersController extends Zend_Controller_Action
     }
     
     /**
-    * Delete record Users.
+    * Delete record Configs.
     * @param $id
     * @author 
     */
-    public function ajaxDeleteUsersAction(){
+    public function ajaxDeleteConfigsAction(){
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
@@ -257,73 +283,5 @@ class UsersController extends Zend_Controller_Action
             }
         }
         die('0');
-    }
-    
-    /**
-     * login action
-     * @author tri.van
-     * @since Tue Now 3, 9:48 AM
-     */
-    public function loginAction(){
-    	$this->_helper->layout()->setLayout('admin-login');
-    
-    	//save backlink
-    	$backLink = null;
-    	if (isset($_SERVER['HTTP_REFERER'])) {
-    		if (strstr($backLink, "/login") != "/login"){
-    			$backLink = $_SERVER['HTTP_REFERER'];
-    			$this->view->backLink = $backLink;
-    		}
-    	}
-    
-    	//check authentication first
-    	$zendAuth = Zend_Auth::getInstance();
-    	if ($zendAuth->hasIdentity()) {
-    		$this->_redirect("/");
-    	}
-    
-    	if($this->_request->isPost()){
-    
-    		if(!empty($_POST["backLink"])) $backLink = $_POST["backLink"];
-    
-    		$auth = new Application_Plugin_Initializer();
-    		if(empty($_POST['username']) || empty($_POST['password']))
-    			$this->view->rs = false;
-    		else{
-    			$data = array();
-    			$data['Email'] = $_POST['username'];
-    			$data['Password'] = sha1($_POST['password']);
-    			$rs = $auth->login($data);
-    			if(!$rs) $this->view->rs = false;
-    			else {
-    				//save LastLogin to database
-    				$this->_model->update(array("LastLogin"=>Zend_Date::now()->toString(DATE_FORMAT_DATABASE)
-    				),"UserId = ".USER_ID);
-    
-    				//if choice remember password
-    				if(isset($_POST["remember"])) {
-    					$saveHandler = Zend_Session::getSaveHandler();
-    					$saveHandler->setOverrideLifetime(true);
-    					$saveHandler->setLifetime(SESSION_LIFE_TIME_REMEMBER);
-    				}
-    
-    				//redirect
-    				if(empty($backLink)) $this->_redirect("/	");
-    				else {
-    					if(isset($_SESSION['sessionBackLink']['link'])){
-    						$link = $_SESSION['sessionBackLink']['link'];
-    						Zend_Session::namespaceUnset('sessionBackLink');
-    						$this->_redirect($link);
-    					}
-    					else $this->_redirect($backLink);
-    				}
-    			}
-    		}
-    	}
-    }
-    
-    public function logoutAction(){
-    	$auth = new Application_Plugin_Initializer();
-    	$auth->logout();
     }
 }

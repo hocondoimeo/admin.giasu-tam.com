@@ -53,12 +53,17 @@ class NewsCategoriesController extends Zend_Controller_Action
     */
     public function addNewsCategoriesAction() {
         $form = new Application_Form_Core_NewsCategories();
+        $form->changeModeToAdd();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-                if($this->_model->add($formData)){
+            	$data = $_POST;
+            	            	
+            	if(isset($data['NewsCategoryId'])) unset($data['NewsCategoryId']);
+            	
+                if($this->_model->add($data)){
                     $msg = str_replace(array("{subject}"),array("NewsCategories"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
@@ -96,6 +101,7 @@ class NewsCategoriesController extends Zend_Controller_Action
         }
     
         $form = new Application_Form_Core_NewsCategories();
+        $form->changeModeToUpdate($id);
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -118,6 +124,7 @@ class NewsCategoriesController extends Zend_Controller_Action
         $form->populate($row->toArray());
         $this->view->form = $form;
         $this->view->showAllUrl = 'show-news-categories';
+        $this->_helper->viewRenderer->setRender('add-news-categories');
     }
     
     /**
@@ -140,11 +147,19 @@ class NewsCategoriesController extends Zend_Controller_Action
         }
        
         $form = new Application_Form_Core_NewsCategories();
+        $form->changeModeToDelete($id) ;
+        
+        foreach($form->getElements() as $element){
+        	if($element instanceof Zend_Form_Element_Text ||
+                 $element instanceof Zend_Form_Element_Checkbox)
+        		$element->setAttrib('disabled', true);
+        }
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-           	if($row && $this->_model->deleteRow($id)) {
+            $id = $formData['NewsCategoryId'];
+            if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
                     $msg = str_replace(array("{subject}"),array("NewsCategories"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
@@ -152,7 +167,10 @@ class NewsCategoriesController extends Zend_Controller_Action
         }
          
         $this->view->id = $id;
+        $form->populate($row->toArray());
+        $this->view->form = $form;
         $this->view->showAllUrl = 'show-news-categories';
+        $this->_helper->viewRenderer->setRender('add-news-categories');
     }
     
     /**

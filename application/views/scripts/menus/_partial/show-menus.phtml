@@ -1,0 +1,68 @@
+<?php
+/**
+ * partial loop of Menus
+ * Menus
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->MenuId;?>
+    </td>
+
+    <!-- <td> -->
+        <?php //echo $dataRow->ParentMenuId;?>
+    <!-- </td> -->
+
+    <td>
+    	<a href="/menus/update-menus/id/<?php echo $dataRow->MenuId; ?>" class="">
+        	<?php echo $dataRow->MenuName;?><br/>
+         </a>
+    </td>
+
+    <td>
+        <?php echo $dataRow->MenuCode;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->MenuUrl;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ClassName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Position;?>
+    </td>
+
+    <td style="vertical-align: middle">
+        <?php //echo $dataRow->IsDisabled;?>
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
+    </td>
+
+    <!-- <td> -->
+        <?php //echo $dataRow->LastUpdatedBy;?>
+    <!-- </td> -->
+
+    <!-- <td> -->
+        <?php //echo $dataRow->LastUpdated;?>
+    <!-- </td> -->
+
+    <!-- <td> -->
+        <?php //echo $dataRow->CreatedDate;?>
+    <!-- </td> -->
+    
+    <td>
+        <a href="/menus/update-menus/id/<?php echo $dataRow->MenuId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/menus/delete-menus/id/<?php echo $dataRow->MenuId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

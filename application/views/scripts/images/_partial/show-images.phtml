@@ -1,0 +1,56 @@
+<?php
+/**
+ * partial loop of Images
+ * Images
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->ImageId;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ImageCode;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ImageName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ImageDesc;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->RecommendWidth;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->RecommendHeight;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Section;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->LastUpdated;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->LastUpdatedBy;?>
+    </td>
+    
+    <td>
+        <a href="/images/update-images/id/<?php echo $dataRow->ImageId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/images/delete-images/id/<?php echo $dataRow->ImageId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

@@ -1,5 +1,6 @@
 <?php 
-    $form = $this->form;
+    $form = $this->form;    
+    $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'News'), '-');
     $label = $form->getElement('Save')->getLabel();
     $title = ($label == 'Delete')? 'Delete' : 'Update' ;
     if($label == 'Add') $title = 'Add';
@@ -8,12 +9,12 @@
 <div class="row-fluid">
     <div class="span12">
           <div class="pull-right">
-              <a href="<?php echo $this->url(array('controller' => $this->text(strtolower('News')), 'action'=>$this->showAllUrl), null, true) ?>" >	
+              <a href="<?php echo $this->url(array('controller' => $this->text(strtolower($controller)), 'action'=>$this->showAllUrl), null, true) ?>" >	
                   Back to list <?php echo $this->text('News'); ?>
               </a>
           </div>
           <h2>
-              <?php echo $title.$this->text(' News'); ?>        
+              <?php echo $title.' '.$this->text($controller); ?>        
           </h2>
     </div>
 </div>
@@ -55,10 +56,10 @@
 		            <fieldset class="form-vertical">
 		                <?php echo $this->renderFormElement($form->NewsId, 1);?>
 		                <?php echo $this->renderFormElement($form->Title, 1);?>
-		                <?php  echo $this->renderFormElement($form->Summary, 1);?>
-		                <?php echo $this->renderFormElement($form->Content, 1);?>
+		                <?php echo $this->renderFormElement($form->Summary, 1);?>
+		                <?php if($label !=='Delete' ) echo $this->renderFormElement($form->Content, 1);?>
 		                <?php echo $this->renderFormElement($form->Save);?>
-		                <?php echo $this->renderFormElement($form->Reset);?>
+		                <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
 		                </fieldset>
 	              </div>
 		           <div class="span4">
@@ -67,7 +68,7 @@
 			                <?php echo $this->renderFormElement($form->IsDisabled);?>
 			                <?php echo $this->renderFormElement($form->IsPrivate);?>
 			                <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate, 1);?>
-			                
+			         <?php if($label !=='Delete' ):?>       
 			                <div class="control-group">
 			                	<label for="ImageUrl" class="control-label">Image Upload</label>
 	                            <label class="control-label view-label" for="inputEmail"> </label>
@@ -104,7 +105,8 @@
 		                              <ul id="separate-list" style="display:none"></ul>
 		                            </div>
 		                          </div>
-			                <?php //echo $this->renderFormElement($form->ImageUrl, 1);?>	
+			                <?php //echo $this->renderFormElement($form->ImageUrl, 1);?>
+			                <?php endif;?>	
 			            </fieldset>
 		            </div>
 		         </div>

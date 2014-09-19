@@ -109,8 +109,18 @@ class Application_Form_Core_News extends Zend_Form
     public function changeModeToUpdate($cateId) {
     	//$this->removeElement('CreatedDate');
     	$this->removeElement('UpdatedDate');
-    	$this->getElement('Save')->setLabel('Save changes');    
+    	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');    
     
+    	$cateModel =  new Application_Model_Core_NewsCategories();
+    	$this->getElement('NewsCategoryId')
+    	->addMultiOptions($cateModel->getFormPairs($cateId));
+    }
+    
+    public function changeModeToDelete($cateId) {
+    	//$this->removeElement('CreatedDate');
+    	//$this->removeElement('LastUpdated');
+    	$this->getElement('Save')->setLabel('Delete')->setAttrib('class', 'btn btn-danger');
+    	 
     	$cateModel =  new Application_Model_Core_NewsCategories();
     	$this->getElement('NewsCategoryId')
     	->addMultiOptions($cateModel->getFormPairs($cateId));

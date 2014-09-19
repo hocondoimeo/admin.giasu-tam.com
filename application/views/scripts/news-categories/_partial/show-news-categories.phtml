@@ -14,7 +14,9 @@
     </td>
 
     <td>
-        <?php echo $dataRow->NewsCategoryName;?>
+    	<a href="/news-categories/update-news-categories/id/<?php echo $dataRow->NewsCategoryId; ?>" class="">
+        	<?php echo $dataRow->NewsCategoryName;?>
+        </a>
     </td>
 
     <td>
@@ -25,8 +27,10 @@
         <?php echo $dataRow->CreatedDate;?>
     </td>
 
-    <td>
-        <?php echo $dataRow->IsDisabled;?>
+    <td style="vertical-align: middle">
+        <?php //echo $dataRow->IsDisabled;?>
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
     </td>
     
     <td>
