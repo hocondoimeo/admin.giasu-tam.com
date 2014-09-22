@@ -31,7 +31,8 @@ class Application_Form_Core_NewsCategories extends Zend_Form
         $createdDate->setLabel('CreatedDate');
         $createdDate->addFilter('StringTrim');
         $createdDate->addValidator('Date');
-        $createdDate->setRequired(true);
+        $createdDate->setRequired(false);
+        $createdDate->setAttrib('disabled', true);
         $createdDate->setDecorators(array('ViewHelper'));
         $this->addElement($createdDate);
 

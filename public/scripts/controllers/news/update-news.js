@@ -20,9 +20,9 @@ function uploaderCallback(file, item, fileName, result) {
     image.attr('src', aLink.attr('tmpUrl')+fileName);
     
     var size = file._find(item, 'size').innerHTML;
-    $('#image-size').text(size);
+    //$('#image-size').text(size);
     $('#image-name').text(fileName);
-    var d = new Date();
+    /*var d = new Date();
     var ampm = 'AM';
     var hour = d.getHours();
     if(hour > 12) ampm = 'PM';
@@ -32,13 +32,13 @@ function uploaderCallback(file, item, fileName, result) {
     var date = $('#image-upload-date').attr('date') + hour + ':' + minute + ' ' + ampm;
     $('#image-upload-date').text(date);
     $('#progress-img').hide();
-    $('#image-size').text(size);
+    $('#image-size').text(size);*/
     $('#Save').attr('disabled', false);
-    var img = new Image();
+    /*var img = new Image();
     img.src = aLink.attr('tmpUrl')+fileName;
     img.onload = function(){
     	$('#image-dimension').text(img.width + ' x ' + img.height + ' px');
-    }
+    }*/
 }
 
 $(document).ready(function() {

@@ -65,7 +65,7 @@ class Application_Form_Core_News extends Zend_Form
         $this->addElement($updatedDate);
 
         $isPrivate = new Zend_Form_Element_Checkbox('IsPrivate');
-        $isPrivate->setLabel('IsPrivate');
+        $isPrivate->setLabel('Feature');
         $isPrivate->setDecorators(array('ViewHelper'));
         $this->addElement($isPrivate);
 
