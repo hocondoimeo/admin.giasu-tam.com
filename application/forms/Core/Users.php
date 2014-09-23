@@ -63,6 +63,5 @@ class Application_Form_Core_Users extends Zend_Form
         $lastLogin->setRequired(true);
         $lastLogin->setDecorators(array('ViewHelper'));
         $this->addElement($lastLogin);
-
     }
 }

@@ -114,6 +114,7 @@ class Application_Form_Core_Menus extends Zend_Form
     public function changeModeToUpdate($cateId) {
     	//$this->removeElement('CreatedDate');
     	//$this->removeElement('LastUpdated');
+    	//$this->getElement('MenuCode')->setAttrib('disabled', true);
     	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');
     }
     

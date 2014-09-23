@@ -93,6 +93,8 @@ class Application_Form_Core_Configs extends Zend_Form
     public function changeModeToUpdate($cateId) {
     	//$this->removeElement('CreatedDate');
     	//$this->removeElement('LastUpdated');
+    	$this->getElement('ConfigCode')->setRequired(false);
+    	$this->getElement('ConfigCode')->setAttrib('disabled', true);
     	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');
     
     	$cateModel =  new Application_Model_Core_ConfigCategories();
