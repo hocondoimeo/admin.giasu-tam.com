@@ -42,7 +42,7 @@ define('SESSION_LIFE_TIME_REMEMBER', 7 * 24 * 60 * 60);
 
 /************************* Files *******************************/
 define('UPLOAD_PATH_TMP', '/tmp');
-define('DATA_PATH', '/home/gia53c14');
+define('DATA_PATH', '/home/gia53c14/public_html');
 //define('DATA_PATH',  'C:/wamp/www/admin.giasu-tam.com');//test local
 define('UPLOAD_PATH', DATA_PATH . '/uploads');
 
@@ -60,3 +60,11 @@ define('IMAGE_UPLOAD_URL_TMP', IMAGE_UPLOAD_URL .'tmp/');
 define('IMAGE_SIZE_LIMIT', 500);
 $allowedExt = array('jpeg', 'jpg', 'png', 'gif');
 define('IMAGE_ALLOWED_EXT', serialize($allowedExt));
+
+
+/************************* Tutors *******************************/
+$levels = array('- Chọn trình độ -', 'Cao Đẳng', 'Đại Học', 'Thạc Sỹ', 'Bằng cấp khác');
+define('TUTOR_LEVELS', serialize($levels));
+
+$careers = array('Sinh Viên', 'Giáo Viên', 'Đã Tốt Nghiệp');
+define('TUTOR_CAREERS' , serialize($careers));

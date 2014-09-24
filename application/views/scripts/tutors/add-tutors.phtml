@@ -1,6 +1,6 @@
 <?php 
-    $form = $this->form;    
-    $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'News'), '-');
+    $form = $this->form;
+    $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Tutors'), '-');
     $label = $form->getElement('Save')->getLabel();
     $title = ($label == 'Delete')? 'Delete' : 'Update' ;
     if($label == 'Add') $title = 'Add';
@@ -10,7 +10,7 @@
     <div class="span12">
           <div class="pull-right">
               <a href="<?php echo $this->url(array('controller' => $this->text(strtolower($controller)), 'action'=>$this->showAllUrl), null, true) ?>" >	
-                  Back to list <?php echo $this->text('News'); ?>
+                  Back to list <?php echo $this->text('Tutors'); ?>
               </a>
           </div>
           <h2>
@@ -33,7 +33,7 @@
 </div>
 
 <?php
-						$imageUrl = (isset($this->imageUrl) && !empty($this->imageUrl))?$this->imageUrl:trim($form->ImageUrl->getValue());
+						$imageUrl = (isset($this->avatar) && !empty($this->avatar))?$this->avatar:trim($form->Avatar->getValue());
                         if(!empty($imageUrl)){
                             $filename = IMAGE_UPLOAD_PATH.$imageUrl;
                             $imageStyle = 'width="200" height="200"';
@@ -49,28 +49,37 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <form class="" method="post" action="" id="frmImage">
-        <div class="form-horizontal">
+        <form class="form-horizontal" method="post" action="" id="frmImage">
+            <div class="form-horizontal">
 	        <div class="row-fluid">
 	            <div class="span8">
-		            <fieldset class="form-vertical">
-		                <?php echo $this->renderFormElement($form->NewsId, 1);?>
-		                <?php echo $this->renderFormElement($form->Title, 1);?>
-		                <?php echo $this->renderFormElement($form->Summary, 1);?>
-		                <?php if($label !=='Delete' ) echo $this->renderFormElement($form->Content, 1);?>
+		            <fieldset class="form-vertical">                
+		                <?php echo $this->renderFormElement($form->TutorId);?>
+		                <?php echo $this->renderFormElement($form->UserName);?>
+		                <?php echo $this->renderFormElement($form->Gender);?>
+		                <?php echo $this->renderFormElement($form->Birthday);?>
+		                <?php echo $this->renderFormElement($form->Email);?>
+		                <?php echo $this->renderFormElement($form->Address);?>
+		                <?php echo $this->renderFormElement($form->Phone);?>
+		                <?php echo $this->renderFormElement($form->University);?>
+		                <?php if($label !=='Delete' ) echo $this->renderFormElement($form->Introduction);?>
 		                <?php echo $this->renderFormElement($form->Save);?>
-		                <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
-		                </fieldset>
-	              </div>
-		           <div class="span4">
-			            <fieldset class="form-vertical">
-			                <?php echo $this->renderFormElement($form->NewsCategoryId, 1);?>
-			                <?php echo $this->renderFormElement($form->IsDisabled);?>
-			                <?php echo $this->renderFormElement($form->IsPrivate);?>
-			                <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate, 1);?>
-			         <?php if($label !=='Delete' ):?>       
+				         <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
+				     </fieldset>
+		        </div>
+		        <div class="span4">
+				     <fieldset class="form-vertical">
+		                <?php echo $this->renderFormElement($form->Level, 1);?>
+		                <?php echo $this->renderFormElement($form->Subject, 1);?>
+		                <?php echo $this->renderFormElement($form->Graduation, 1);?>
+		                <?php echo $this->renderFormElement($form->Career, 1);?>
+		                <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate, 1);?>
+		                <?php echo $this->renderFormElement($form->IsDisabled);?>
+		                <?php echo $this->renderFormElement($form->Status);?>
+		                <?php //echo $this->renderFormElement($form->Avatar, 1);?>
+		                <?php if($label !=='Delete' ):?>       
 			                <div class="control-group">
-			                	<label for="ImageUrl" class="control-label">Image Upload</label>
+			                	<label for="Avatar" class="control-label">Image Upload</label>
 	                            <label class="control-label view-label" for="inputEmail"> </label>
 	                            <div class="controls" style="position: relative;">
 	                              <div id="file-uploader"></div><img id="progress-img" src="/scripts/upload/loading.gif"/>
@@ -78,7 +87,7 @@
 	                          </div>
 	                        <div class="control-group">
 	                            <div class="controls">
-	                                Recommend image demension: 200 x 200 (px)<br>
+	                                Recommend image demension: 100 x 100 (px)<br>
 	                                Accepted extensions: jpg, png, gif. Maximum size: <?php echo IMAGE_SIZE_LIMIT; ?> kB
 	                            </div>
 	                        </div>
@@ -96,7 +105,7 @@
 		                                <div id="image-thumb">
 		                                <?php $url = (isset($this->avatar) && !empty($this->avatar)) ? IMAGE_UPLOAD_URL_TMP : IMAGE_UPLOAD_URL;?>
 		                                    <a class="image-in-modal" url="<?php echo IMAGE_UPLOAD_URL?>" tmpUrl="<?php echo IMAGE_UPLOAD_URL_TMP?>" filename="<?php echo $imageUrl?>" href="#">
-		                                        <img alt="<?php echo $imageUrl?>" title="+" src="<?php echo $url.$imageUrl?>" <?php echo !empty($imageStyle)?$imageStyle:''?> width="200" height="200"/>
+		                                        <img alt="<?php echo $imageUrl?>" title="+" src="<?php echo $url.$imageUrl?>" <?php echo !empty($imageStyle)?$imageStyle:''?> width="100" height="100"/>
 		                                    </a>
 		                                </div>
 		                            </div>
@@ -108,10 +117,10 @@
 		                          </div>
 			                <?php //echo $this->renderFormElement($form->ImageUrl, 1);?>
 			                <?php endif;?>	
-			            </fieldset>
-		            </div>
-		         </div>
-	         </div>
+		            </fieldset>
+		       </div>
+		    </div>
+	        </div>
         </form>
     </div>
 </div>

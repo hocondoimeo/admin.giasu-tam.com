@@ -66,12 +66,22 @@ class NewsController extends Zend_Controller_Action
             	$data['LastUpdatedBy'] = USER_ID;
             	if(isset($data['NewsId'])) unset($data['NewsId']);
             	
+            	//copy new image from 'tmp' to 'images' folder then remove it
+            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
+            	//copy exist image from 'images' to 'backup' folder then remove it
+            	//$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);            	 
+            	
                 if($this->_model->add($data)){
                     $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
+                }else {
+                	if (file_exists(IMAGE_UPLOAD_PATH_TMP.$fileName))
+                		unlink(IMAGE_UPLOAD_PATH_TMP.$fileName);
+                	$this->_helper->flashMessenger->addMessage(array('danger/database error'));
                 }
                 $this->_helper->redirector('show-news');
             }else{
+            	$this->view->imageUrl = (isset($_POST['ImageUrl'])  && !empty($_POST['ImageUrl']))?$_POST['ImageUrl']:'';
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
                       $msg .= '/'.$key;
@@ -116,23 +126,27 @@ class NewsController extends Zend_Controller_Action
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
             	$data['LastUpdatedBy'] = USER_ID;
             	
-            	//copy new image from 'tmp' to 'images' folder then remove it
-            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
-            	//copy exist image from 'images' to 'backup' folder then remove it
-            	$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);
+            	if (($data['Avatar'] !== $data['OldImageName'])){
+	            	//copy new image from 'tmp' to 'images' folder then remove it
+	            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
+	            	//copy exist image from 'images' to 'backup' folder then remove it
+	            	$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);
+            	}
             	
             	//if($fileName || $fileNameBackup){
             		if($this->_model->edit($data)){
             			$msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been updated successfully.');
                  		$this->_helper->flashMessenger->addMessage($msg);
             		}else{
-            			unlink(IMAGE_UPLOAD_PATH.$fileName);
-            			$this->_helper->flashMessenger->addMessage(MSG_ERROR_DB);
+            			if (($data['Avatar'] !== $data['OldImageName']) && file_exists(IMAGE_UPLOAD_PATH_TMP.$fileName))
+            				unlink(IMAGE_UPLOAD_PATH_TMP.$fileName);
+            			$this->_helper->flashMessenger->addMessage(array('danger/database error'));
             		}
             	/* }else
             		$this->_helper->flashMessenger->addMessage(MSG_ERROR_PHP); */
                  	$this->_helper->redirector('show-news');
             }else{
+            	$this->view->imageUrl = (isset($_POST['ImageUrl'])  && !empty($_POST['ImageUrl']))?$_POST['ImageUrl']:'';
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
                       $msg .= '/'.$key;
@@ -181,6 +195,9 @@ class NewsController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             $id = $formData['NewsId'];
             if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
+            		$fileName = isset($formData['ImageUrl'])?$formData['ImageUrl']:'';
+            		if (file_exists(IMAGE_UPLOAD_PATH.$fileName))
+            			unlink(IMAGE_UPLOAD_PATH.$fileName);
                     $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }

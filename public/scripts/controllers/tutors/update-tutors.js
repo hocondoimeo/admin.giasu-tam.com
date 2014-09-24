@@ -103,7 +103,7 @@ $(document).ready(function() {
 		if(url.length <= 0) url = tmpUrl;
 		var content = '<img src="'+url+imageName+'"/>'; 
 		loadModal(content);
-	})
+	});
 	
 	$("form#frmImage").submit( function(eventObj) {
 		var oldImageName = $.trim($('#image-name').attr('old-image-name'));
@@ -115,7 +115,7 @@ $(document).ready(function() {
 	          .appendTo('form#frmImage');
 	      
 	      $('<input />').attr('type', 'hidden')
-          .attr('name', "ImageUrl")
+          .attr('name', "Avatar")
           .attr('value', imageName)
           .appendTo('form#frmImage');
 	      return true;
