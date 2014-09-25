@@ -1,0 +1,114 @@
+<div class="row-fluid">
+<?php if(!empty($this->message) && isset($this->message[0])):?>
+<?php $message = explode("/", $this->message[0]);?>
+<div class="span12">
+     <div class="alert alert-<?php echo $message[0];?>">
+        <button class="close" data-dismiss="alert" type="button">X</button>
+        <?php echo $message[1];?>
+        <?php if(isset($message[2]))echo "<ul><li>".$message[2]."</li></ul>"?>
+    </div>
+</div>
+<?php endif;?>
+</div>
+
+<?php 
+    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'Classes'), ' ');
+?>
+
+<div class="row-fluid show-grid">
+    <div class="span12">
+        <h2>
+            <?php echo $this->text($controller) ?>
+        </h2>
+    </div>
+</div>
+<?php
+$typeSearchs = array(
+    'All' => 'All',
+    //'ClassId'                      => $this->text('ClassId', false),
+    //'ClassAddress'                 => $this->text('ClassAddress', false),
+    'ClassContact'                 => $this->text('ClassContact', false),
+    'ClassCost'                    => $this->text('ClassCost', false),
+    'ClassDaysOfWeek'              => $this->text('ClassDaysOfWeek', false),
+    'ClassTime'                    => $this->text('ClassTime', false),
+    'ClassRequire'                 => $this->text('ClassRequire', false),
+    //'ClassTutors'                  => $this->text('ClassTutors', false),
+    //'ClassSubjects'                => $this->text('ClassSubjects', false),
+    'ClassMember'                  => $this->text('ClassMember', false),
+    //'ClassStatus'                  => $this->text('ClassStatus', false),
+    //'CreatedDate'                  => $this->text('CreatedDate', false),
+    //'IsDisabled'                   => $this->text('IsDisabled', false),
+    //'LastUpdated'                  => $this->text('LastUpdated', false),
+    //'LastUpdatedBy'                => $this->text('LastUpdatedBy', false),
+);
+$buttons = array(
+    "<a class='btn btn-small btn-primary'  
+        href='{$this->url(array('action' => 'add-'. $this->controller))}'>
+        <i class='icon-plus'></i>
+        Add {$this->text('Classes')}
+    </a>"
+);
+echo $this->searchBar($typeSearchs, null, $buttons);
+
+?>
+
+
+<div class="row-fluid show-grid">
+    <div class="span12">
+        <table class="table table-striped table-bordered table-condensed">
+
+            <thead>
+                <tr>
+                    <?php $this->renderTh('Class Id'); ?>
+                    <?php $this->renderTh('Class Status'); ?>
+                    <?php //$this->renderTh('Class Address'); ?>
+                    <?php //$this->renderTh('Class Contact'); ?>
+                    <?php $this->renderTh('Class Cost'); ?>
+                    <?php $this->renderTh('Class Days Of Week'); ?>
+                    <?php $this->renderTh('Class Time'); ?>
+                    <?php $this->renderTh('Class Require'); ?>
+                    <?php //$this->renderTh('Class Tutors'); ?>
+                    <?php $this->renderTh('Class Subjects'); ?>
+                    <?php $this->renderTh('Class Member'); ?>
+                    <?php //$this->renderTh('Created Date'); ?>
+                    <?php $this->renderTh('Is Disabled'); ?>
+                    <?php //$this->renderTh('Last Updated'); ?>
+                    <?php //$this->renderTh('Last Updated By'); ?>
+                    
+                    <th style="vertical-align: middle;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php if (count($this->paginator) != 0) : ?>
+                    <?php 
+	                    //convert object array to string for subject
+	                    function array2string($haystack, $needle){
+	                    	$str="";
+	                    	foreach($haystack as $k=>$i){
+	                    		if(is_array($i)){
+	                    			if(in_array($i['SubjectId'], $needle))
+	                    				$str.= ','.$i['SubjectName'];
+	                    			$str.=array2string($i, $needle);
+	                    		}
+	                    	}
+	                    	return $str;
+	                    }
+                    	$subjectModel = new Application_Model_Core_Subjects();
+                    	$subjects = $subjectModel->fetchAll($subjectModel->getAllAvaiabled());
+                        foreach ($this->paginator as $row){ 
+							$subjectNames = trim(array2string($subjects->toArray(), explode(',', $row->ClassSubjects)), ',');   
+                            echo $this->partial('classes/_partial/show-classes.phtml', array('dataRow'=>$row, 'subjectNames' => $subjectNames) );
+                        }
+                    ?>
+                <?php else : ?>
+                    <tr><td colspan="100"><h3>No Result</h3></td></tr>
+                <?php endif; ?>
+            </tbody>
+
+            <?php echo $this->renderPaging($this->paginator); ?>
+        </table>
+
+        <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+    </div>
+</div>

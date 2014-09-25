@@ -1,0 +1,62 @@
+<?php
+/**
+ * partial loop of Classes
+ * Classes
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->ClassId;?>
+    </td>
+
+    <td style="vertical-align: middle">
+        <?php if(!$dataRow->ClassStatus):?><span class="btn btn-success">Available</span><?php endif;?>
+        <?php if($dataRow->ClassStatus):?><span class="btn btn-default">Unavailable</span><?php endif;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ClassCost;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ClassDaysOfWeek;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ClassTime;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ClassRequire;?>
+    </td>
+
+    <td>
+        <?php echo $this->subjectNames;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ClassMember;?>
+    </td>
+
+    <td style="vertical-align: middle">
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
+    </td>
+
+    <!-- <td> -->
+        <?php //echo $dataRow->LastUpdated;?>
+    <!-- </td> -->
+    
+    <td>
+        <a href="/classes/update-classes/id/<?php echo $dataRow->ClassId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <!--<a href="/classes/delete-classes/id/<?php //echo $dataRow->ClassId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>-->
+    </td>
+</tr>
