@@ -50,13 +50,7 @@
     	if(in_array($dataRow->TutorId, explode(',', $this->ctutors)))
     		$checked = ' checked="checked"';
     ?>
-    <td>
-    	<input type="checkbox" id="<?php echo $dataRow->TutorId; ?>" value="<?php echo $dataRow->TutorId; ?>" <?php echo $checked?>>
-         <!--<a href="/tutors/update-tutors/id/<?php //echo $dataRow->TutorId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
-           Update
-        </a>-->
-        <!--<a href="/tutors/delete-tutors/id/<?php //echo $dataRow->TutorId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
-           Delete
-        </a>-->
+    <td style="vertical-align: middle">
+    	<input type="checkbox" id="<?php echo $dataRow->TutorId; ?>" value="<?php echo $dataRow->TutorId; ?>" <?php echo $checked?>
     </td>
 </tr>
