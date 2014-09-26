@@ -1,0 +1,62 @@
+<?php
+/**
+ * partial loop of Tutors
+ * Tutors
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->TutorId;?>
+    </td>
+    
+    <td style="vertical-align: middle">
+        <?php if($dataRow->Status):?><span class="btn btn-success">Verify</span><?php endif;?>
+        <?php if(!$dataRow->Status):?><span class="btn btn-default">Untrust</span><?php endif;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->UserName;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Email;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Phone;?>
+    </td>
+
+    <td>
+        <?php $levels = unserialize(TUTOR_LEVELS); echo $levels[$dataRow->Level]?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->Subject;?>
+    </td>
+
+    <td>
+        <?php $careers = unserialize(TUTOR_CAREERS); echo $careers[$dataRow->Career]?>
+    </td>
+
+    <!-- <td> -->
+        <?php //echo $dataRow->Avatar;?>
+    <!-- </td> -->
+    <?php 
+    	$checked = '';
+    	if(in_array($dataRow->TutorId, explode(',', $this->ctutors)))
+    		$checked = ' checked="checked"';
+    ?>
+    <td>
+    	<input type="checkbox" id="<?php echo $dataRow->TutorId; ?>" value="<?php echo $dataRow->TutorId; ?>" <?php echo $checked?>>
+         <!--<a href="/tutors/update-tutors/id/<?php //echo $dataRow->TutorId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>-->
+        <!--<a href="/tutors/delete-tutors/id/<?php //echo $dataRow->TutorId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>-->
+    </td>
+</tr>

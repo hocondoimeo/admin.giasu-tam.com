@@ -34,18 +34,19 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <form class="form-horizontal" method="post" action="">
+        <form class="form-horizontal" method="post" action="" id="frmClass">
             <fieldset>
                 
                 <?php echo $this->renderFormElement($form->ClassId);?>
+                <?php echo $this->renderFormElement($form->DistrictId);?>
                 <?php echo $this->renderFormElement($form->ClassAddress);?>
                 <?php echo $this->renderFormElement($form->ClassContact);?>
                 <?php echo $this->renderFormElement($form->ClassCost);?>
                 <?php echo $this->renderFormElement($form->ClassDaysOfWeek);?>
                 <?php echo $this->renderFormElement($form->ClassTime);?>
                 <?php echo $this->renderFormElement($form->ClassRequire);?>
-                <?php echo $this->renderFormElement($form->ClassTutors);?>
-                <?php echo $this->renderFormElement($form->ClassSubjects);?>
+                <?php echo $form->ClassTutors;?>
+                <?php echo $form->ClassSubjects;?>
                 <?php echo $this->renderFormElement($form->ClassMember);?>
                 <?php echo $this->renderFormElement($form->ClassStatus);?>
                 <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate);?>

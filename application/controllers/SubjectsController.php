@@ -196,6 +196,37 @@ class SubjectsController extends Zend_Controller_Action
         $this->view->assign($params);
     }
     
+    /**
+     * Add record Subjects
+     * @param array $formData
+     * @author
+     */
+    public function ajaxConvertSubjectsAction() {
+    
+    	$this->_helper->layout->disableLayout();
+    
+    	$subjectIds    = $this->_getParam('subjects', null);
+    
+    	$subjects = $this->_model->getSubjectName($subjectIds);
+    	
+    	$subjectNames = trim($this->_array2string($subjects->toArray(), explode(',', $subjectIds)), ',');
+    	
+    	//echo "{'subjects':'{$subjectNames}'}";die;
+    	echo Zend_Json::encode(array('subjects' => $subjectNames));exit;
+    }
+    
+    private function _array2string($haystack, $needle){
+    	$str="";
+    	foreach($haystack as $k=>$i){
+    		if(is_array($i)){
+    			if(in_array($i['SubjectId'], $needle))
+    				$str.= ','.$i['SubjectName'];
+    			$str.=$this->_array2string($i, $needle);
+    		}
+    	}
+    	return $str;
+    }
+    
    /**
     * Add record Subjects
     * @param array $formData

@@ -50,6 +50,18 @@ class Application_Model_Core_Districts extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
+    public function getFormPairs() {
+    	$select = $this->getQuerySelectAll(array(), array('DistrictId', 'DistrictName'));
+    	 
+    	$result = $this->fetchAll($select)->toArray();
+    	$content = array();
+    	 
+    	foreach ($result as $val) {
+    		$content[$val['DistrictId']] = $val['DistrictName'];
+    	}
+    	 
+    	return $content;
+    }
 
 
 }

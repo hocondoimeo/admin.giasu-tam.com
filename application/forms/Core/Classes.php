@@ -13,6 +13,14 @@ class Application_Form_Core_Classes extends Zend_Form
         $classId->setDecorators(array('ViewHelper'));
         $this->addElement($classId);
 
+        $newsCategoryId = new Zend_Form_Element_Select('DistrictId');
+        $newsCategoryId->setLabel('District');
+        $newsCategoryId->addFilter('StringTrim');
+        //$newsCategoryId->addValidator('Int');
+        //$newsCategoryId->setRequired(true);
+        $newsCategoryId->setDecorators(array('ViewHelper'));
+        $this->addElement($newsCategoryId);
+        
         $classAddress = new Zend_Form_Element_Text('ClassAddress');
         $classAddress->setLabel('ClassAddress');
         $classAddress->addFilter('StringTrim');
@@ -62,7 +70,13 @@ class Application_Form_Core_Classes extends Zend_Form
         $classTutors->addFilter('StringTrim');
         $classTutors->setRequired(false);
         $classTutors->setAttrib('disabled', true);
-        $classTutors->setDecorators(array('ViewHelper'));
+        $classTutors->setDecorators(array(
+        		'ViewHelper',
+        		array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'tutors-modal', 'class' => "btn btn-info")),
+        		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
+        		array('Label', array('class' => 'control-label col-lg-2')),
+        		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
+        ));
         $this->addElement($classTutors);
 
         $classSubjects = new Zend_Form_Element_Text('ClassSubjects');
@@ -70,7 +84,13 @@ class Application_Form_Core_Classes extends Zend_Form
         $classSubjects->addFilter('StringTrim');
         $classSubjects->setRequired(true);
         $classSubjects->setAttrib('disabled', true);
-        $classSubjects->setDecorators(array('ViewHelper'));
+        $classSubjects->setDecorators(array(
+        		'ViewHelper',
+        		array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'subjects-modal', 'class' => "btn btn-info")),
+        		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
+        		array('Label', array('class' => 'control-label col-lg-2')),
+        		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
+        ));
         $this->addElement($classSubjects);
 
         $classMember = new Zend_Form_Element_Text('ClassMember');
@@ -137,6 +157,10 @@ class Application_Form_Core_Classes extends Zend_Form
     	$this->removeElement('LastUpdated');
     	$this->removeElement('CreatedDate');
     	$this->getElement('Save')->setLabel('Add');
+    	
+    	$cateModel =  new Application_Model_Core_Districts();
+    	$this->getElement('DistrictId')
+    	->addMultiOptions($cateModel->getFormPairs());
     }
     
     public function changeModeToUpdate($classSubjects) {
@@ -158,6 +182,7 @@ class Application_Form_Core_Classes extends Zend_Form
     	$subjects = $subjectModel->fetchAll($subjectModel->getAllAvaiabled());
     	$subjectNames = trim(array2string($subjects->toArray(), explode(',', $classSubjects)), ',');
      	$this->getElement('ClassSubjects')->setValue($subjectNames);
+     	$this->getElement('ClassSubjects')->setAttrib('subs', $classSubjects);
     	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');
     }
     
@@ -165,5 +190,15 @@ class Application_Form_Core_Classes extends Zend_Form
     	//$this->removeElement('CreatedDate');
     	//$this->removeElement('LastUpdated');
     	$this->getElement('Save')->setLabel('Delete')->setAttrib('class', 'btn btn-danger');
+    	
+    	$cateModel =  new Application_Model_Core_Districts();
+    	$this->getElement('DistrictId')
+    	->addMultiOptions($cateModel->getFormPairs());
+    }
+    
+    public function changeModeToDistrictId() {    	
+    	$cateModel =  new Application_Model_Core_Districts();
+    	$this->getElement('DistrictId')
+    	->addMultiOptions($cateModel->getFormPairs());    	
     }
 }

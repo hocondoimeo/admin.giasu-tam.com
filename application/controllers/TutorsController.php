@@ -72,29 +72,33 @@ class TutorsController extends Zend_Controller_Action
             	
                 if($id = $this->_model->add($data)){
                 	$email = $_POST["Email"];
-                	$mailSubject = null;$mailMessageContent = null;
-                	$mailUserName =null;$mailFrom = null;
-                	$configMails = null;
+                	$mailUserName =null; $mailFrom = null; $configMails = null;
                 	try{
                 		$modelConfig = new Application_Model_Core_Configs();
                 		$configMails = $modelConfig->getConfigValueByCategoryCode("GROUP_CONFIG_MAIL");
                 		foreach ($configMails as $key=>$configMail){
                 			switch ($configMail["ConfigCode"]){
-                				case "mail-subject": $mailSubject = $configMail["ConfigValue"];break;
-                				case "mail-message-content": $mailMessageContent = $configMail["ConfigValue"];break;
                 				case "mail-user-name": $mailUserName = $configMail["ConfigValue"];break;
                 				case "mail-user-name-from": $mailFrom = $configMail["ConfigValue"];break;
                 			}
                 		}
+                		$tutorConfig = $modelConfig->getConfigDetail("dang-ky-gia-su");
                 	}catch (Zend_Exception $e){
                 	
                 	}
                 	 
                 	$rsInitMail = $this->_initMail($configMails);
                 	if($rsInitMail[0]){
-                		$subject = $mailSubject;
+                		$subject = $tutorConfig['ConfigName'];
                 		 
-                		$message = str_replace(array("{id}"),array($id), $mailMessageContent);
+                		// initialize template
+                		$html = new Zend_View();
+                		$html->setScriptPath(APPLICATION_PATH . '/views/scripts/email_templates/');
+                		
+                		$html->assign('name', $data['UserName']);
+                		$html->assign('tutorId', $id);
+                		
+                		$message = $html->render('register-tutor.phtml');
                 		$sendResult = $this->sendMail($email, $subject, $message,$mailUserName,$mailFrom);
                 		 
 	                		if($sendResult[0]){     			
@@ -253,7 +257,7 @@ class TutorsController extends Zend_Controller_Action
         /*Get parameters filter*/
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
-        $params['perpage'] = $this->_getParam('perpage',20);
+        $params['perpage'] = $this->_getParam('perpage',10);
         
         /*Get all data*/
         $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params));

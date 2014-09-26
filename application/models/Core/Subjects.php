@@ -55,8 +55,8 @@ class Application_Model_Core_Subjects extends Base_Db_Table_Abstract {
     }
     
     public function getSubjectName($subjectIds = ''){
-    	$cols = array('SubjectName');
-    	$select = $this->getItemsBySelectQuery($cols, array('SubjectId  IN ('.$subjectIds.') AND IsDisabled = 0'));
+    	$cols = array('SubjectId', 'SubjectName');
+    	$select = $this->getQuerySelectAll(array(), $cols, array('where' => 'SubjectId  IN ('.$subjectIds.') AND IsDisabled = 0'));
     	$result = $this->fetchAll($select);
     	if(count($result)) return $result;
     	else return null;

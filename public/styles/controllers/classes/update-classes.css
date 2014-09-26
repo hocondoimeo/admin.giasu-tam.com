@@ -1,0 +1,35 @@
+.modal-backdrop1 , .modal-white{
+	background-color: #eee; z-index: 9999; width: 95%
+}
+.modal-backdrop.fade {
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.modal-backdrop.fade.in {
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.tutor-title{
+	position: absolute;
+	display: block;
+	top: 35px;
+	left: 25px;
+	font-weight: bold;
+	font-size: 30px;
+}
+
+.subject-title{
+	font-weight: bold;
+	font-size: 30px;
+}
+
+#ClassSubjects, #ClassTutors{
+	min-width: 500px;
+}
+
+#tutors-modal, #subjects-modal{
+	height: 25px;
+	margin-left: 10px;
+	margin-bottom: 4px;
+}

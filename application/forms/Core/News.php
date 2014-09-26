@@ -113,7 +113,7 @@ class Application_Form_Core_News extends Zend_Form
     
     	$cateModel =  new Application_Model_Core_NewsCategories();
     	$this->getElement('NewsCategoryId')
-    	->addMultiOptions($cateModel->getFormPairs($cateId));
+    	->addMultiOptions($cateModel->getFormPairs());
     }
     
     public function changeModeToDelete($cateId) {
@@ -123,6 +123,6 @@ class Application_Form_Core_News extends Zend_Form
     	 
     	$cateModel =  new Application_Model_Core_NewsCategories();
     	$this->getElement('NewsCategoryId')
-    	->addMultiOptions($cateModel->getFormPairs($cateId));
+    	->addMultiOptions($cateModel->getFormPairs());
     }
 }

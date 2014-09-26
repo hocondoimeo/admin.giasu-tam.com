@@ -103,6 +103,7 @@ class ClassesController extends Zend_Controller_Action
         }
     
         $form = new Application_Form_Core_Classes();
+        $form->changeModeToDistrictId();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
