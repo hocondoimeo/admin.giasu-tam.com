@@ -13,14 +13,12 @@
         <?php echo $dataRow->MenuId;?>
     </td>
 
-    <!-- <td> -->
-        <?php //echo $dataRow->ParentMenuId;?>
-    <!-- </td> -->
-
     <td>
     	<a href="/menus/update-menus/id/<?php echo $dataRow->MenuId; ?>" class="">
         	<?php echo $dataRow->MenuName;?><br/>
-         </a>
+         </a><?php if(!empty($this->parentName)):?>
+         <span><small>Parent: <?php echo $this->parentName;?></small></span>
+         <?php endif;?>
     </td>
 
     <td>

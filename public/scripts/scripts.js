@@ -114,7 +114,7 @@ function loadJsOrCssFile(filename, filetype){
 function loadModal(content){
 	var html = '<div id="loadModal" class="modal fade modal-white" role="dialog" tabindex="-1">';
 	html += '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="close">x</button></div>';
-	html += '  <div class="modal-body"><div class="row-fluid"><center style="padding: 10px;" class="load-content">'+content+'</center></div></div></div>'; 
+	html += '<div class="modal-body"><div class="row-fluid"><center style="padding: 10px;" class="load-content">'+content+'</center></div></div></div>'; 
 	$('#loadModal').remove();
 	$('body').append(html);
 	$('#loadModal').modal();

@@ -70,9 +70,11 @@ class Application_Form_Core_Classes extends Zend_Form
         $classTutors->addFilter('StringTrim');
         $classTutors->setRequired(false);
         $classTutors->setAttrib('disabled', true);
+        $classTutors->setDescription('<a id="tutors-modal" class="btn btn-info" title="Choose Classes">...</a>');
         $classTutors->setDecorators(array(
         		'ViewHelper',
-        		array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'tutors-modal', 'class' => "btn btn-info")),
+        		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
+        		//array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'tutors-modal', 'class' => "btn btn-info")),
         		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
         		array('Label', array('class' => 'control-label col-lg-2')),
         		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
@@ -84,22 +86,24 @@ class Application_Form_Core_Classes extends Zend_Form
         $classSubjects->addFilter('StringTrim');
         $classSubjects->setRequired(true);
         $classSubjects->setAttrib('disabled', true);
+        $classSubjects->setDescription('<a id="subjects-modal" class="btn btn-info" title="Choose Subjects">...</a>');
         $classSubjects->setDecorators(array(
         		'ViewHelper',
-        		array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'subjects-modal', 'class' => "btn btn-info")),
+        		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
+        		//array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'subjects-modal', 'class' => "btn btn-info")),
         		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
         		array('Label', array('class' => 'control-label col-lg-2')),
         		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
         ));
         $this->addElement($classSubjects);
 
-        $classMember = new Zend_Form_Element_Text('ClassMember');
-        $classMember->setLabel('ClassMember');
-        $classMember->addFilter('StringTrim');
-        $classMember->addValidator('Int');
-        $classMember->setRequired(true);
-        $classMember->setDecorators(array('ViewHelper'));
-        $this->addElement($classMember);
+        $classGrade = new Zend_Form_Element_Text('ClassGrade');
+        $classGrade->setLabel('ClassGrade');
+        $classGrade->addFilter('StringTrim');
+        //$classGrade->addValidator('Int');
+        $classGrade->setRequired(true);
+        $classGrade->setDecorators(array('ViewHelper'));
+        $this->addElement($classGrade);
 
         $classStatus = new Zend_Form_Element_Checkbox('ClassStatus');
         $classStatus->setLabel('ClassStatus');

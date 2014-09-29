@@ -64,6 +64,7 @@ class MenusController extends Zend_Controller_Action
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
             	$data['LastUpdatedBy'] = USER_ID;
             	if(isset($data['MenuId'])) unset($data['MenuId']);
+            	if($data['ParentMenuId'] == 0) $data['ParentMenuId'] = NULL;
             	
                 if($this->_model->add($data)){
                     $msg = str_replace(array("{subject}"),array("Menus"),'success/The {subject} has been added successfully.');
@@ -113,6 +114,7 @@ class MenusController extends Zend_Controller_Action
             	
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
             	$data['LastUpdatedBy'] = USER_ID;
+            	if($data['ParentMenuId'] == 0) $data['ParentMenuId'] = NULL;
             	
                 if($this->_model->edit($data)){
                     $msg = str_replace(array("{subject}"),array("Menus"),'success/The {subject} has been updated successfully.');
@@ -158,7 +160,8 @@ class MenusController extends Zend_Controller_Action
         
         foreach($form->getElements() as $element){
         	if($element instanceof Zend_Form_Element_Text ||
-                 $element instanceof Zend_Form_Element_Checkbox )
+                 $element instanceof Zend_Form_Element_Checkbox ||
+                 $element instanceof Zend_Form_Element_Select)
         		$element->setAttrib('disabled', true);
         }
 

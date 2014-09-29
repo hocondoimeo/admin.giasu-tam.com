@@ -66,6 +66,22 @@ class Application_Model_Core_Menus extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
-
+	public function getParentMenu($menuId){
+		$select = $this->select()->where('ParentMenuId is null');
+		if(isset($menuId) && $menuId) $select->where('MenuId != '.$menuId);
+		$select->order("Position ASC");
+		$result = $this->fetchAll($select)->toArray();
+		$content = array();
+		 
+		foreach ($result as $val) {
+			$content[$val['MenuId']] = $val['MenuName'];
+		}
+		 
+		return $content;
+	}
+	
+	public function getParentName($menuId){
+		return $this->fetchRow($this->select()->where('MenuId = '.$menuId)->where('ParentMenuId is null'));
+	}
 
 }

@@ -73,9 +73,14 @@ echo $this->searchBar($typeSearchs, null, $buttons);
             <tbody>
                 <?php if (count($this->paginator) != 0) : ?>
                     <?php 
+                        $menuModel = new Application_Model_Core_Menus();
                         foreach ($this->paginator as $row){
-    
-                            echo $this->partial('menus/_partial/show-menus.phtml', array('dataRow'=>$row) );
+							$parentName = '';
+							if(isset($row->ParentMenuId) && $row->ParentMenuId){
+								$result = $menuModel->getParentName($row->ParentMenuId);
+	    						$parentName = count($result)? $result->MenuName: '';
+	    					}
+                            echo $this->partial('menus/_partial/show-menus.phtml', array('dataRow'=>$row, 'parentName' => $parentName));
                         }
                     ?>
                 <?php else : ?>

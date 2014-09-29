@@ -25,11 +25,15 @@
 }
 
 #ClassSubjects, #ClassTutors{
-	min-width: 500px;
+	min-width: 550px;
 }
 
 #tutors-modal, #subjects-modal{
 	height: 25px;
 	margin-left: 10px;
 	margin-bottom: 4px;
+}
+#desc{
+	float:right;
+	margin-right: 10px;
 }

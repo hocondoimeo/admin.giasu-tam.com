@@ -22,7 +22,7 @@
     	if(in_array($dataRow->SubjectId, explode(',', $this->csubjects)))
     		$checked = ' checked="checked"';
     ?>
-    <td>
+    <td style="vertical-align: middle">
     	<input type="checkbox" id="<?php echo $dataRow->SubjectId; ?>" value="<?php echo $dataRow->SubjectName; ?>" <?php echo $checked?>>
     </td>
 </tr>

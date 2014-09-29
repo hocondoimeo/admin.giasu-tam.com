@@ -13,11 +13,11 @@ class Application_Form_Core_Menus extends Zend_Form
         $menuId->setDecorators(array('ViewHelper'));
         $this->addElement($menuId);
 
-        $parentMenuId = new Zend_Form_Element_Text('ParentMenuId');
+        $parentMenuId = new Zend_Form_Element_Select('ParentMenuId');
         $parentMenuId->setLabel('ParentMenuId');
         $parentMenuId->addFilter('StringTrim');
-        $parentMenuId->addValidator('Int');
         $parentMenuId->setRequired(false);
+        $parentMenuId->addMultiOptions(array('0' => 'Choose menu parent'));
         $parentMenuId->setDecorators(array('ViewHelper'));
         $this->addElement($parentMenuId);
 
@@ -109,13 +109,19 @@ class Application_Form_Core_Menus extends Zend_Form
     	$this->removeElement('LastUpdated');
     	$this->removeElement('CreatedDate');
     	$this->getElement('Save')->setLabel('Add');
+    	    	
+    	$menuModel = new Application_Model_Core_Menus();
+    	$this->getElement('ParentMenuId')->addMultiOptions($menuModel->getParentMenu());
     }
     
-    public function changeModeToUpdate($cateId) {
+    public function changeModeToUpdate($menuId) {
     	//$this->removeElement('CreatedDate');
     	//$this->removeElement('LastUpdated');
     	//$this->getElement('MenuCode')->setAttrib('disabled', true);
     	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');
+
+    	$menuModel = new Application_Model_Core_Menus();
+    	$this->getElement('ParentMenuId')->addMultiOptions($menuModel->getParentMenu($menuId));
     }
     
     public function changeModeToDelete($cateId) {
