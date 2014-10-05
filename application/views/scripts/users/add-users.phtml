@@ -1,5 +1,8 @@
 <?php 
     $form = $this->form;
+    $label = $form->getElement('Save')->getLabel();
+    $title = ($label == 'Delete')? 'Delete' : 'Update' ;
+    if($label == 'Add') $title = 'Add';
 ?>
 
 <div class="row-fluid">
@@ -10,7 +13,7 @@
               </a>
           </div>
           <h2>
-              Add <?php echo $this->text('Users'); ?>        
+              <?php echo $title.' '.$this->text('Users'); ?>        
           </h2>
     </div>
 </div>
@@ -34,18 +37,15 @@
             <fieldset>
                 
                 <?php echo $this->renderFormElement($form->UserId);?>
-                <?php echo $this->renderFormElement($form->Password);?>
                 <?php echo $this->renderFormElement($form->Email);?>
+                <?php echo $this->renderFormElement($form->Password);?>
                 <?php echo $this->renderFormElement($form->LastName);?>
                 <?php echo $this->renderFormElement($form->FirstName);?>
                 <?php echo $this->renderFormElement($form->UserName);?>
                 <?php echo $this->renderFormElement($form->IsDisabled);?>
-                <?php echo $this->renderFormElement($form->LastLogin);?>
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> Submit</button>
-                    <button type="reset" class="btn"><i class="icon-refresh"></i> Reset</button>
-                </div>
+                <?php if($label !=='Add') echo $this->renderFormElement($form->LastLogin);?>                
+                <?php echo $this->renderFormElement($form->Save);?>
+				<?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
             </fieldset>
         </form>
     </div>

@@ -33,7 +33,7 @@ class UsersController extends Zend_Controller_Action
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
         $params['perpage'] = $this->_getParam('perpage',NUMBER_OF_ITEM_PER_PAGE);
-        $params['where'] = array('UserId != 1');
+        $params['where'] = array('UserId != 1 AND (UserName != "Admin" OR  UserName != "admin")');
         
         /*Get all data*/
         $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params));
@@ -54,12 +54,22 @@ class UsersController extends Zend_Controller_Action
     */
     public function addUsersAction() {
         $form = new Application_Form_Core_Users();
+        $form->changeModeToAdd();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-                if($this->_model->add($formData)){
+            	$data = $_POST;
+            	
+            	$data["LastLogin"] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+            	$data['Password'] = sha1($_POST['Password']);
+            	if(isset($data['UserId'])) unset($data['UserId']);
+            	
+                if($this->_model->add($data)){
+                	
+                	$this->_sendEmailToUser($data['FirstName'].' '.$data['LastName'], $data['Email'], 'users/show-users');
+                	
                     $msg = str_replace(array("{subject}"),array("Users"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
@@ -97,12 +107,23 @@ class UsersController extends Zend_Controller_Action
         }
     
         $form = new Application_Form_Core_Users();
+        $form->changeModeToUpdate($id);
+        $email = $form->getElement('Email')->getValue();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-                if($this->_model->edit($form->getValues())){
+            	$data = $_POST;//var_dump($data);die;
+            	if(!empty($data['Password']))
+            		$data['Password'] = sha1($_POST['Password']);
+            	else 
+            		unset($data['Password']);
+            	
+            	if(!empty($data['Email']) && ($data['Email'] == $email))
+            		unset($data['Email']);
+            	
+                if($this->_model->edit($data)){
                     $msg = str_replace(array("{subject}"),array("Users"),'success/The {subject} has been updated successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
@@ -115,10 +136,11 @@ class UsersController extends Zend_Controller_Action
                  $this->view->message = array($msg);
            }
         }
-            
+        $row->Password = '';
         $form->populate($row->toArray());
         $this->view->form = $form;
         $this->view->showAllUrl = 'show-users';
+        $this->_helper->viewRenderer->setRender('add-users');
     }
     
     /**
@@ -141,11 +163,20 @@ class UsersController extends Zend_Controller_Action
         }
        
         $form = new Application_Form_Core_Users();
+        $form->changeModeToDelete($id) ;
+        
+        foreach($form->getElements() as $element){
+        	if($element instanceof Zend_Form_Element_Text ||
+        			$element instanceof Zend_Form_Element_Checkbox ||
+        			$element instanceof Zend_Form_Element_Select)
+        				$element->setAttrib('disabled', true);
+        }
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-           	if($row && $this->_model->deleteRow($id)) {
+            $id = $formData['UserId'];
+            if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
                     $msg = str_replace(array("{subject}"),array("Users"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
@@ -153,7 +184,10 @@ class UsersController extends Zend_Controller_Action
         }
          
         $this->view->id = $id;
+        $form->populate($row->toArray());
+        $this->view->form = $form;
         $this->view->showAllUrl = 'show-users';
+        $this->_helper->viewRenderer->setRender('add-users');
     }
     
     /**
@@ -325,5 +359,120 @@ class UsersController extends Zend_Controller_Action
     public function logoutAction(){
     	$auth = new Application_Plugin_Initializer();
     	$auth->logout();
+    }
+    
+    private function _sendEmailToUser($name, $email, $urlRedirect){
+    	$mailUserName =null; $mailFrom = null; $configMails = null;
+    	try{
+    		$modelConfig = new Application_Model_Core_Configs();
+    		$configMails = $modelConfig->getConfigValueByCategoryCode("GROUP_CONFIG_MAIL");
+    		foreach ($configMails as $key=>$configMail){
+    			switch ($configMail["ConfigCode"]){
+    				case "mail-user-name": $mailUserName = $configMail["ConfigValue"];break;
+    				case "mail-user-name-from": $mailFrom = $configMail["ConfigValue"];break;
+    			}
+    		}
+    		$tutorConfig = $modelConfig->getConfigDetail("dang-ky-tim-gia-su");
+    	}catch (Zend_Exception $e){
+    		 
+    	}
+    	 
+    	$rsInitMail = $this->_initMail($configMails);
+    	if($rsInitMail[0]){
+    		$subject = $tutorConfig['ConfigName'];
+    
+    		// initialize template
+    		$html = new Zend_View();
+    		$html->setScriptPath(APPLICATION_PATH . '/views/scripts/email_templates/');
+    
+    		$html->assign('name', $name);
+    
+    		$message = $html->render('register-user.phtml');
+    
+    		$sendResult = $this->sendMail($email, $subject, $message,$mailUserName,$mailFrom);
+    
+    		if($sendResult[0]){
+    			$this->_redirect($urlRedirect);
+    		}else{
+    			$this->view->messageStatus = 'danger/.';
+    		}
+    	}else{
+    		$this->view->messageStatus = 'danger/.';
+    	}
+    }
+    
+    /**
+     * init mail
+     * @author tri.van
+     * @since Tue Now 3, 9:48 AM
+     */
+    private function _initMail($configMails){
+    	try {
+    
+    		$mailUserName = null;$mailPassword=null;
+    		$mailSSL =null;$mailPort = null;
+    
+    		//get config mail from DB
+    		foreach ($configMails as $key=>$configMail){
+    			switch ($configMail["ConfigCode"]){
+    				case "mail-user-name": $mailUserName = $configMail["ConfigValue"];break;
+    				case "mail-password": $mailPassword = $configMail["ConfigValue"];break;
+    				case "mail-ssl": $mailSSL = $configMail["ConfigValue"];break;
+    				case "mail-port": $mailPort = $configMail["ConfigValue"];break;
+    				case "mail-server": $mailServer = $configMail["ConfigValue"];break;
+    			}
+    		}
+    
+    		$config = array(
+    				'auth' => 'login',
+    				'username' => $mailUserName,
+    				'password' => $mailPassword,
+    				'ssl' => $mailSSL,
+    				'port' => (int)$mailPort
+    		);
+    
+    		$mailTransport = new Zend_Mail_Transport_Smtp($mailServer, $config);
+    		Zend_Mail::setDefaultTransport($mailTransport);
+    		return array(true,"");
+    	} catch (Zend_Exception $e){
+    		return array(false,$e->getMessage());
+    	}
+    }
+    
+    /**
+     * send mail helper
+     * @author tri.van
+     * @param $email
+     * @param $subject
+     * @param $message
+     * @param $mailUserName
+     * @param $mailFrom
+     * @since Tue Now 3, 9:48 AM
+     */
+    private function sendMail($email,$subject,$message,$mailUserName,$mailFrom){
+    	try {
+    		//Prepare email
+    		$mail = new Zend_Mail('UTF-8');
+    		//add headers avoid the mail direction to 'spam'/ 'junk' folder
+    		$mail->addHeader('MIME-Version', '1.0');
+    		$mail->addHeader('Content-Type', 'text/html');
+    		$mail->addHeader('Content-Transfer-Encoding', '8bit');
+    		$mail->addHeader('X-Mailer:', 'PHP/'.phpversion());
+    
+    		$mail->setFrom($mailUserName, $mailFrom);
+    		//add reply to avoid the mail direction to 'spam'/ 'junk' folder
+    		$mail->setReplyTo($mailFrom, $subject);
+    
+    		$mail->addTo($email);
+    		$mail->setSubject($subject);
+    		$mail->setBodyHtml($message);
+    
+    		//Send it!
+    		$mail->send();
+    		return array(true,"");
+    	} catch (Exception $e){
+    		$sent = $e->getMessage();
+    		return array(false,$sent);
+    	}
     }
 }

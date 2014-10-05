@@ -14,7 +14,7 @@
     </td>
 
     <td>
-        <?php echo $dataRow->Email;?>
+        <a href="mailto:<?php echo $dataRow->Email;?>" title="Send email"><?php echo $dataRow->Email;?></a>
     </td>
 
     <td>
@@ -26,11 +26,18 @@
     </td>
 
     <td>
-        <?php echo $dataRow->UserName;?>
+    	<a href="/users/update-users/id/<?php echo $dataRow->UserId; ?>" title="Update">
+        	<?php echo $dataRow->UserName;?>
+        </a>
+    </td>
+    
+    <td>
+        <?php echo $dataRow->OpenId;?>
     </td>
 
-    <td>
-        <?php echo $dataRow->IsDisabled;?>
+    <td style="vertical-align: middle">
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
     </td>
 
     <td>

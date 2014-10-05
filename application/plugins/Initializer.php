@@ -77,7 +77,7 @@ class Application_Plugin_Initializer extends Zend_Controller_Plugin_Abstract
     	->setCredential($credentials['Password']);
     
     	$select = $adapter->getDbSelect();
-    	$select->where('IsDisabled = 0');
+    	$select->where('IsDisabled = 0')->where('OpenId is null');
     
     	/* Authenticate main */
     	$result = $this->_auth->authenticate($adapter);
