@@ -81,7 +81,7 @@ echo $this->searchBar($typeSearchs, null, $buttons);
     </div>
 </div>
 <script>
-$("input[type=checkbox]").each(function() {
+$("input[type=checkbox][class=modal-checkbox]").each(function() {
 	$(this).live('click', function() {
 		var tutors = '';
     	if($(this).is(':checked')){

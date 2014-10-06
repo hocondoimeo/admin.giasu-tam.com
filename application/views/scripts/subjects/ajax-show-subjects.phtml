@@ -36,7 +36,7 @@
     </div>
 </div>
 <script>
-$("input[type=checkbox]").each(function() {
+$("input[type=checkbox][class=modal-checkbox]").each(function() {
 	$(this).live('click', function() {
 		var subjects = ''; var subjectIds = '';
 		var url = '/subjects/ajax-convert-subjects';
@@ -52,15 +52,7 @@ $("input[type=checkbox]").each(function() {
         	arr =  $.unique((data1+$(this).val()).split(','));
         	subjects = arr.join(","); //get unique string back with
         	$('#ClassSubjects').val(subjects);
-
-        	/* $.ajax({
-    			url : url+'/subjects/'+subjectIds+'?json',
-                method: 'get',
-                dataType: 'json',            
-                success : function(data){console.log(data.subjects);
-                    $('#ClassSubjects').val(data.subjects);
-                }
-            }); */
+        	
     	}else{
     		//var data = $.trim($('#ClassSubjects').attr('subs'));
     		var data = $.trim($('#ClassSubjects').val());
@@ -79,15 +71,6 @@ $("input[type=checkbox]").each(function() {
 	    		subjectIds = y.join(","); //get unique string back with
         	}
     		$('#ClassSubjects').attr('subs', subjectIds);
-
-        	/* $.ajax({
-    			url : url+'/subjects/'+subjectIds+'?json',
-                method: 'get',
-                dataType: 'json',            
-                success : function(data){
-                    $('#ClassSubjects').val(data.subjects);
-                }
-            }); */
         }
 	});        
 });                    

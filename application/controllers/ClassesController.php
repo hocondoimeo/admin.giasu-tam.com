@@ -60,16 +60,21 @@ class ClassesController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
             	$data = $_POST;
-            	
-            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
-            	$data['LastUpdatedBy'] = USER_ID;
-            	if(isset($data['ClassId'])) unset($data['ClassId']);
-            	
-                if($this->_model->add($data)){
-                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been added successfully.');
-                 	$this->_helper->flashMessenger->addMessage($msg);
-                }
-                $this->_helper->redirector('show-classes');
+            	if($data['ClassStatus'] && count(explode(',', $data['ClassTutors'])) >1){
+            		$msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
+            		$msg .= '/Class Status is checked when Class Tutors contained only one number';
+            		$this->view->message = array($msg);
+            	}else{            	
+	            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+	            	$data['LastUpdatedBy'] = USER_ID;
+	            	if(isset($data['ClassId'])) unset($data['ClassId']);
+	            	
+	                if($this->_model->add($data)){
+	                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been added successfully.');
+	                 	$this->_helper->flashMessenger->addMessage($msg);
+	                }
+                	$this->_helper->redirector('show-classes');
+            	}
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -109,16 +114,21 @@ class ClassesController extends Zend_Controller_Action
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-            	$data = $_POST;
-            	
-            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
-            	$data['LastUpdatedBy'] = USER_ID;
-            	
-                if($this->_model->edit($data)){
-                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been updated successfully.');
-                 	$this->_helper->flashMessenger->addMessage($msg);
-                }
-                 	$this->_helper->redirector('show-classes');
+	            $data = $_POST;
+            	if($data['ClassStatus'] && count(explode(',', $data['ClassTutors'])) > 1){
+            		$msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
+            		$msg .= '/Class Status is checked when Class Tutors contained only one number';
+            		$this->view->message = array($msg);
+            	}else{	            	
+	            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
+	            	$data['LastUpdatedBy'] = USER_ID;
+	            	
+	                if($this->_model->edit($data)){
+	                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been updated successfully.');
+	                 	$this->_helper->flashMessenger->addMessage($msg);
+	                }
+                	$this->_helper->redirector('show-classes');
+            	}
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
