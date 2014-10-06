@@ -1,0 +1,33 @@
+<?php
+/**
+ * partial loop of Grades
+ * Grades
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->GradeId;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->GradeName;?>
+    </td>
+
+    <td style="vertical-align: middle">
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
+    </td>
+    
+    <td>
+        <a href="/grades/update-grades/id/<?php echo $dataRow->GradeId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/grades/delete-grades/id/<?php echo $dataRow->GradeId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

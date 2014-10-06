@@ -2,33 +2,33 @@
 
 
 /**
- * Controller for Districts controller
+ * Controller for Grades controller
  *
  * @author  kissconcept
  * @version $Id$
  */
-class DistrictsController extends Zend_Controller_Action
+class GradesController extends Zend_Controller_Action
 {
     /**
      * Init model
      */
     public function init() {
-        $this->_model = new Application_Model_Core_Districts();
+        $this->_model = new Application_Model_Core_Grades();
         //$this->_controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
     /**
     * Function show all Sites
     */
     public function indexAction() {
-        $this->_helper->redirector('show-districts');
+        $this->_helper->redirector('show-grades');
     }    
     
    /**
-    * Function show all Districts
-    * @return list Districts
+    * Function show all Grades
+    * @return list Grades
     * @author 
     */
-    public function showDistrictsAction() {
+    public function showGradesAction() {
         /*Get parameters filter*/
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
@@ -46,13 +46,13 @@ class DistrictsController extends Zend_Controller_Action
     }
     
     /**
-    * Add record Districts
+    * Add record Grades
     * @param array $formData
     * @return
     * @author 
     */
-    public function addDistrictsAction() {
-        $form = new Application_Form_Core_Districts();
+    public function addGradesAction() {
+        $form = new Application_Form_Core_Grades();
         $form->changeModeToAdd();
 
         /* Proccess data post*/
@@ -60,13 +60,13 @@ class DistrictsController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
             	$data = $_POST;
-            	if(isset($data['DistrictId'])) unset($data['DistrictId']);
+            	if(isset($data['GradeId'])) unset($data['GradeId']);
             	
             	if($this->_model->add($data)){
-                    $msg = str_replace(array("{subject}"),array("Districts"),'success/The {subject} has been added successfully.');
+                    $msg = str_replace(array("{subject}"),array("Grades"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
-                $this->_helper->redirector('show-districts');
+                $this->_helper->redirector('show-grades');
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -76,30 +76,30 @@ class DistrictsController extends Zend_Controller_Action
             }
         }
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-districts';        
+        $this->view->showAllUrl = 'show-grades';        
     }
     	
     /**
-    * Update record Districts.
+    * Update record Grades.
     * @param array $formData
     * @return
     * @author 
     */
-    public function updateDistrictsAction() {
+    public function updateGradesAction() {
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-districts');
+            $this->_helper->redirector('show-grades');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-districts');
+            $this->_helper->redirector('show-grades');
         }
     
-        $form = new Application_Form_Core_Districts();
+        $form = new Application_Form_Core_Grades();
         $form->changeModeToUpdate($id);
 
         /* Proccess data post*/
@@ -107,10 +107,10 @@ class DistrictsController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
                 if($this->_model->edit($form->getValues())){
-                    $msg = str_replace(array("{subject}"),array("Districts"),'success/The {subject} has been updated successfully.');
+                    $msg = str_replace(array("{subject}"),array("Grades"),'success/The {subject} has been updated successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
                 }
-                 	$this->_helper->redirector('show-districts');
+                 	$this->_helper->redirector('show-grades');
             }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -122,31 +122,31 @@ class DistrictsController extends Zend_Controller_Action
             
         $form->populate($row->toArray());
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-districts';
-        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Districts'), '-');
+        $this->view->showAllUrl = 'show-grades';
+        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Grades'), '-');
         $this->_helper->viewRenderer->setRender('add-'.$controller);
     }
     
     /**
-    * Delete record Districts.
+    * Delete record Grades.
     * @param $id
     * @return
     * @author 
     */
-    public function deleteDistrictsAction(){
+    public function deleteGradesAction(){
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-districts');
+            $this->_helper->redirector('show-grades');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-districts');
+            $this->_helper->redirector('show-grades');
         }
        
-        $form = new Application_Form_Core_Districts();
+        $form = new Application_Form_Core_Grades();
         $form->changeModeToDelete($id) ;
         
         foreach($form->getElements() as $element){
@@ -160,28 +160,28 @@ class DistrictsController extends Zend_Controller_Action
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $id = $formData['DistrictId'];
+            $id = $formData['GradeId'];
             if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
-                    $msg = str_replace(array("{subject}"),array("Districts"),'success/The {subject} has been deleted successfully.');
+                    $msg = str_replace(array("{subject}"),array("Grades"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
-                 	 $this->_helper->redirector('show-districts');
+                 	 $this->_helper->redirector('show-grades');
         }
          
         $this->view->id = $id;
         $form->populate($row->toArray());
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-districts';
-        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Districts'), '-');
+        $this->view->showAllUrl = 'show-grades';
+        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Grades'), '-');
         $this->_helper->viewRenderer->setRender('add-'.$controller);
     }
     
     /**
-    * Function show all Districts
-    * @return list Districts
+    * Function show all Grades
+    * @return list Grades
     * @author 
     */
-    public function ajaxShowDistrictsAction() {
+    public function ajaxShowGradesAction() {
         $this->_helper->layout->disableLayout();
         
         /*Get parameters filter*/
@@ -200,15 +200,15 @@ class DistrictsController extends Zend_Controller_Action
     }
     
    /**
-    * Add record Districts
+    * Add record Grades
     * @param array $formData
     * @author 
     */
-    public function ajaxAddDistrictsAction() {
+    public function ajaxAddGradesAction() {
     
         $this->_helper->layout->disableLayout();
         
-        $form = new Application_Form_Core_Districts();
+        $form = new Application_Form_Core_Grades();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -224,11 +224,11 @@ class DistrictsController extends Zend_Controller_Action
     }
     
    /**
-    * Update record Districts
+    * Update record Grades
     * @param array $formData
     * @author 
     */
-    public function ajaxUpdateDistrictsAction() {
+    public function ajaxUpdateGradesAction() {
     
         $this->_helper->layout->disableLayout();
         
@@ -242,12 +242,12 @@ class DistrictsController extends Zend_Controller_Action
             die('0');
         }
     
-        $form = new Application_Form_Core_Districts();
+        $form = new Application_Form_Core_Grades();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $formData['DistrictId'] = $id;
+            $formData['GradeId'] = $id;
             if($form->isValid($formData)) {
                 if($this->_model->edit($form->getValues())){
                     die('1');
@@ -259,11 +259,11 @@ class DistrictsController extends Zend_Controller_Action
     }
     
     /**
-    * Delete record Districts.
+    * Delete record Grades.
     * @param $id
     * @author 
     */
-    public function ajaxDeleteDistrictsAction(){
+    public function ajaxDeleteGradesAction(){
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
