@@ -50,6 +50,20 @@ class Application_Model_Core_Grades extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
-
-
+    public function getAllAvaiabled(){
+    	return $this->select()->where('IsDisabled = 0')->order("GradeId ASC");
+    }
+    
+    public function getFormPairs() {
+    	$select = $this->getQuerySelectAll(array(), array('GradeId', 'GradeName'));
+    
+    	$result = $this->fetchAll($select)->toArray();
+    	$content = array();
+    
+    	foreach ($result as $val) {
+    		$content[$val['GradeId']] = $val['GradeName'];
+    	}
+    
+    	return $content;
+    }
 }

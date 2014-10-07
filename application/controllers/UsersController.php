@@ -33,10 +33,13 @@ class UsersController extends Zend_Controller_Action
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
         $params['perpage'] = $this->_getParam('perpage',NUMBER_OF_ITEM_PER_PAGE);
-        $params['where'] = array('UserId != 1 AND (UserName != "Admin" OR  UserName != "admin")');
+        $params['where'] = array('Users.UserId != 1 AND (UserName != "Admin" OR  UserName != "admin")');
+        $params['foreign'] = array('table' => 'Contacts', 'key' => 'UserId', 'cols' => array('ContactId'));
+        $params['group'] = 'Users.UserId';
+        $cols = array('Users.UserId', 'Email', 'LastName', 'FirstName', 'UserName', 'IsDisabled', 'LastLogin', 'OpenId', 'count(ContactId) as Contacts');
         
         /*Get all data*/
-        $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params));
+        $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params, $cols));
         $paginator->setCurrentPageNumber($params['page']);
         $paginator->setItemCountPerPage($params['perpage']);
 

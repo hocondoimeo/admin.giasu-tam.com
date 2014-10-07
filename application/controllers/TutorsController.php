@@ -116,6 +116,15 @@ class TutorsController extends Zend_Controller_Action
             	}
                 $this->_helper->redirector('show-tutors');
             }else{
+            	if(isset($_POST['TeachableInClass'])  && !empty($_POST['TeachableInClass']) && isset($_POST['TeachableInClassText']))
+            		$form->changeModeToClass($_POST['TeachableInClass'], $_POST['TeachableInClassText']);
+            	 
+            	if(isset($_POST['TeachableSubjects'])  && !empty($_POST['TeachableSubjects']) && isset($_POST['TeachableSubjectsText']))
+            		$form->changeModeToSubjects($_POST['TeachableSubjects'], $_POST['TeachableSubjectsText']);
+            	 
+            	if(isset($_POST['TeachableDistricts'])  && !empty($_POST['TeachableDistricts']) && isset($_POST['TeachableDistrictsText']))
+            		$form->changeModeToDistricts($_POST['TeachableDistricts'], $_POST['TeachableDistrictsText']);
+            	
             	$this->view->avatar = (isset($_POST['Avatar'])  && !empty($_POST['Avatar']))?$_POST['Avatar']:'';
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -150,7 +159,6 @@ class TutorsController extends Zend_Controller_Action
         }
     
         $form = new Application_Form_Core_Tutors();
-        $form->changeModeToUpdate($id);
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -182,6 +190,15 @@ class TutorsController extends Zend_Controller_Action
             		 $this->_helper->flashMessenger->addMessage(MSG_ERROR_PHP); */
                  	$this->_helper->redirector('show-tutors');
             }else{
+            	if(isset($_POST['TeachableInClass'])  && !empty($_POST['TeachableInClass']) && isset($_POST['TeachableInClassText']))
+            		$form->changeModeToClass($_POST['TeachableInClass'], $_POST['TeachableInClassText']);
+            	 
+            	if(isset($_POST['TeachableSubjects'])  && !empty($_POST['TeachableSubjects']) && isset($_POST['TeachableSubjectsText']))
+            		$form->changeModeToSubjects($_POST['TeachableSubjects'], $_POST['TeachableSubjectsText']);
+            	 
+            	if(isset($_POST['TeachableDistricts'])  && !empty($_POST['TeachableDistricts']) && isset($_POST['TeachableDistrictsText']))
+            		$form->changeModeToDistricts($_POST['TeachableDistricts'], $_POST['TeachableDistrictsText']);
+            	
             	$this->view->avatar = (isset($_POST['Avatar'])  && !empty($_POST['Avatar']))?$_POST['Avatar']:'';
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -192,6 +209,8 @@ class TutorsController extends Zend_Controller_Action
         }
             
         $form->populate($row->toArray());
+        $form->changeModeToUpdate($row->TeachableInClass, $row->TeachableSubjects, $row->TeachableDistricts);
+        
         $this->view->form = $form;
         $this->view->showAllUrl = 'show-tutors';
         $this->_helper->viewRenderer->setRender('add-tutors');

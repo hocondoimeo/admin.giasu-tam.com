@@ -1,0 +1,1 @@
+loadJsOrCssFile('/scripts/controllers/contacts/update-contacts.js', 'js');

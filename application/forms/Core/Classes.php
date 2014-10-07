@@ -16,8 +16,6 @@ class Application_Form_Core_Classes extends Zend_Form
         $newsCategoryId = new Zend_Form_Element_Select('DistrictId');
         $newsCategoryId->setLabel('District');
         $newsCategoryId->addFilter('StringTrim');
-        //$newsCategoryId->addValidator('Int');
-        //$newsCategoryId->setRequired(true);
         $newsCategoryId->setDecorators(array('ViewHelper'));
         $this->addElement($newsCategoryId);
         
@@ -74,7 +72,6 @@ class Application_Form_Core_Classes extends Zend_Form
         $classTutors->setDecorators(array(
         		'ViewHelper',
         		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
-        		//array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'tutors-modal', 'class' => "btn btn-info")),
         		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
         		array('Label', array('class' => 'control-label col-lg-2')),
         		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
@@ -90,7 +87,6 @@ class Application_Form_Core_Classes extends Zend_Form
         $classSubjects->setDecorators(array(
         		'ViewHelper',
         		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
-        		//array(array('Errors' => 'HtmlTag'), array('placement' => 'append','tag' => 'a', 'id' => 'subjects-modal', 'class' => "btn btn-info")),
         		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
         		array('Label', array('class' => 'control-label col-lg-2')),
         		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
@@ -196,13 +192,16 @@ class Application_Form_Core_Classes extends Zend_Form
     	$this->getElement('Save')->setLabel('Delete')->setAttrib('class', 'btn btn-danger');
     	
     	$cateModel =  new Application_Model_Core_Districts();
-    	$this->getElement('DistrictId')
-    	->addMultiOptions($cateModel->getFormPairs());
+    	$this->getElement('DistrictId')->addMultiOptions($cateModel->getFormPairs());
     }
     
     public function changeModeToDistrictId() {    	
     	$cateModel =  new Application_Model_Core_Districts();
-    	$this->getElement('DistrictId')
-    	->addMultiOptions($cateModel->getFormPairs());    	
+    	$this->getElement('DistrictId')->addMultiOptions($cateModel->getFormPairs());    	
+    }
+    
+    public function changeModeToSubjects($subjects, $subjectsText) {
+    	$this->getElement('ClassSubjects')->setValue($subjectsText);
+    	$this->getElement('ClassSubjects')->setAttrib('subs', $subjects);
     }
 }

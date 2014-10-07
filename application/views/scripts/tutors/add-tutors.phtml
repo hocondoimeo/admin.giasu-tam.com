@@ -62,6 +62,9 @@
 		                <?php echo $this->renderFormElement($form->Address);?>
 		                <?php echo $this->renderFormElement($form->Phone);?>
 		                <?php echo $this->renderFormElement($form->University);?>
+		                <?php echo $form->TeachableInClass;?>
+		                <?php echo $form->TeachableSubjects;?>
+		                <?php echo $form->TeachableDistricts;?>
 		                <?php if($label !=='Delete' ) echo $this->renderFormElement($form->Introduction);?>
 		                <?php echo $this->renderFormElement($form->Save);?>
 				         <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
@@ -71,8 +74,9 @@
 				     <fieldset class="form-vertical">
 		                <?php echo $this->renderFormElement($form->Level, 1);?>
 		                <?php echo $this->renderFormElement($form->Subject, 1);?>
-		                <?php echo $this->renderFormElement($form->Graduation, 1);?>
 		                <?php echo $this->renderFormElement($form->Career, 1);?>
+		                <?php echo $this->renderFormElement($form->ExperienceYears, 1);?>
+		                <?php echo $this->renderFormElement($form->CareerLocation, 1);?>
 		                <?php if($label !=='Add') echo $this->renderFormElement($form->CreatedDate, 1);?>
 		                <?php echo $this->renderFormElement($form->IsDisabled);?>
 		                <?php echo $this->renderFormElement($form->Status);?>

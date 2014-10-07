@@ -1,6 +1,19 @@
 .modal-backdrop1 , .modal-white{
-	background-color: #eee; z-index: 9999; width: 95%
+	background-color: #eee; 
+	z-index: 9999;
+	margin: 3%; 
+	width: 95%;
+	height: 95% !important;
+	transition: all 0.4s ease !important;
 }
+.modal-open1  .row, .modal-open1  .row-fluid{
+/* Blur and de-color */
+  -webkit-filter: blur(5px) grayscale(10%);
+
+  /* Recede */
+  -webkit-transform: scale(0.9);
+}
+
 .modal-backdrop.fade {
 	opacity: 0;
 	filter: alpha(opacity=0);
@@ -36,4 +49,12 @@
 #desc{
 	float:right;
 	margin-right: 10px;
+}
+
+.ui-widget-overlay
+{
+  opacity: .50 !important; /* Make sure to change both of these, as IE only sees the second one */
+  filter: Alpha(Opacity=50) !important;
+
+  background-color: rgb(50, 50, 50) !important; /* This will make it darker */
 }

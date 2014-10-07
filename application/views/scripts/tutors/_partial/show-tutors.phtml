@@ -19,7 +19,9 @@
     </td>
 
     <td>
-        <?php echo $dataRow->UserName;?>
+    	<a href="/tutors/update-tutors/id/<?php echo $dataRow->TutorId; ?>" title="update">
+        	<?php echo $dataRow->UserName;?>
+        </a>
     </td>
 
     <!-- <td> -->
@@ -50,7 +52,7 @@
         <?php //echo $dataRow->University;?>
     <!-- </td> -->
 
-    <td>
+    <td style="max-width: 150px;">
         <?php echo $dataRow->Subject;?>
     </td>
 

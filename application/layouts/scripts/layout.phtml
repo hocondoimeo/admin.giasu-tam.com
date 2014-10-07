@@ -15,21 +15,18 @@ getHeaders($this, $controller, $action);
 <link href="/images/logo_256px.ico" rel="SHORTCUT ICON">
 </head>
 <body>
-
-<div class="row">
-  <div class="col-md-12">
-  <?php echo $this->render("header.phtml"); ?>
-  
-  </div>
-  
+<div class="page-wrap">
+	<div class="row">
+	  <div class="col-md-12">
+	  <?php echo $this->render("header.phtml"); ?>  
+	  </div>	  
+	</div>
+	  <?php  echo $this->layout()->content ?>
+	<div class="row">
+	  <div class="col-md-12">
+	  <?php  echo $this->render("footer.phtml"); ?>
+	  </div>
+	</div>
 </div>
-  <?php  echo $this->layout()->content ?>
-<div class="row">
-  <div class="col-md-12">
-  <?php  echo $this->render("footer.phtml"); ?>
-  </div>
-</div>
-
-
 </body>
 </html>

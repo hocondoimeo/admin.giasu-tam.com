@@ -70,11 +70,12 @@ class Base_Db_Table_Abstract extends Zend_Db_Table {
         $params = array_reverse($params);
         $select = $this->createSQL($_select, $params);
         
-        if(isset($params['foreign']) && is_array($params['foreign'])){
+        if(isset($params['foreign']) && is_array($params['foreign'])){        	
         	$table = $params['foreign']['table'];
         	$foreignKey = $params['foreign']['key'];
         	$cols = isset($params['foreign']['cols']) && is_array($params['foreign']['cols'])?$params['foreign']['cols']:array();
          	$select->joinLeft("{$table}", "{$this->_name}.{$foreignKey} = {$table}.{$foreignKey}", $cols);
+         	if(isset($params['group']) && !empty($params['group'])) $select->group($params['group']);
         }
         
         if(isset($params['where']) && is_array($params['where']) && count($params['where'])){

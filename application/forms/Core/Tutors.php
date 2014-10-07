@@ -82,13 +82,6 @@ class Application_Form_Core_Tutors extends Zend_Form
         $subject->setDecorators(array('ViewHelper'));
         $this->addElement($subject);
 
-        $graduation = new Zend_Form_Element_Text('Graduation');
-        $graduation->setLabel('Graduation');
-        $graduation->addFilter('StringTrim');
-        $graduation->setRequired(true);
-        $graduation->setDecorators(array('ViewHelper'));
-        $this->addElement($graduation);
-
         $career = new Zend_Form_Element_Select('Career');
         $career->setLabel('Career');
         $career->addFilter('StringTrim');
@@ -97,6 +90,69 @@ class Application_Form_Core_Tutors extends Zend_Form
         $career->setDecorators(array('ViewHelper'));
         $career->addMultiOptions(unserialize(TUTOR_CAREERS));
         $this->addElement($career);
+
+        $experienceYears  = new Zend_Form_Element_Select('ExperienceYears');
+        $experienceYears->setLabel('ExperienceYears *');
+        $experienceYears->addFilter('StringTrim');
+        $experienceYears->setRequired(false);
+        $experienceYears->setDecorators(array('ViewHelper'));
+        $options = unserialize(EXPERIENCE_YEAR);
+        //$experienceYears->addMultiOptions(array_combine($options, $options));
+        $experienceYears->setMultiOptions(unserialize(EXPERIENCE_YEAR));
+        $this->addElement($experienceYears);
+        
+        $careerLocation  = new Zend_Form_Element_Text('CareerLocation');
+        $careerLocation->setLabel('CareerLocation *');
+        $careerLocation->addFilter('StringTrim');
+        $careerLocation->setRequired(false);
+        $careerLocation->setDecorators(array('ViewHelper'));
+        $careerLocation->addValidator('stringLength', false, array(1, 100, "messages" => "CareerLocation limits 100 characters"));
+        $this->addElement($careerLocation);
+        
+        $teachableInClass = new Zend_Form_Element_Text('TeachableInClass');
+        $teachableInClass->setLabel('TeachableInClass');
+        $teachableInClass->addFilter('StringTrim');
+        $teachableInClass->setRequired(false);
+        $teachableInClass->setAttrib('disabled', true);
+        $teachableInClass->setDescription('<a id="grades-modal" class="btn btn-info" title="Choose grade">...</a>');
+        $teachableInClass->setDecorators(array(
+        		'ViewHelper',
+        		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
+        		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
+        		array('Label', array('class' => 'control-label col-lg-2')),
+        		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
+        ));
+        $this->addElement($teachableInClass);
+        
+        $teachableSubjects = new Zend_Form_Element_Text('TeachableSubjects');
+        $teachableSubjects->setLabel('TeachableSubjects');
+        $teachableSubjects->addFilter('StringTrim');
+        $teachableSubjects->setRequired(false);
+        $teachableSubjects->setAttrib('disabled', true);
+        $teachableSubjects->setDescription('<a id="subjects-modal" class="btn btn-info" title="Choose subject">...</a>');
+        $teachableSubjects->setDecorators(array(
+        		'ViewHelper',
+        		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
+        		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
+        		array('Label', array('class' => 'control-label col-lg-2')),
+        		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
+        ));
+        $this->addElement($teachableSubjects);
+        
+        $teachableDistricts = new Zend_Form_Element_Text('TeachableDistricts');
+        $teachableDistricts->setLabel('TeachableDistricts');
+        $teachableDistricts->addFilter('StringTrim');
+        $teachableDistricts->setRequired(false);
+        $teachableDistricts->setAttrib('disabled', true);
+        $teachableDistricts->setDescription('<span id="districts-modal" class="btn btn-info" title="Choose district">...</span>');
+        $teachableDistricts->setDecorators(array(
+        		'ViewHelper',
+        		array('Description', array('escape' => false, 'tag' => 'span', 'id' => 'desc')),
+        		array(array('control' => 'HtmlTag'), array('tag' => 'div', 'class' => 'element-control col-lg-6')),
+        		array('Label', array('class' => 'control-label col-lg-2')),
+        		array(array('controls' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group'))
+        ));
+        $this->addElement($teachableDistricts);
 
         $introduction = new Zend_Form_Element_Textarea('Introduction');
         $introduction->setLabel('Introduction');
@@ -158,9 +214,39 @@ class Application_Form_Core_Tutors extends Zend_Form
     	$email->setRequired(true)->addValidator('NotEmpty',true,array('messages'=>array('isEmpty'=>"Email is whether invalid or not exist")));
     }
     
-    public function changeModeToUpdate($cateId) {
+    public function changeModeToUpdate($tutorGrades, $tutorSubjects, $tutorDistricts) {
+    	function array2string($haystack, $needle, $name){
+    		$str="";
+    		foreach($haystack as $k=>$i){
+    			if(is_array($i)){
+    				if(in_array($i[$name.'Id'], $needle))
+    					$str.= ','.$i[$name.'Name'];
+    				$str.=array2string($i, $needle, $name);
+    			}
+    		}
+    		return $str;
+    	}
     	//$this->removeElement('CreatedDate');
     	$this->removeElement('UpdatedDate');
+    	
+    	$gradeModel = new Application_Model_Core_Grades();
+    	$grades = $gradeModel->fetchAll($gradeModel->getAllAvaiabled());
+    	$gradeNames = trim(array2string($grades->toArray(), explode(',', $tutorGrades), 'Grade'), ',');
+    	$this->getElement('TeachableInClass')->setValue($gradeNames);
+    	$this->getElement('TeachableInClass')->setAttrib('subs', $tutorGrades);
+    	
+    	$subjectModel = new Application_Model_Core_Subjects();
+    	$subjects = $subjectModel->fetchAll($subjectModel->getAllAvaiabled());
+    	$subjectNames = trim(array2string($subjects->toArray(), explode(',', $tutorSubjects), 'Subject'), ',');
+    	$this->getElement('TeachableSubjects')->setValue($subjectNames);
+    	$this->getElement('TeachableSubjects')->setAttrib('subs', $tutorSubjects);
+    	
+    	$districtModel = new Application_Model_Core_Districts();
+    	$districts = $districtModel->fetchAll($districtModel->getAllAvaiabled());
+    	$districtNames = trim(array2string($districts->toArray(), explode(',', $tutorDistricts), 'District'), ',');
+    	$this->getElement('TeachableDistricts')->setValue($districtNames);
+    	$this->getElement('TeachableDistricts')->setAttrib('subs', $tutorDistricts);
+    	
     	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');
     }
     
@@ -168,5 +254,20 @@ class Application_Form_Core_Tutors extends Zend_Form
     	//$this->removeElement('CreatedDate');
     	//$this->removeElement('LastUpdated');
     	$this->getElement('Save')->setLabel('Delete')->setAttrib('class', 'btn btn-danger');
+    }
+    
+    public function changeModeToClass($grades, $gradesText) {
+    	$this->getElement('TeachableInClass')->setValue($gradesText);
+    	$this->getElement('TeachableInClass')->setAttrib('subs', $grades);
+    }
+    
+    public function changeModeToSubjects($subjects, $subjectsText) {
+    	$this->getElement('TeachableSubjects')->setValue($subjectsText);
+    	$this->getElement('TeachableSubjects')->setAttrib('subs', $subjects);
+    }
+    
+    public function changeModeToDistricts($districts, $districtsText) {
+    	$this->getElement('TeachableDistricts')->setValue($districtsText);
+    	$this->getElement('TeachableDistricts')->setAttrib('subs', $districts);
     }
 }

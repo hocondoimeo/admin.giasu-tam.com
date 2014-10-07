@@ -39,38 +39,55 @@
 $("input[type=checkbox][class=modal-checkbox]").each(function() {
 	$(this).live('click', function() {
 		var subjects = ''; var subjectIds = '';
-		var url = '/subjects/ajax-convert-subjects';
     	if($(this).is(':checked')){
-    		var data = $.trim($('#ClassSubjects').attr('subs'));
+        	if($('#ClassSubjects').length)
+    			var data = $.trim($('#ClassSubjects').attr('subs'));
+        	else
+        		var data = $.trim($('#TeachableSubjects').attr('subs'));
+    		
     		if($.trim(data) != '') data += ',';
         	arr =  $.unique((data+$(this).attr('id')).split(','));
         	subjectIds = arr.join(","); //get unique string back with
-        	$('#ClassSubjects').attr('subs', subjectIds);
-
-        	var data1 = $.trim($('#ClassSubjects').val());
+        	if($('#ClassSubjects').length){
+        		$('#ClassSubjects').attr('subs', subjectIds);
+        		var data1 = $.trim($('#ClassSubjects').val());
+        	}else{
+        		$('#TeachableSubjects').attr('subs', subjectIds);
+        		var data1 = $.trim($('#TeachableSubjects').val());
+        	}
         	if($.trim(data) != '') data1 += ',';
         	arr =  $.unique((data1+$(this).val()).split(','));
         	subjects = arr.join(","); //get unique string back with
-        	$('#ClassSubjects').val(subjects);
-        	
+        	if($('#ClassSubjects').length)
+        		$('#ClassSubjects').val(subjects);
+        	else
+        		$('#TeachableSubjects').val(subjects);
     	}else{
-    		//var data = $.trim($('#ClassSubjects').attr('subs'));
-    		var data = $.trim($('#ClassSubjects').val());
+    		if($('#ClassSubjects').length)
+    			var data = $.trim($('#ClassSubjects').val());
+    		else
+    			var data = $.trim($('#TeachableSubjects').val());
         	y =  data.split(',');
         	if(y.length){
 	    		y.splice( $.inArray($(this).val(), y), 1 );
 	    		subjects = y.join(","); //get unique string back with
         	}
-    		$('#ClassSubjects').val(subjects);
-
-    		var data1 = $.trim($('#ClassSubjects').attr('subs'));
-    		//var data = $.trim($('#ClassSubjects').val());
+        	if($('#ClassSubjects').length){
+    			$('#ClassSubjects').val(subjects);
+        		var data1 = $.trim($('#ClassSubjects').attr('subs'));
+        	}else{
+        		$('#TeachableSubjects').val(subjects);
+        		var data1 = $.trim($('#TeachableSubjects').attr('subs'));
+        	}
         	y =  data1.split(',');
         	if(y.length){
 	    		y.splice( $.inArray($(this).attr('id'), y), 1 );
 	    		subjectIds = y.join(","); //get unique string back with
         	}
-    		$('#ClassSubjects').attr('subs', subjectIds);
+        	if($('#ClassSubjects').length)
+    			$('#ClassSubjects').attr('subs', subjectIds);
+        	else
+        		$('#TeachableSubjects').attr('subs', subjectIds);
         }
 	});        
 });                    

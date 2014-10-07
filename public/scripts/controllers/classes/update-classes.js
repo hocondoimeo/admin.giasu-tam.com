@@ -1,4 +1,4 @@
-$(document).ready(function() {    
+$(document).ready(function() {
     $('#tutors-modal').live('click', function(){
         var url = '/tutors/ajax-show-tutors';
         //$('.lastest-news-content').append('<div class="loading-news"><img src="/images/preloading.gif"/><div>');
@@ -30,6 +30,7 @@ $(document).ready(function() {
     $("form#frmClass").submit( function(eventObj) {
 		var tutors = $.trim($('#ClassTutors').val());
 		var subjects = $.trim($('#ClassSubjects').attr('subs'));
+		var subjectsText = $.trim($('#ClassSubjects').val());
 		
 	      $('<input />').attr('type', 'hidden')
 	          .attr('name', "ClassTutors")
@@ -40,6 +41,12 @@ $(document).ready(function() {
           .attr('name', "ClassSubjects")
           .attr('value', subjects)
           .appendTo('form#frmClass');
+	      
+	      $('<input />').attr('type', 'hidden')
+          .attr('name', "ClassSubjectsText")
+          .attr('value', subjectsText)
+          .appendTo('form#frmClass');
+	      
 	      return true;
 	  });
 });

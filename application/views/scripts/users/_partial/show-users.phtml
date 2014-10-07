@@ -34,6 +34,17 @@
     <td>
         <?php echo $dataRow->OpenId;?>
     </td>
+    
+    <td>
+        <?php $contacts = $dataRow->Contacts; 
+        	if($contacts):?>
+        	<a href="/contacts/show-contacts/keywords/<?php echo $dataRow->UserId; ?>/fieldsearch/UserId" title="View Contacts">
+        		<?php echo $contacts; ?>
+        	</a>
+        <?php else:?>
+        	<?php echo $contacts; ?>
+        <?php endif;?>
+    </td>
 
     <td style="vertical-align: middle">
         <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>

@@ -22,23 +22,7 @@ function uploaderCallback(file, item, fileName, result) {
     var size = file._find(item, 'size').innerHTML;
     //$('#image-size').text(size);
     $('#image-name').text(fileName);
-    /*var d = new Date();
-    var ampm = 'AM';
-    var hour = d.getHours();
-    if(hour > 12) ampm = 'PM';
-    hour = ((''+hour).length<2 ? '0' :'') + hour ;
-    var minute = d.getMinutes();
-    minute = ((''+minute).length<2 ? '0' :'') + minute;
-    var date = $('#image-upload-date').attr('date') + hour + ':' + minute + ' ' + ampm;
-    $('#image-upload-date').text(date);
-    $('#progress-img').hide();
-    $('#image-size').text(size);*/
     $('#Save').attr('disabled', false);
-    /*var img = new Image();
-    img.src = aLink.attr('tmpUrl')+fileName;
-    img.onload = function(){
-    	$('#image-dimension').text(img.width + ' x ' + img.height + ' px');
-    }*/
 }
 
 $(document).ready(function() {
@@ -105,6 +89,51 @@ $(document).ready(function() {
 		loadModal(content);
 	});
 	
+	$('#grades-modal').live('click', function(){
+        var url = '/grades/ajax-show-grades';
+        //$('.lastest-news-content').append('<div class="loading-news"><img src="/images/preloading.gif"/><div>');
+        var grades = $('#TeachableInClass').attr('subs');
+        if($.trim(grades) != '')  url += '/cgrades/'+grades;
+        $.ajax({
+            url : url,
+            method: 'get',
+            success : function(data){
+                loadModal(data);
+            }
+        });
+    });
+    
+    $('#subjects-modal').live('click', function(){
+        var url = '/subjects/ajax-show-subjects';
+        //$('.lastest-news-content').append('<div class="loading-news"><img src="/images/preloading.gif"/><div>');
+        var subjects = $('#TeachableSubjects').attr('subs');
+        if($.trim(subjects) != '')  url += '/csubjects/'+subjects;
+        $.ajax({
+            url : url,
+            method: 'get',
+            success : function(data){
+                loadModal(data);
+            }
+        });
+    });
+    
+    $('#districts-modal').live('click', function(){
+        var url = '/districts/ajax-show-districts';
+        //$('.lastest-news-content').append('<div class="loading-news"><img src="/images/preloading.gif"/><div>');
+        var districts = $('#TeachableDistricts').attr('subs');
+        if($.trim(districts) != '')  url += '/cdistricts/'+districts;
+        $.ajax({
+            url : url,
+            method: 'get',
+            success : function(data){
+                loadModal(data);
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+            }
+        });
+    });
+	
 	$("form#frmImage").submit( function(eventObj) {
 		var oldImageName = $.trim($('#image-name').attr('old-image-name'));
 		var imageName = $.trim($('#image-name').text());
@@ -118,6 +147,46 @@ $(document).ready(function() {
           .attr('name', "Avatar")
           .attr('value', imageName)
           .appendTo('form#frmImage');
+	      
+	      var grades = $.trim($('#TeachableInClass').attr('subs'));
+	    	var gradesText = $.trim($('#TeachableInClass').val());
+	    	
+			var subjects = $.trim($('#TeachableSubjects').attr('subs'));
+			var subjectsText = $.trim($('#TeachableSubjects').val());
+			
+			var districts = $.trim($('#TeachableDistricts').attr('subs'));
+			var districtsText = $.trim($('#TeachableDistricts').val());
+			
+		      $('<input />').attr('type', 'hidden')
+		          .attr('name', "TeachableInClass")
+		          .attr('value', grades)
+		          .appendTo('form#frmImage');
+		      
+		      $('<input />').attr('type', 'hidden')
+	          .attr('name', "TeachableSubjects")
+	          .attr('value', subjects)
+	          .appendTo('form#frmImage');
+		      
+		      $('<input />').attr('type', 'hidden')
+	          .attr('name', "TeachableDistricts")
+	          .attr('value', districts)
+	          .appendTo('form#frmImage');
+		      
+		      $('<input />').attr('type', 'hidden')
+	          .attr('name', "TeachableInClassText")
+	          .attr('value', gradesText)
+	          .appendTo('form#frmImage');
+		      
+		      $('<input />').attr('type', 'hidden')
+	          .attr('name', "TeachableSubjectsText")
+	          .attr('value', subjectsText)
+	          .appendTo('form#frmImage');
+		      
+		      $('<input />').attr('type', 'hidden')
+	          .attr('name', "TeachableDistrictsText")
+	          .attr('value', districtsText)
+	          .appendTo('form#frmImage');
+		      
 	      return true;
 	  });		
 });

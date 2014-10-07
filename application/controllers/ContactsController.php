@@ -2,33 +2,33 @@
 
 
 /**
- * Controller for Classes controller
+ * Controller for Contacts controller
  *
  * @author  kissconcept
  * @version $Id$
  */
-class ClassesController extends Zend_Controller_Action
+class ContactsController extends Zend_Controller_Action
 {
     /**
      * Init model
      */
     public function init() {
-        $this->_model = new Application_Model_Core_Classes();
+        $this->_model = new Application_Model_Core_Contacts();
         //$this->_controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
     /**
     * Function show all Sites
     */
     public function indexAction() {
-        $this->_helper->redirector('show-classes');
+        $this->_helper->redirector('show-contacts');
     }    
     
    /**
-    * Function show all Classes
-    * @return list Classes
+    * Function show all Contacts
+    * @return list Contacts
     * @author 
     */
-    public function showClassesAction() {
+    public function showContactsAction() {
         /*Get parameters filter*/
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
@@ -46,39 +46,29 @@ class ClassesController extends Zend_Controller_Action
     }
     
     /**
-    * Add record Classes
+    * Add record Contacts
     * @param array $formData
     * @return
     * @author 
     */
-    public function addClassesAction() {
-        $form = new Application_Form_Core_Classes();
+    public function addContactsAction() {
+        $form = new Application_Form_Core_Contacts();
         $form->changeModeToAdd();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-            	$data = $_POST; $tutors = explode(',', $data['ClassTutors']);
-            	if($data['ClassStatus'] && isset($tutors[0]) && !empty($tutors[0])){
-            		$msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
-            		$msg .= '/Class Status is checked when Class Tutors contained only one number';
-            		$this->view->message = array($msg);
-            	}else{            	
-	            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
-	            	$data['LastUpdatedBy'] = USER_ID;
-	            	if(isset($data['ClassId'])) unset($data['ClassId']);
-	            	
-	                if($this->_model->add($data)){
-	                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been added successfully.');
-	                 	$this->_helper->flashMessenger->addMessage($msg);
-	                }
-                	$this->_helper->redirector('show-classes');
-            	}
-            }else{
-            	if(isset($_POST['ClassSubjects'])  && !empty($_POST['ClassSubjects']) && isset($_POST['ClassSubjectsText']))
-            		$form->changeModeToSubjects($_POST['ClassSubjects'], $_POST['ClassSubjectsText']);
+            	$data = $_POST;
+            	$data['UserId'] = USER_ID;
+            	if(isset($data['ContactId'])) unset($data['ContactId']);
             	
+            	if($this->_model->add($data)){
+                    $msg = str_replace(array("{subject}"),array("Contacts"),'success/The {subject} has been added successfully.');
+                 	$this->_helper->flashMessenger->addMessage($msg);
+                }
+                $this->_helper->redirector('show-contacts');
+            }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
                       $msg .= '/'.$key;
@@ -87,55 +77,44 @@ class ClassesController extends Zend_Controller_Action
             }
         }
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-classes';        
+        $this->view->showAllUrl = 'show-contacts';        
     }
     	
     /**
-    * Update record Classes.
+    * Update record Contacts.
     * @param array $formData
     * @return
     * @author 
     */
-    public function updateClassesAction() {
+    public function updateContactsAction() {
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-classes');
+            $this->_helper->redirector('show-contacts');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-classes');
+            $this->_helper->redirector('show-contacts');
         }
     
-        $form = new Application_Form_Core_Classes();
-        $form->changeModeToDistrictId();
+        $form = new Application_Form_Core_Contacts();
+        $form->changeModeToUpdate($id);
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
-	            $data = $_POST; $tutors = explode(',', $data['ClassTutors']);
-            	if($data['ClassStatus'] && isset($tutors[0]) && !empty($tutors[0])){
-            		$msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
-            		$msg .= '/Class Status is checked when Class Tutors contained only one number';
-            		$this->view->message = array($msg);
-            	}else{	            	
-	            	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
-	            	$data['LastUpdatedBy'] = USER_ID;
-	            	
-	                if($this->_model->edit($data)){
-	                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been updated successfully.');
-	                 	$this->_helper->flashMessenger->addMessage($msg);
-	                }
-                	$this->_helper->redirector('show-classes');
-            	}
-            }else{
-            	if(isset($_POST['ClassSubjects'])  && !empty($_POST['ClassSubjects']) && isset($_POST['ClassSubjectsText']))
-            		$form->changeModeToSubjects($_POST['ClassSubjects'], $_POST['ClassSubjectsText']);
+            	$data = $_POST;            	
             	
+                if($this->_model->edit($data)){
+                    $msg = str_replace(array("{subject}"),array("Contacts"),'success/The {subject} has been updated successfully.');
+                 	$this->_helper->flashMessenger->addMessage($msg);
+                }
+                 	$this->_helper->redirector('show-contacts');
+            }else{
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
                       $msg .= '/'.$key;
@@ -145,34 +124,32 @@ class ClassesController extends Zend_Controller_Action
         }
             
         $form->populate($row->toArray());
-        $form->changeModeToUpdate($row->ClassSubjects);
-        
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-classes';
-        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Classes'), '-');
+        $this->view->showAllUrl = 'show-contacts';
+        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Contacts'), '-');
         $this->_helper->viewRenderer->setRender('add-'.$controller);
     }
     
     /**
-    * Delete record Classes.
+    * Delete record Contacts.
     * @param $id
     * @return
     * @author 
     */
-    public function deleteClassesAction(){
+    public function deleteContactsAction(){
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-classes');
+            $this->_helper->redirector('show-contacts');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-classes');
+            $this->_helper->redirector('show-contacts');
         }
        
-        $form = new Application_Form_Core_Classes();
+        $form = new Application_Form_Core_Contacts();
         $form->changeModeToDelete($id) ;
         
         foreach($form->getElements() as $element){
@@ -186,28 +163,28 @@ class ClassesController extends Zend_Controller_Action
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $id = $formData['ClassId'];
+            $id = $formData['ContactId'];
             if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
-                    $msg = str_replace(array("{subject}"),array("Classes"),'success/The {subject} has been deleted successfully.');
+                    $msg = str_replace(array("{subject}"),array("Contacts"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
-                 	 $this->_helper->redirector('show-classes');
+                 	 $this->_helper->redirector('show-contacts');
         }
          
         $this->view->id = $id;
         $form->populate($row->toArray());
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-classes';
-        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Classes'), '-');
+        $this->view->showAllUrl = 'show-contacts';
+        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Contacts'), '-');
         $this->_helper->viewRenderer->setRender('add-'.$controller);
     }
     
     /**
-    * Function show all Classes
-    * @return list Classes
+    * Function show all Contacts
+    * @return list Contacts
     * @author 
     */
-    public function ajaxShowClassesAction() {
+    public function ajaxShowContactsAction() {
         $this->_helper->layout->disableLayout();
         
         /*Get parameters filter*/
@@ -226,15 +203,15 @@ class ClassesController extends Zend_Controller_Action
     }
     
    /**
-    * Add record Classes
+    * Add record Contacts
     * @param array $formData
     * @author 
     */
-    public function ajaxAddClassesAction() {
+    public function ajaxAddContactsAction() {
     
         $this->_helper->layout->disableLayout();
         
-        $form = new Application_Form_Core_Classes();
+        $form = new Application_Form_Core_Contacts();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -250,11 +227,11 @@ class ClassesController extends Zend_Controller_Action
     }
     
    /**
-    * Update record Classes
+    * Update record Contacts
     * @param array $formData
     * @author 
     */
-    public function ajaxUpdateClassesAction() {
+    public function ajaxUpdateContactsAction() {
     
         $this->_helper->layout->disableLayout();
         
@@ -268,12 +245,12 @@ class ClassesController extends Zend_Controller_Action
             die('0');
         }
     
-        $form = new Application_Form_Core_Classes();
+        $form = new Application_Form_Core_Contacts();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $formData['ClassId'] = $id;
+            $formData['ContactId'] = $id;
             if($form->isValid($formData)) {
                 if($this->_model->edit($form->getValues())){
                     die('1');
@@ -285,11 +262,11 @@ class ClassesController extends Zend_Controller_Action
     }
     
     /**
-    * Delete record Classes.
+    * Delete record Contacts.
     * @param $id
     * @author 
     */
-    public function ajaxDeleteClassesAction(){
+    public function ajaxDeleteContactsAction(){
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){

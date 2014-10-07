@@ -1,0 +1,51 @@
+<?php
+/**
+ * partial loop of Contacts
+ * Contacts
+ */
+ 
+    $dataRow       = $this->dataRow;
+    
+?>
+<tr>
+    
+    <td>
+        <?php echo $dataRow->ContactId;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ContactName;?>
+    </td>
+    <td>
+        <?php echo $dataRow->ContactPhone;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->ContactTitle;?>
+    </td>
+
+    <td>
+        <?php echo $dataRow->CreatedDate;?>
+    </td>
+
+    <td>
+    	<a href="/users/show-users/keywords/<?php echo $dataRow->UserId; ?>/fieldsearch/UserId" title="View User">
+        	<?php echo $dataRow->UserId;?>
+        </a>
+    </td>
+    
+
+    <td style="vertical-align: middle">
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
+    </td>
+    
+    <td>
+        <a href="/contacts/update-contacts/id/<?php echo $dataRow->ContactId; ?>" class="btn btn-warning"> <i class="icon-edit"></i> 
+           Update
+        </a>
+        <a href="/contacts/delete-contacts/id/<?php echo $dataRow->ContactId; ?>" class="btn btn-danger btn-delete"> <i class="icon-remove icon-white"></i> 
+           Delete
+        </a>
+    </td>
+</tr>

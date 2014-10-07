@@ -50,6 +50,10 @@ class Application_Model_Core_Districts extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
+    public function getAllAvaiabled(){
+    	return $this->select()->where('IsDisabled = 0')->order("DistrictId ASC");
+    }
+    
     public function getFormPairs() {
     	$select = $this->getQuerySelectAll(array(), array('DistrictId', 'DistrictName'));
     	 
