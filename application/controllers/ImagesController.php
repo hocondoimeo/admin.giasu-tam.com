@@ -2,38 +2,37 @@
 
 
 /**
- * Controller for News controller
+ * Controller for Images controller
  *
  * @author  kissconcept
  * @version $Id$
  */
-class NewsController extends Zend_Controller_Action
+class ImagesController extends Zend_Controller_Action
 {
     /**
      * Init model
      */
     public function init() {
-        $this->_model = new Application_Model_Core_News();
+        $this->_model = new Application_Model_Core_Images();
         //$this->_controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
     /**
     * Function show all Sites
     */
     public function indexAction() {
-        $this->_helper->redirector('show-news');
+        $this->_helper->redirector('show-images');
     }    
     
    /**
-    * Function show all News
-    * @return list News
+    * Function show all Images
+    * @return list Images
     * @author 
     */
-    public function showNewsAction() {
+    public function showImagesAction() {
         /*Get parameters filter*/
         $params            = $this->_getAllParams();
         $params['page']    = $this->_getParam('page',1);
         $params['perpage'] = $this->_getParam('perpage',NUMBER_OF_ITEM_PER_PAGE);
-        $params['foreign'] = array('table' => 'NewsCategories', 'key' => 'NewsCategoryId', 'cols' => array('NewsCategoryName'));
         
         /*Get all data*/
         $paginator = Zend_Paginator::factory($this->_model->getQuerySelectAll($params));
@@ -47,13 +46,13 @@ class NewsController extends Zend_Controller_Action
     }
     
     /**
-    * Add record News
+    * Add record Images
     * @param array $formData
     * @return
     * @author 
     */
-    public function addNewsAction() {
-        $form = new Application_Form_Core_News();
+    public function addImagesAction() {
+        $form = new Application_Form_Core_Images();
         $form->changeModeToAdd();
 
         /* Proccess data post*/
@@ -64,23 +63,21 @@ class NewsController extends Zend_Controller_Action
             	
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
             	$data['LastUpdatedBy'] = USER_ID;
-            	if(isset($data['NewsId'])) unset($data['NewsId']);
+            	if(isset($data['ImageId'])) unset($data['ImageId']);
             	
             	//copy new image from 'tmp' to 'images' folder then remove it
-            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
+            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_CAROUSEL_UPLOAD_TMP, IMAGE_CAROUSEL_UPLOAD_PATH);
             	//copy exist image from 'images' to 'backup' folder then remove it
-            	//$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);            	 
+            	//$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_CAROUSEL_UPLOAD_PATH, IMAGE_CAROUSEL_UPLOAD_BACKUP);
             	
                 if($this->_model->add($data)){
-                    $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been added successfully.');
+                    $msg = str_replace(array("{subject}"),array("Images"),'success/The {subject} has been added successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
-                }else {
-                	if (file_exists(IMAGE_UPLOAD_PATH_TMP.$fileName))
-                		unlink(IMAGE_UPLOAD_PATH_TMP.$fileName);
-                	$this->_helper->flashMessenger->addMessage(array('danger/database error'));
                 }
-                $this->_helper->redirector('show-news');
+                $this->_helper->redirector('show-images');
             }else{
+            	if (file_exists(IMAGE_CAROUSEL_UPLOAD_TMP.$fileName))
+            		unlink(IMAGE_CAROUSEL_UPLOAD_TMP.$fileName);
             	$this->view->imageUrl = (isset($_POST['ImageUrl'])  && !empty($_POST['ImageUrl']))?$_POST['ImageUrl']:'';
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -90,63 +87,57 @@ class NewsController extends Zend_Controller_Action
             }
         }
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-news';
+        $this->view->showAllUrl = 'show-images';        
     }
     	
     /**
-    * Update record News.
+    * Update record Images.
     * @param array $formData
     * @return
     * @author 
     */
-    public function updateNewsAction() {
+    public function updateImagesAction() {
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-news');
+            $this->_helper->redirector('show-images');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-news');
+            $this->_helper->redirector('show-images');
         }
     
-        $form = new Application_Form_Core_News();
+        $form = new Application_Form_Core_Images();
         $form->changeModeToUpdate($id);
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
-            $formData = $this->_request->getPost();	
+            $formData = $this->_request->getPost();
             if($form->isValid($formData)) {
             	$data = $_POST;
             	
-            	//$data['IsDisabled'] = isset($_POST['selectStatus'])?1:0;
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
             	$data['LastUpdatedBy'] = USER_ID;
             	
             	if (($data['ImageUrl'] !== $data['OldImageName'])){
-	            	//copy new image from 'tmp' to 'images' folder then remove it
-	            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
-	            	//copy exist image from 'images' to 'backup' folder then remove it
-	            	if($data['OldImageName'] !== 'none.gif')
-	            		$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);
+            		//copy new image from 'tmp' to 'images' folder then remove it
+            		$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_CAROUSEL_UPLOAD_TMP, IMAGE_CAROUSEL_UPLOAD_PATH);
+            		//copy exist image from 'images' to 'backup' folder then remove it
+            		if($data['OldImageName'] !== 'none.gif')
+            			$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_CAROUSEL_UPLOAD_PATH, IMAGE_CAROUSEL_UPLOAD_BACKUP);
             	}
             	
-            	//if($fileName || $fileNameBackup){
-            		if($this->_model->edit($data)){
-            			$msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been updated successfully.');
-                 		$this->_helper->flashMessenger->addMessage($msg);
-            		}else{
-            			if (($data['ImageUrl'] !== $data['OldImageName']) && file_exists(IMAGE_UPLOAD_PATH_TMP.$fileName))
-            				unlink(IMAGE_UPLOAD_PATH_TMP.$fileName);
-            			$this->_helper->flashMessenger->addMessage(array('danger/database error'));
-            		}
-            	/* }else
-            		$this->_helper->flashMessenger->addMessage(MSG_ERROR_PHP); */
-                 	$this->_helper->redirector('show-news');
+                if($this->_model->edit($data)){
+                    $msg = str_replace(array("{subject}"),array("Images"),'success/The {subject} has been updated successfully.');
+                 	$this->_helper->flashMessenger->addMessage($msg);
+                }
+                 	$this->_helper->redirector('show-images');
             }else{
+            	if (($data['ImageUrl'] !== $data['OldImageName']) && file_exists(IMAGE_CAROUSEL_UPLOAD_TMP.$fileName))
+            		unlink(IMAGE_CAROUSEL_UPLOAD_TMP.$fileName);
             	$this->view->imageUrl = (isset($_POST['ImageUrl'])  && !empty($_POST['ImageUrl']))?$_POST['ImageUrl']:'';
                  $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
                  foreach ($form->getMessages() as $key=>$messageFormError){
@@ -155,35 +146,37 @@ class NewsController extends Zend_Controller_Action
                  $this->view->message = array($msg);
            }
         }
+            
         $form->populate($row->toArray());
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-news';
-        $this->_helper->viewRenderer->setRender('add-news');
+        $this->view->showAllUrl = 'show-images';
+        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Images'), '-');
+        $this->_helper->viewRenderer->setRender('add-'.$controller);
     }
     
     /**
-    * Delete record News.
+    * Delete record Images.
     * @param $id
     * @return
     * @author 
     */
-    public function deleteNewsAction(){
+    public function deleteImagesAction(){
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-news');
+            $this->_helper->redirector('show-images');
         }
 
         $row = $this->_model->find($id)->current();
         if(!$row) {
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
-            $this->_helper->redirector('show-news');
+            $this->_helper->redirector('show-images');
         }
        
-        $form = new Application_Form_Core_News();
+        $form = new Application_Form_Core_Images();
         $form->changeModeToDelete($id) ;
         
-    	foreach($form->getElements() as $element){
+        foreach($form->getElements() as $element){
         	if($element instanceof Zend_Form_Element_Text ||
                  $element instanceof Zend_Form_Element_Checkbox ||
                  $element instanceof Zend_Form_Element_Select ||
@@ -194,22 +187,22 @@ class NewsController extends Zend_Controller_Action
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $id = $formData['NewsId'];
+            $id = $formData['ImageId'];
             if(isset($id) && !empty($id) && $this->_model->deleteRow($id)) {
-            		$fileName = !empty($row->ImageUrl)?$row->ImageUrl:'';
-            		if (!empty($fileName) && file_exists(IMAGE_UPLOAD_PATH.$fileName))
-            			unlink(IMAGE_UPLOAD_PATH.$fileName);
-                    $msg = str_replace(array("{subject}"),array("News"),'success/The {subject} has been deleted successfully.');
+	            	if (!empty($row->ImageUrl) && file_exists(IMAGE_CAROUSEL_UPLOAD_PATH.$row->ImageUrl))
+	            		unlink(IMAGE_CAROUSEL_UPLOAD_PATH.$row->ImageUrl);
+                    $msg = str_replace(array("{subject}"),array("Images"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }
-                 	 $this->_helper->redirector('show-news');
+                 	 $this->_helper->redirector('show-images');
         }
          
         $this->view->id = $id;
         $form->populate($row->toArray());
         $this->view->form = $form;
-        $this->view->showAllUrl = 'show-news';
-        $this->_helper->viewRenderer->setRender('add-news');
+        $this->view->showAllUrl = 'show-images';
+        $controller = ltrim(preg_replace("/([A-Z])/", "-$1", 'Images'), '-');
+        $this->_helper->viewRenderer->setRender('add-'.$controller);
     }
     
     /**
@@ -223,25 +216,25 @@ class NewsController extends Zend_Controller_Action
     	$this->_helper->viewRenderer->setNoRender(true);
     
     	if ($this->_request->isPost()) {
-	    		// list of valid extensions, ex. array("jpeg", "xml", "bmp")
-	    		$allowedExtensions = unserialize(IMAGE_ALLOWED_EXT);
-	    		// max file size in bytes
-	    		$sizeLimit = IMAGE_SIZE_LIMIT * 1024;
-	    
-	    		$uploader = new Common_FileUploader_qqFileUploader($allowedExtensions, $sizeLimit);
-	    		$result = $uploader->handleUpload(IMAGE_UPLOAD_PATH_TMP, true);
-	    		// to pass data through iframe you will need to encode all html tags
-	    		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
-	    	}else
-	    		echo '{success:true}';
-	    }
+    		// list of valid extensions, ex. array("jpeg", "xml", "bmp")
+    		$allowedExtensions = unserialize(IMAGE_ALLOWED_EXT);
+    		// max file size in bytes
+    		$sizeLimit = IMAGE_SIZE_LIMIT * 1024;
+    	  
+    		$uploader = new Common_FileUploader_qqFileUploader($allowedExtensions, $sizeLimit);
+    		$result = $uploader->handleUpload(IMAGE_CAROUSEL_UPLOAD_TMP, true);
+    		// to pass data through iframe you will need to encode all html tags
+    		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+    	}else
+    		echo '{success:true}';
+    }
     
     /**
-    * Function show all News
-    * @return list News
+    * Function show all Images
+    * @return list Images
     * @author 
     */
-    public function ajaxShowNewsAction() {
+    public function ajaxShowImagesAction() {
         $this->_helper->layout->disableLayout();
         
         /*Get parameters filter*/
@@ -260,15 +253,15 @@ class NewsController extends Zend_Controller_Action
     }
     
    /**
-    * Add record News
+    * Add record Images
     * @param array $formData
     * @author 
     */
-    public function ajaxAddNewsAction() {
+    public function ajaxAddImagesAction() {
     
         $this->_helper->layout->disableLayout();
         
-        $form = new Application_Form_Core_News();
+        $form = new Application_Form_Core_Images();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -284,11 +277,11 @@ class NewsController extends Zend_Controller_Action
     }
     
    /**
-    * Update record News
+    * Update record Images
     * @param array $formData
     * @author 
     */
-    public function ajaxUpdateNewsAction() {
+    public function ajaxUpdateImagesAction() {
     
         $this->_helper->layout->disableLayout();
         
@@ -302,12 +295,12 @@ class NewsController extends Zend_Controller_Action
             die('0');
         }
     
-        $form = new Application_Form_Core_News();
+        $form = new Application_Form_Core_Images();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            $formData['NewsId'] = $id;
+            $formData['ImageId'] = $id;
             if($form->isValid($formData)) {
                 if($this->_model->edit($form->getValues())){
                     die('1');
@@ -319,11 +312,11 @@ class NewsController extends Zend_Controller_Action
     }
     
     /**
-    * Delete record News.
+    * Delete record Images.
     * @param $id
     * @author 
     */
-    public function ajaxDeleteNewsAction(){
+    public function ajaxDeleteImagesAction(){
         
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){

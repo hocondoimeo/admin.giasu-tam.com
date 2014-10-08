@@ -60,7 +60,7 @@
 		                <?php if($label !=='Delete' ) echo $this->renderFormElement($form->Content, 1);?>
 		                <?php echo $this->renderFormElement($form->Save);?>
 		                <?php if($label !=='Delete') echo $this->renderFormElement($form->Reset);?>
-		                </fieldset>
+		              </fieldset>
 	              </div>
 		           <div class="span4">
 			            <fieldset class="form-vertical">
@@ -94,7 +94,7 @@
 		                            <label class="control-label view-label" for="inputSection"><strong>Thumb</strong></label>
 		                            <div class="controls">
 		                                <div id="image-thumb">
-		                                <?php $url = (isset($this->avatar) && !empty($this->avatar)) ? IMAGE_UPLOAD_URL_TMP : IMAGE_UPLOAD_URL;?>
+		                                <?php $url = (isset($this->imageUrl) && !empty($this->imageUrl)) ? IMAGE_UPLOAD_URL_TMP : IMAGE_UPLOAD_URL;?>
 		                                    <a class="image-in-modal" url="<?php echo IMAGE_UPLOAD_URL?>" tmpUrl="<?php echo IMAGE_UPLOAD_URL_TMP?>" filename="<?php echo $imageUrl?>" href="#">
 		                                        <img alt="<?php echo $imageUrl?>" title="+" src="<?php echo $url.$imageUrl?>" <?php echo !empty($imageStyle)?$imageStyle:''?> width="200" height="200"/>
 		                                    </a>

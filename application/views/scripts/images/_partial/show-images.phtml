@@ -16,14 +16,18 @@
     <td>
         <?php echo $dataRow->ImageCode;?>
     </td>
-
+    
     <td>
-        <?php echo $dataRow->ImageName;?>
+        <?php echo $dataRow->ImageUrl;?>
     </td>
 
-    <td>
-        <?php echo $dataRow->ImageDesc;?>
-    </td>
+    <!-- <td> -->
+        <?php //echo $dataRow->ImageName;?>
+    <!-- </td> -->
+
+    <!-- <td> -->
+        <?php //echo $dataRow->ImageDesc;?>
+    <!-- </td> -->
 
     <td>
         <?php echo $dataRow->RecommendWidth;?>
@@ -41,8 +45,13 @@
         <?php echo $dataRow->LastUpdated;?>
     </td>
 
-    <td>
-        <?php echo $dataRow->LastUpdatedBy;?>
+    <!-- <td> -->
+        <?php //echo $dataRow->LastUpdatedBy;?>
+    <!-- </td> -->
+    
+    <td style="vertical-align: middle">
+        <?php if(!$dataRow->IsDisabled):?><span class="label label-success">Active</span><?php endif;?>
+        <?php if($dataRow->IsDisabled):?><span class="label label-default">Inactive</span><?php endif;?>
     </td>
     
     <td>

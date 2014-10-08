@@ -12,6 +12,11 @@
     <td>
         <?php echo $dataRow->NewsId;?>
     </td>
+    
+    <td style="vertical-align: middle">
+        <?php if($dataRow->IsPrivate):?><span class="label label-success">Home</span><?php endif;?>
+        <?php if(!$dataRow->IsPrivate):?><span class="label label-default">Away</span><?php endif;?>
+    </td>
 
     <td>
        <a href="/news/update-news/id/<?php echo $dataRow->NewsId; ?>" class="">

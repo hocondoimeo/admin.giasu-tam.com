@@ -252,6 +252,9 @@ class TutorsController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             $id = $formData['TutorId'];
            	if($row && $this->_model->deleteRow($id)) {
+	           		$fileName = !empty($row->Avatar)?$row->Avatar:'';
+	           		if (!empty($fileName) && file_exists(IMAGE_UPLOAD_PATH.$fileName))
+	           			unlink(IMAGE_UPLOAD_PATH.$fileName);
                     $msg = str_replace(array("{subject}"),array("Tutors"),'success/The {subject} has been deleted successfully.');
                  	$this->_helper->flashMessenger->addMessage($msg);
             }

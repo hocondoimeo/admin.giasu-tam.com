@@ -11,10 +11,14 @@
 <?php endif;?>
 </div>
 
+<?php 
+    $controller = ltrim(preg_replace("/([A-Z])/", " $1", 'Images'), ' ');
+?>
+
 <div class="row-fluid show-grid">
     <div class="span12">
         <h2>
-            <?php echo $this->text('Images') ?>
+            <?php echo $this->text($controller) ?>
         </h2>
     </div>
 </div>
@@ -24,12 +28,12 @@ $typeSearchs = array(
     'ImageId'                      => $this->text('ImageId', false),
     'ImageCode'                    => $this->text('ImageCode', false),
     'ImageName'                    => $this->text('ImageName', false),
-    'ImageDesc'                    => $this->text('ImageDesc', false),
-    'RecommendWidth'               => $this->text('RecommendWidth', false),
-    'RecommendHeight'              => $this->text('RecommendHeight', false),
+    //'ImageDesc'                    => $this->text('ImageDesc', false),
+    //'RecommendWidth'               => $this->text('RecommendWidth', false),
+    //'RecommendHeight'              => $this->text('RecommendHeight', false),
     'Section'                      => $this->text('Section', false),
-    'LastUpdated'                  => $this->text('LastUpdated', false),
-    'LastUpdatedBy'                => $this->text('LastUpdatedBy', false),
+    //'LastUpdated'                  => $this->text('LastUpdated', false),
+    //'LastUpdatedBy'                => $this->text('LastUpdatedBy', false),
 );
 $buttons = array(
     "<a class='btn btn-small btn-primary'  
@@ -49,15 +53,17 @@ echo $this->searchBar($typeSearchs, null, $buttons);
 
             <thead>
                 <tr>
-                    <?php $this->renderTh('ImageId'); ?>
-                    <?php $this->renderTh('ImageCode'); ?>
-                    <?php $this->renderTh('ImageName'); ?>
-                    <?php $this->renderTh('ImageDesc'); ?>
-                    <?php $this->renderTh('RecommendWidth'); ?>
-                    <?php $this->renderTh('RecommendHeight'); ?>
+                    <?php $this->renderTh('Image Id'); ?>
+                    <?php $this->renderTh('Image Code'); ?>
+                    <?php $this->renderTh('Image Url'); ?>
+                    <?php //$this->renderTh('Image Name'); ?>
+                    <?php //$this->renderTh('Image Desc'); ?>
+                    <?php $this->renderTh('Recommend Width'); ?>
+                    <?php $this->renderTh('Recommend Height'); ?>
                     <?php $this->renderTh('Section'); ?>
-                    <?php $this->renderTh('LastUpdated'); ?>
-                    <?php $this->renderTh('LastUpdatedBy'); ?>
+                    <?php $this->renderTh('Last Updated'); ?>
+                    <?php //$this->renderTh('Last Updated By'); ?>
+                    <?php $this->renderTh('Is Disabled'); ?>
                     
                     <th style="vertical-align: middle;">Actions</th>
                 </tr>
