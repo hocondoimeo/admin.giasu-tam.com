@@ -62,26 +62,6 @@ class Application_Model_Core_News extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
-
-    public function groupMenuByParent(Zend_Db_Table_Rowset_Abstract $news) {
-    	$data = array();
-    
-    	foreach ($news as $new) {
-    		if ($new->NewsCategoryId) {
-    			if (! isset($data[$new->NewsCategoryId])) $data[$new->NewsCategoryId] = array();
-    
-    			$data[$new->NewsCategoryId]['childs'][] = $new->toArray();
-    		} else {
-    			if (! isset($data[$new->NewsId])) {
-    				$data[$new->NewsId] = array_merge($new->toArray(), array('childs' => array()));
-    			} else {
-    				$data[$new->NewsId] = array_merge($new->toArray(), array('childs' => $data[$new->NewsId]['childs']));
-    			}
-    		}
-    	}
-    
-    	return $data;
-    }
     
     public function getNewsByCate($cateId) {
     	return $this->_db->fetchOne("SELECT Position FROM {$this->_name} ORDER BY CreatedDate");
@@ -90,5 +70,32 @@ class Application_Model_Core_News extends Base_Db_Table_Abstract {
     public function getAllNews() {
     	return $this->_db->fetchOne("SELECT Position FROM {$this->_name} ORDER BY CreatedDate DESC");
     }
+
+    public function getModifiedNews(){
+    	$select = $this->select()->from($this,'count(NewsId) as ANews')->where('LastUpdated > DATE_SUB(NOW(), INTERVAL 1 MONTH)');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->ANews;
+    	else return null;
+    }
     
+    public function getNewNews(){
+    	$select = $this->select()->from($this,'count(NewsId) as NNews')->where('CreatedDate > DATE_SUB(NOW(), INTERVAL 1 MONTH)');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->NNews;
+    	else return null;
+    }
+    
+    public function getDisabledNews(){
+    	$select = $this->select()->from($this,'count(NewsId) as UNews')->where('IsDisabled = 1');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->UNews;
+    	else return null;
+    }
+    
+    public function getTotalNews(){
+    	$select = $this->select()->from($this,'count(NewsId) as TNews');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->TNews;
+    	else return null;
+    }
 }

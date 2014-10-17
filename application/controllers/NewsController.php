@@ -130,7 +130,7 @@ class NewsController extends Zend_Controller_Action
 	            	//copy new image from 'tmp' to 'images' folder then remove it
 	            	$fileName = Common_FileUploader_qqUploadedFileXhr::copyImage($data['ImageUrl'], IMAGE_UPLOAD_PATH_TMP, IMAGE_UPLOAD_PATH);
 	            	//copy exist image from 'images' to 'backup' folder then remove it
-	            	if($data['OldImageName'] !== 'none.gif')
+	            	if(file_exists(IMAGE_UPLOAD_PATH.$fileName) && $data['OldImageName'] !== 'none.gif')
 	            		$fileNameBackup = Common_FileUploader_qqUploadedFileXhr::copyImage($data['OldImageName'], IMAGE_UPLOAD_PATH, IMAGE_UPLOAD_PATH_BACKUP);
             	}
             	

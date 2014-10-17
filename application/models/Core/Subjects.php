@@ -61,5 +61,11 @@ class Application_Model_Core_Subjects extends Base_Db_Table_Abstract {
     	if(count($result)) return $result;
     	else return null;
     }
-
+	
+    public function getAvailableSubjects(){
+    	$select = $this->select()->from($this,'count(SubjectId) as ASubjects');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->ASubjects;
+    	else return null;
+    }
 }

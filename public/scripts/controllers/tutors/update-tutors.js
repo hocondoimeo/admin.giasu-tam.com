@@ -17,6 +17,7 @@ function uploaderCallback(file, item, fileName, result) {
     aLink.attr('filename', fileName);
     var image = $('#image-thumb a img');
     aLink.attr('url', '');
+    image.attr('alt', fileName);
     image.attr('src', aLink.attr('tmpUrl')+fileName);
     
     var size = file._find(item, 'size').innerHTML;

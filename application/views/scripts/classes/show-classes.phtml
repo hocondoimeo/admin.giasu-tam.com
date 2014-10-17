@@ -25,21 +25,11 @@
 <?php
 $typeSearchs = array(
     'All' => 'All',
-    //'ClassId'                      => $this->text('ClassId', false),
-    //'ClassAddress'                 => $this->text('ClassAddress', false),
     'ClassContact'                 => $this->text('ClassContact', false),
     'ClassCost'                    => $this->text('ClassCost', false),
     'ClassDaysOfWeek'              => $this->text('ClassDaysOfWeek', false),
     'ClassTime'                    => $this->text('ClassTime', false),
     'ClassRequire'                 => $this->text('ClassRequire', false),
-    //'ClassTutors'                  => $this->text('ClassTutors', false),
-    //'ClassSubjects'                => $this->text('ClassSubjects', false),
-    'ClassGrade'                  => $this->text('ClassGrade', false),
-    //'ClassStatus'                  => $this->text('ClassStatus', false),
-    //'CreatedDate'                  => $this->text('CreatedDate', false),
-    //'IsDisabled'                   => $this->text('IsDisabled', false),
-    //'LastUpdated'                  => $this->text('LastUpdated', false),
-    //'LastUpdatedBy'                => $this->text('LastUpdatedBy', false),
 );
 $buttons = array(
     "<a class='btn btn-small btn-primary'  
@@ -61,19 +51,13 @@ echo $this->searchBar($typeSearchs, null, $buttons);
                 <tr>
                     <?php $this->renderTh('Class Id'); ?>
                     <?php $this->renderTh('Class Status'); ?>
-                    <?php //$this->renderTh('Class Address'); ?>
-                    <?php //$this->renderTh('Class Contact'); ?>
                     <?php $this->renderTh('Class Cost'); ?>
                     <?php $this->renderTh('Class Days Of Week'); ?>
                     <?php $this->renderTh('Class Time'); ?>
                     <?php $this->renderTh('Class Require'); ?>
-                    <?php //$this->renderTh('Class Tutors'); ?>
                     <?php $this->renderTh('Class Subjects'); ?>
-                    <?php $this->renderTh('Class Grade'); ?>
-                    <?php //$this->renderTh('Created Date'); ?>
+                    <?php //$this->renderTh('Class Grade'); ?>
                     <?php $this->renderTh('Is Disabled'); ?>
-                    <?php //$this->renderTh('Last Updated'); ?>
-                    <?php //$this->renderTh('Last Updated By'); ?>
                     
                     <th style="vertical-align: middle;">Actions</th>
                 </tr>

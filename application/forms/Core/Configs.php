@@ -19,6 +19,10 @@ class Application_Form_Core_Configs extends Zend_Form
         $configName->setRequired(true);
         $configName->setDecorators(array('ViewHelper'));
         $this->addElement($configName);
+        
+        $multiConfigName = new Zend_Form_Element_Hidden('MultiConfigName');
+        $multiConfigName->setDecorators(array('ViewHelper'));
+        $this->addElement($multiConfigName);
 
         $configCode = new Zend_Form_Element_Text('ConfigCode');
         $configCode->setLabel('ConfigCode');
@@ -33,6 +37,12 @@ class Application_Form_Core_Configs extends Zend_Form
         $configValue->setRequired(true);
         $configValue->setDecorators(array('ViewHelper'));
         $this->addElement($configValue);
+        
+        $section = new Zend_Form_Element_Select('Section');
+        $section->setLabel('ConfigValue');        
+        $section->setRequired(false);
+        $section->setDecorators(array('ViewHelper'));
+        $this->addElement($section);
 
         $configCategoryId = new Zend_Form_Element_Select('ConfigCategoryId');
         $configCategoryId->setLabel('ConfigCategoryId');
@@ -90,13 +100,26 @@ class Application_Form_Core_Configs extends Zend_Form
     	->addMultiOptions($cateModel->getFormPairs());
     }
     
-    public function changeModeToUpdate($cateId) {
+    public function changeModeToAddMulti($sections, $configValue = '') {
+    	$this->getElement('MultiConfigName')->setValue(serialize($sections));
+    	$this->getElement('ConfigName')->setValue('Multi');
+    	$this->getElement('Section')->addMultiOptions($sections);
+    	$this->getElement('Section')->setValue($configValue);
+    }
+    
+    public function changeModeToUpdate($cateId, $multi = '', $configValue = '') {
     	//$this->removeElement('CreatedDate');
     	//$this->removeElement('LastUpdated');
     	$this->getElement('ConfigCode')->setRequired(false);
     	$this->getElement('ConfigCode')->setAttrib('disabled', true);
     	$this->getElement('Save')->setLabel('Update')->setAttrib('class', 'btn btn-warning');
     
+    	if(!empty($multi)){
+    		$this->getElement('Section')->addMultiOptions(unserialize($multi));
+    		$this->getElement('Section')->setValue($configValue);
+    		$this->getElement('MultiConfigName')->setValue($multi);
+    	}
+    	
     	$cateModel =  new Application_Model_Core_ConfigCategories();
     	$this->getElement('ConfigCategoryId')
     	->addMultiOptions($cateModel->getFormPairs($cateId));

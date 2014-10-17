@@ -1,0 +1,41 @@
+<?php 
+    $form = $this->form;
+?>
+
+<div class="row-fluid">
+    <div class="span12">
+          <div class="pull-right">
+          </div>
+          <h2>
+              <?php echo 'Add multi config values for your selection'; ?>        
+          </h2>
+    </div>
+</div>
+
+<div class="row-fluid">	
+<?php if(!empty($this->message) && isset($this->message[0])):?>
+<?php $message = explode("/", $this->message[0]);?>
+<div class="span12">
+     <div class="alert alert-<?php echo $message[0];?>">
+        <button class="close" data-dismiss="alert" type="button">X</button>
+        <?php echo $message[1];?>
+        <?php if(isset($message[2]))echo "<ul><li>".$message[2]."</li></ul>"?>
+    </div>
+</div>
+<?php endif;?>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <form class="form-horizontal" method="post" action="/configs/add-configs" id="frmMultiConfigs">
+            <fieldset>
+                
+                <?php echo $this->renderFormElement($form->MultiConfigName);?>
+                <?php echo $this->renderFormElement($form->MultiConfigValue);?>
+                <?php echo $this->renderFormElement($form->Save);?>
+		        <?php echo $this->renderFormElement($form->Reset);?>
+                                
+            </fieldset>
+        </form>
+    </div>
+</div>

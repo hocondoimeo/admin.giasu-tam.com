@@ -1,13 +1,193 @@
-<div class="row-fluid show-grid form-horizontal">
-    <div class="span12">
-           <h2>
-              Gen code
-          </h2>
-    </div>
-</div>
-<div class="row-fluid show-grid form-horizontal">
-    <div class="span12">
-        <a href="/project-infos/phpinfo">php info</a>
-    </div>
-</div>
-
+    			        <div class="container-fluid">
+			        		<fieldset class="well the-fieldset">
+			        			<legend>Website Statistics</legend>
+			        					<div class="row">
+			        					
+				        					<div class="col-md-4 col-lg-4">
+								        		<fieldset class="col-md-10 col-lg-10 well the-fieldset">
+								        			<legend>Classes Statistics</legend>
+								        			<table class="table table-bordered">
+								        				<tr>
+															  <th class="active">Summary</th>
+															  <th class="active">Result</th>
+														</tr>
+								        				<tr>
+															  <th class="info">Available</th>
+															  <td class="info"><?php echo !empty($this->aClasses)? $this->aClasses: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="warning">New</th>
+															  <td class="warning"><?php echo !empty($this->nClasses)? $this->nClasses: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="danger">Unavailable</th>
+															  <td class="danger"><?php echo !empty($this->uClasses)? $this->uClasses: '';?></td>
+														</tr>														
+								        				<tr>
+															  <th class="success">Total</th>
+															  <td class="success"><?php echo !empty($this->tClasses)? $this->tClasses: '';?></td>
+														 </tr>
+													</table>
+								        		</fieldset>
+								        	</div>
+								        	
+								        	<div class="col-md-4 col-lg-4">
+								        		<fieldset class="col-md-10 col-lg-10 well the-fieldset">
+								        			<legend>Tutors Statistics</legend>
+								        			<table class="table table-bordered">
+								        				<tr>
+															  <th class="active">Summary</th>
+															  <th class="active">Result</th>
+														</tr>
+								        				<tr>
+															  <th class="info">Verify</th>
+															  <td class="info"><?php echo !empty($this->aTutors)? $this->aTutors: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="warning">New</th>
+															  <td class="warning"><?php echo !empty($this->nTutors)? $this->nTutors: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="danger">Untrust</th>
+															  <td class="danger"><?php echo !empty($this->uTutors)? $this->uTutors: '';?></td>
+														</tr>														
+								        				<tr>
+															  <th class="success">Total</th>
+															  <td class="success"><?php echo !empty($this->tTutors)? $this->tTutors: '';?></td>
+														 </tr>
+													</table>
+								        		</fieldset>
+									        </div>
+								        		
+								        	<div class="col-lg-4 col-md-4">
+								        		<fieldset class="col-md-10 col-lg-10 well the-fieldset">
+								        			<legend>Contents Statistics</legend>
+								        			<table class="table table-bordered">
+								        				<tr>
+															  <th class="active">Summary</th>
+															  <th class="active">Result</th>
+														</tr>
+								        				<tr>
+															  <th class="info">Modified</th>
+															  <td class="info"><?php echo !empty($this->aNews)? $this->aNews: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="warning">New</th>
+															  <td class="warning"><?php echo !empty($this->nNews)? $this->nNews: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="danger">Disabled</th>
+															  <td class="danger"><?php echo !empty($this->uNews)? $this->uNews: '';?></td>
+														</tr>														
+								        				<tr>
+															  <th class="success">Total</th>
+															  <td class="success"><?php echo !empty($this->tNews)? $this->tNews: '';?></td>
+														 </tr>
+													</table>
+								        		</fieldset>
+									        </div>
+								        	
+								        </div>
+								        
+								        <div class="row">
+			        					
+				        					<div class="col-md-4 col-lg-4">
+								        		<fieldset class="col-md-10 col-lg-10 well the-fieldset">
+								        			<legend>Users Statistics</legend>
+								        			<table class="table table-bordered">
+								        				<tr>
+															  <th class="active">Summary</th>
+															  <th class="active">Result</th>
+														</tr>
+														<tr>
+															  <th class="danger">Admin</th>
+															  <td class="danger"><?php echo !empty($this->admin)? $this->admin: '';?></td>
+														</tr>
+								        				<tr>
+															  <th style="background-color: #428bca">Guest</th>
+															  <td style="background-color: #428bca"><?php echo !empty($this->default)? $this->default: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="warning">Facebook</th>
+															  <td class="warning"><?php echo !empty($this->facebook)? $this->facebook: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="info">Google</th>
+															  <td class="info"><?php echo !empty($this->google)? $this->google: '';?></td>
+														</tr>
+														<tr>
+															  <th class="default">Twitter</th>
+															  <td class="default"><?php echo !empty($this->twitter)? $this->twitter: '';?></td>
+														</tr>														
+								        				<tr>
+															  <th class="success">Total</th>
+															  <td class="success"><?php echo !empty($this->totalUsers)? $this->totalUsers: '';?></td>
+														 </tr>
+													</table>
+								        		</fieldset>
+								        	</div>
+								        	
+								        	<div class="col-md-4 col-lg-4">
+								        		<fieldset class="col-md-10 col-lg-10 well the-fieldset">
+								        			<legend>Filters Statistics</legend>
+								        			<table class="table table-bordered">
+								        				<tr>
+															  <th class="active">Summary</th>
+															  <th class="active">Result</th>
+														</tr>
+								        				<tr>
+															  <th class="info">Subjects</th>
+															  <td class="info"><?php echo !empty($this->subjects)? $this->subjects: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="warning">Grades</th>
+															  <td class="warning"><?php echo !empty($this->grades)? $this->grades: '';?></td>
+														</tr>														
+														<tr>
+															  <th class="danger">Districts</th>
+															  <td class="danger"><?php echo !empty($this->districts)? $this->districts: '';?></td>
+														</tr>														
+								        				<tr>
+															  <th class="success">Total</th>
+															  <td class="success">
+															  	<?php $tt = 0;
+															  		if(!empty($this->subjects)  && !empty($this->grades) && !empty($this->districts))
+															  			$tt = $this->subjects+$this->grades+$this->districts;
+															  		echo $tt;
+															  	?></td>
+														 </tr>
+													</table>
+								        		</fieldset>
+									        </div>
+								        		
+								        	<div class="col-md-4 col-lg-4">
+								        		<fieldset class="col-md-10 col-lg-10 well the-fieldset">
+								        			<legend>Images Statistics</legend>
+								        			<table class="table table-bordered">
+								        				<tr>
+															  <th class="active">Summary</th>
+															  <th class="active">Result</th>
+														</tr>
+								        				<tr>
+															  <th class="info">Modified</th>
+															  <td class="info"><?php echo !empty($this->aImages)? $this->aImages: '';?></td>
+														</tr>														
+														<!-- <tr>
+															  <th class="warning">New</th>
+															  <td class="warning"><?php //echo !empty($this->nImages)? $this->nImages: '';?></td>
+														</tr> -->														
+														<tr>
+															  <th class="danger">Disabled</th>
+															  <td class="danger"><?php echo !empty($this->uImages)? $this->uImages: '';?></td>
+														</tr>														
+								        				<tr>
+															  <th class="success">Total</th>
+															  <td class="success"><?php echo !empty($this->tImages)? $this->tImages: '';?></td>
+														 </tr>
+													</table>
+								        		</fieldset>
+									        </div>
+								        	
+								     </div>
+			        		</fieldset>
+			        	</div>

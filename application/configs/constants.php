@@ -51,7 +51,7 @@ define('IMAGE_UPLOAD_PATH_TMP', IMAGE_UPLOAD_PATH .'tmp/');
 define('IMAGE_UPLOAD_PATH_BACKUP', IMAGE_UPLOAD_PATH .'backup/');
 
 define('IMAGE_CAROUSEL_UPLOAD_PATH', IMAGE_UPLOAD_PATH . 'carousel/');
-define('IMAGE_CAROUSEL_UPLOAD_TMP', IMAGE_CAROUSEL_UPLOAD_PATH . 'tmp');
+define('IMAGE_CAROUSEL_UPLOAD_TMP', IMAGE_CAROUSEL_UPLOAD_PATH . 'tmp/');
 define('IMAGE_CAROUSEL_UPLOAD_BACKUP', IMAGE_CAROUSEL_UPLOAD_PATH . 'backup/');
 
 define('IMAGE_UPLOAD_URI', '/uploads/images/');
@@ -80,3 +80,8 @@ define('EXPERIENCE_YEAR', serialize($exYears));
 
 $careers = array('Sinh Viên Năm 1', 'Sinh Viên Năm 2', 'Sinh Viên Năm 3', 'Sinh Viên Năm 4', 'Đã Tốt Nghiệp', 'Giáo Viên', 'Giảng Viên');
 define('TUTOR_CAREERS' , serialize($careers));
+
+
+/************************* Configs *******************************/
+$sectionOtp = array('None-bg' => 'None', 'violet-bg' => 'Violet', 'brone-bg' => 'Copper', 'two-bg' => 'Mixed Gray-Purple', 'orange-bg' => 'Orange', 'red-bg' => 'Red');
+define('CONFIG_SECTION' , serialize($sectionOtp));

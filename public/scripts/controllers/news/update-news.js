@@ -17,28 +17,12 @@ function uploaderCallback(file, item, fileName, result) {
     aLink.attr('filename', fileName);
     var image = $('#image-thumb a img');
     aLink.attr('url', '');
+    image.attr('alt', fileName);
     image.attr('src', aLink.attr('tmpUrl')+fileName);
     
     var size = file._find(item, 'size').innerHTML;
-    //$('#image-size').text(size);
     $('#image-name').text(fileName);
-    /*var d = new Date();
-    var ampm = 'AM';
-    var hour = d.getHours();
-    if(hour > 12) ampm = 'PM';
-    hour = ((''+hour).length<2 ? '0' :'') + hour ;
-    var minute = d.getMinutes();
-    minute = ((''+minute).length<2 ? '0' :'') + minute;
-    var date = $('#image-upload-date').attr('date') + hour + ':' + minute + ' ' + ampm;
-    $('#image-upload-date').text(date);
-    $('#progress-img').hide();
-    $('#image-size').text(size);*/
     $('#Save').attr('disabled', false);
-    /*var img = new Image();
-    img.src = aLink.attr('tmpUrl')+fileName;
-    img.onload = function(){
-    	$('#image-dimension').text(img.width + ' x ' + img.height + ' px');
-    }*/
 }
 
 $(document).ready(function() {
@@ -103,7 +87,7 @@ $(document).ready(function() {
 		if(url.length <= 0) url = tmpUrl;
 		var content = '<img src="'+url+imageName+'"/>'; 
 		loadModal(content);
-	})
+	});
 	
 	$("form#frmImage").submit( function(eventObj) {
 		var oldImageName = $.trim($('#image-name').attr('old-image-name'));

@@ -5,7 +5,13 @@
  */
  
     $dataRow       = $this->dataRow;
-    
+    $multiName = '';
+    $multiValue = '';
+    $multi = explode('@Multi@', $dataRow->ConfigName);
+    if(count($multi) >1){
+    	$multiName = $multi[0];
+    	$multiValue = unserialize($multi[1]);
+    }
 ?>
 <tr>
     
@@ -15,7 +21,7 @@
 
     <td>
        <a href="/configs/update-configs/id/<?php echo $dataRow->ConfigId; ?>" class="">
-        	<?php echo $dataRow->ConfigName;?><br/>
+        	<?php echo (!empty($multiName))?$multiName:$dataRow->ConfigName;?><br/>
          </a>
         <span><small>Category: <?php echo $dataRow->ConfigCategoryName;?></small></span>
     </td>
@@ -25,7 +31,11 @@
     </td>
 
     <td>
-        <?php echo $dataRow->ConfigValue;?>
+        <?php if(empty($multiName)) 
+        			echo $dataRow->ConfigValue;
+        		else
+					echo $multiValue[$dataRow->ConfigValue];
+        ?>
     </td>
 
     <td style="vertical-align: middle">

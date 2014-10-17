@@ -61,5 +61,45 @@ class Application_Model_Core_Users extends Base_Db_Table_Abstract {
 * PUT YOUR CODE HERE
 ********************************************************************/
 
-
+    public function getAdminUsers(){
+    	$select = $this->select()->from($this,'count(UserId) as AUsers')->where('OpenId is null AND (UserName = "admin")');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->AUsers;
+    	else return null;
+    }
+    
+    public function getDefaultUsers(){
+    	$select = $this->select()->from($this,'count(UserId) as DUsers')->where('OpenId is null AND (UserName = "guest")');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->DUsers;
+    	else return null;
+    }
+    
+    public function getFacebookUsers(){
+    	$select = $this->select()->from($this,'count(UserId) as FUsers')->where('OpenId like "fb_%"');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->FUsers;
+    	else return null;
+    }
+    
+    public function getGoogleUsers(){
+    	$select = $this->select()->from($this,'count(UserId) as GUsers')->where('OpenId like "gg_%"');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->GUsers;
+    	else return null;
+    }
+    
+    public function getTwitterUsers(){
+    	$select = $this->select()->from($this,'count(UserId) as TwUsers')->where('OpenId like "tw_%"');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->TwUsers;
+    	else return null;
+    }
+    
+    public function getTotalUsers(){
+    	$select = $this->select()->from($this,'count(UserId) as TUsers');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->TUsers;
+    	else return null;
+    }
 }

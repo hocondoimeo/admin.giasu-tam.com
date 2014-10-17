@@ -74,6 +74,32 @@ class Application_Model_Core_Classes extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
-
+    public function getAvailableClasses(){
+    	$select = $this->select()->from($this,'count(ClassId) as AClasses')->where('ClassStatus = 0');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->AClasses;
+    	else return null;
+    }
+    
+    public function getNewClasses(){
+    	$select = $this->select()->from($this,'count(ClassId) as NClasses')->where('CreatedDate > DATE_SUB(NOW(), INTERVAL 1 MONTH)');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->NClasses;
+    	else return null;
+    }
+    
+    public function getUnAvailableClasses(){
+    	$select = $this->select()->from($this,'count(ClassId) as UClasses')->where('ClassStatus = 1');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->UClasses;
+    	else return null;
+    }
+    
+    public function getTotalClasses(){
+    	$select = $this->select()->from($this,'count(ClassId) as TClasses');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->TClasses;
+    	else return null;
+    }
 
 }

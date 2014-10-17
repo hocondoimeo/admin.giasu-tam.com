@@ -78,6 +78,32 @@ class Application_Model_Core_Tutors extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
-
+    public function getAvailableTutors(){
+    	$select = $this->select()->from($this,'count(TutorId) as ATutors')->where('Status = 0');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->ATutors;
+    	else return null;
+    }
+    
+    public function getNewTutors(){
+    	$select = $this->select()->from($this,'count(TutorId) as NTutors')->where('CreatedDate > DATE_SUB(NOW(), INTERVAL 1 MONTH)');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->NTutors;
+    	else return null;
+    }
+    
+    public function getUnAvailableTutors(){
+    	$select = $this->select()->from($this,'count(TutorId) as UTutors')->where('Status = 1');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->UTutors;
+    	else return null;
+    }
+    
+    public function getTotalTutors(){
+    	$select = $this->select()->from($this,'count(TutorId) as TTutors');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->TTutors;
+    	else return null;
+    }
 
 }

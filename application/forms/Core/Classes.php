@@ -36,7 +36,6 @@ class Application_Form_Core_Classes extends Zend_Form
         $classCost = new Zend_Form_Element_Text('ClassCost');
         $classCost->setLabel('ClassCost');
         $classCost->addFilter('StringTrim');
-        //$classCost->addValidator('Int');
         $classCost->setRequired(true);
         $classCost->setDecorators(array('ViewHelper'));
         $this->addElement($classCost);
@@ -44,7 +43,6 @@ class Application_Form_Core_Classes extends Zend_Form
         $classDaysOfWeek = new Zend_Form_Element_Text('ClassDaysOfWeek');
         $classDaysOfWeek->setLabel('DaysOfWeek');
         $classDaysOfWeek->addFilter('StringTrim');
-        //$classDaysOfWeek->addValidator('Int');
         $classDaysOfWeek->setRequired(true);
         $classDaysOfWeek->setDecorators(array('ViewHelper'));
         $this->addElement($classDaysOfWeek);
@@ -93,11 +91,9 @@ class Application_Form_Core_Classes extends Zend_Form
         ));
         $this->addElement($classSubjects);
 
-        $classGrade = new Zend_Form_Element_Text('ClassGrade');
+        $classGrade = new Zend_Form_Element_Select('GradeId');
         $classGrade->setLabel('ClassGrade');
         $classGrade->addFilter('StringTrim');
-        //$classGrade->addValidator('Int');
-        $classGrade->setRequired(true);
         $classGrade->setDecorators(array('ViewHelper'));
         $this->addElement($classGrade);
 
@@ -159,8 +155,10 @@ class Application_Form_Core_Classes extends Zend_Form
     	$this->getElement('Save')->setLabel('Add');
     	
     	$cateModel =  new Application_Model_Core_Districts();
-    	$this->getElement('DistrictId')
-    	->addMultiOptions($cateModel->getFormPairs());
+    	$this->getElement('DistrictId')->addMultiOptions($cateModel->getFormPairs());
+		
+		$gradeModel =  new Application_Model_Core_Grades();
+    	$this->getElement('GradeId')->addMultiOptions($gradeModel->getFormPairs());
     }
     
     public function changeModeToUpdate($classSubjects) {
@@ -176,8 +174,6 @@ class Application_Form_Core_Classes extends Zend_Form
     		}
     		return $str;
     	}
-    	//$this->removeElement('CreatedDate');
-    	//$this->removeElement('LastUpdated');
     	$subjectModel = new Application_Model_Core_Subjects();
     	$subjects = $subjectModel->fetchAll($subjectModel->getAllAvaiabled());
     	$subjectNames = trim(array2string($subjects->toArray(), explode(',', $classSubjects)), ',');
@@ -187,17 +183,21 @@ class Application_Form_Core_Classes extends Zend_Form
     }
     
     public function changeModeToDelete($cateId) {
-    	//$this->removeElement('CreatedDate');
-    	//$this->removeElement('LastUpdated');
     	$this->getElement('Save')->setLabel('Delete')->setAttrib('class', 'btn btn-danger');
     	
     	$cateModel =  new Application_Model_Core_Districts();
     	$this->getElement('DistrictId')->addMultiOptions($cateModel->getFormPairs());
+		
+		$gradeModel =  new Application_Model_Core_Grades();
+    	$this->getElement('GradeId')->addMultiOptions($gradeModel->getFormPairs());
     }
     
-    public function changeModeToDistrictId() {    	
+    public function changeModeToSelection() {    	
     	$cateModel =  new Application_Model_Core_Districts();
-    	$this->getElement('DistrictId')->addMultiOptions($cateModel->getFormPairs());    	
+    	$this->getElement('DistrictId')->addMultiOptions($cateModel->getFormPairs()); 
+		
+		$gradeModel =  new Application_Model_Core_Grades();
+    	$this->getElement('GradeId')->addMultiOptions($gradeModel->getFormPairs());
     }
     
     public function changeModeToSubjects($subjects, $subjectsText) {

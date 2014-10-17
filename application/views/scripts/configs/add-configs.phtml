@@ -34,13 +34,15 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <form class="form-horizontal" method="post" action="">
+        <form class="form-horizontal" method="post" action="" id="frmConfigs">
             <fieldset>
                 
                 <?php echo $this->renderFormElement($form->ConfigId);?>
+                <?php echo $this->renderFormElement($form->MultiConfigName);?>
                 <?php echo $this->renderFormElement($form->ConfigName);?>
                 <?php echo $this->renderFormElement($form->ConfigCode);?>
-                <?php echo $this->renderFormElement($form->ConfigValue);?>
+                <?php if($this->multi) echo $this->renderFormElement($form->Section);?>
+                <?php if(!$this->multi) echo $this->renderFormElement($form->ConfigValue);?>
                 <?php echo $this->renderFormElement($form->ConfigCategoryId);?>
                 <?php echo $this->renderFormElement($form->IsDisabled);?>
                 <?php if($label !=='Add') echo $this->renderFormElement($form->LastUpdated);?>

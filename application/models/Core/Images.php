@@ -62,6 +62,32 @@ class Application_Model_Core_Images extends Base_Db_Table_Abstract {
 /********************************************************************
 * PUT YOUR CODE HERE
 ********************************************************************/
-
+    public function getModifiedImages(){
+    	$select = $this->select()->from($this,'count(ImageId) as AImages')->where('LastUpdated > DATE_SUB(NOW(), INTERVAL 1 MONTH)');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->AImages;
+    	else return null;
+    }
+    
+    public function getNewImages(){
+    	$select = $this->select()->from($this,'count(ImageId) as NImages')->where('CreatedDate > DATE_SUB(NOW(), INTERVAL 1 MONTH)');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->NImages;
+    	else return null;
+    }
+    
+    public function getDisabledImages(){
+    	$select = $this->select()->from($this,'count(ImageId) as UImages')->where('IsDisabled = 1');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->UImages;
+    	else return null;
+    }
+    
+    public function getTotalImages(){
+    	$select = $this->select()->from($this,'count(ImageId) as TImages');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->TImages;
+    	else return null;
+    }
 
 }

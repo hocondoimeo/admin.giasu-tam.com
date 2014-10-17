@@ -36,10 +36,15 @@ $typeSearchs = array(
 );
 $buttons = array(
     "<a class='btn btn-small btn-primary'  
-        href='{$this->url(array('action' => 'add-'. $this->controller))}'>
+        href='#' id='multi-configs'>
         <i class='icon-plus'></i>
-        Add {$this->text($controller)}
-    </a>"
+        Add {$this->text($controller)}: Choose Value
+    </a>",
+		"<a class='btn btn-small btn-primary'
+	href='{$this->url(array('action' => 'add-'. $this->controller))}'>
+	<i class='icon-plus'></i>
+	Add {$this->text($controller)}: Set Value
+	</a>",
 );
 echo $this->searchBar($typeSearchs, null, $buttons);
 
@@ -67,9 +72,8 @@ echo $this->searchBar($typeSearchs, null, $buttons);
 
             <tbody>
                 <?php if (count($this->paginator) != 0) : ?>
-                    <?php 
-                        foreach ($this->paginator as $row){
-    
+                    <?php
+                        foreach ($this->paginator as $row){    
                             echo $this->partial('configs/_partial/show-configs.phtml', array('dataRow'=>$row) );
                         }
                     ?>

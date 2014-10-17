@@ -66,4 +66,11 @@ class Application_Model_Core_Grades extends Base_Db_Table_Abstract {
     
     	return $content;
     }
+    
+    public function getAvailableGrades(){
+    	$select = $this->select()->from($this,'count(GradeId) as AGrades');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->AGrades;
+    	else return null;
+    }
 }

@@ -67,5 +67,10 @@ class Application_Model_Core_Districts extends Base_Db_Table_Abstract {
     	return $content;
     }
 
-
+    public function getAvailableDistricts(){
+    	$select = $this->select()->from($this,'count(DistrictId) as ADistricts');
+    	$result = $this->fetchRow($select);
+    	if($result) return $result->ADistricts;
+    	else return null;
+    }
 }

@@ -53,31 +53,49 @@ class ConfigsController extends Zend_Controller_Action
     * @author 
     */
     public function addConfigsAction() {
+    	$this->view->multi = $this->_request->getParam('multi',null);
+    	
         $form = new Application_Form_Core_Configs();
         $form->changeModeToAdd();
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            if($form->isValid($formData)) {
-            	$data = $_POST;
-            	 
-            	//$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
-            	$data['LastUpdatedBy'] = USER_ID;
-            	if(isset($data['ConfigId'])) unset($data['ConfigId']);
-            	
-                if($this->_model->add($data)){
-                    $msg = str_replace(array("{subject}"),array("Configs"),'success/The {subject} has been added successfully.');
-                 	$this->_helper->flashMessenger->addMessage($msg);
-                }
-                $this->_helper->redirector('show-configs');
-            }else{
-                 $msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
-                 foreach ($form->getMessages() as $key=>$messageFormError){
-                      $msg .= '/'.$key;
-                 }
-                 $this->view->message = array($msg);
-            }
+            $data = $_POST;            	
+            	if(!empty($data['MultiConfigName']) && !empty($data['MultiConfigValue'])){
+            		$keyArr = explode(',', $data['MultiConfigName']);
+            		$valueArr = explode(',', $data['MultiConfigName']);
+            		$returnArr = array();
+            		if(count($keyArr) && count($valueArr)){
+            			$returnArr = array_combine($keyArr, $valueArr);
+            			$form->changeModeToAddMulti($returnArr);
+            			$this->view->multi = 1;
+            		}
+            	}else{
+            		if(isset($formData['Section'])) unset($formData['Section']);
+            		if($form->isValid($formData)) {
+            			if(isset($data['MultiConfigName']) && !empty($data['MultiConfigName'])) 
+            				$data['ConfigName'] .= '@Multi@'.$data['MultiConfigName']; 
+            			$data['LastUpdatedBy'] = USER_ID;
+            			if(isset($data['ConfigId'])) unset($data['ConfigId']);
+            			 
+            			if($this->_model->add($data)){
+            				$msg = str_replace(array("{subject}"),array("Configs"),'success/The {subject} has been added successfully.');
+            				$this->_helper->flashMessenger->addMessage($msg);
+            			}
+            			$this->_helper->redirector('show-configs');
+            		}else{
+            			if(isset($data['MultiConfigName']) && !empty($data['MultiConfigName'])){
+            				$this->view->multi = 1;
+            				$form->changeModeToAddMulti(unserialize($data['MultiConfigName']), $data['ConfigValue']);
+            			}
+            			$msg ='danger/There are validation error(s) on the form. Please review the following field(s):';
+            			foreach ($form->getMessages() as $key=>$messageFormError){
+            				$msg .= '/'.$key;
+            			}
+            			$this->view->message = array($msg);
+            		}		
+            	}
         }
         $this->view->form = $form;
         $this->view->showAllUrl = 'show-configs';        
@@ -90,7 +108,6 @@ class ConfigsController extends Zend_Controller_Action
     * @author 
     */
     public function updateConfigsAction() {
-        
         /* Check valid data */
         if(null == $id = $this->_request->getParam('id',null)){
             $this->_helper->flashMessenger->addMessage('%%ERROR_URL%%');
@@ -104,7 +121,16 @@ class ConfigsController extends Zend_Controller_Action
         }
     
         $form = new Application_Form_Core_Configs();
-        $form->changeModeToUpdate($id);
+        $multiName = ''; $multiData = '';
+        if(strpos($row->ConfigName, '@Multi@') !== false){
+        	$this->view->multi = 1;
+        	$multi = explode('@Multi@', $row->ConfigName);
+        	if(count($multi) >1){ 
+        		$multiData = $multi[1];
+        		$multiName = $multi[0];
+        	}
+        }
+       $form->changeModeToUpdate($id, $multiData, $row->ConfigValue);
 
         /* Proccess data post*/
         if($this->_request->isPost()) {
@@ -114,6 +140,9 @@ class ConfigsController extends Zend_Controller_Action
             	 
             	$data['LastUpdated'] = Zend_Date::now()->toString(DATE_FORMAT_DATABASE);
             	$data['LastUpdatedBy'] = USER_ID;
+            	
+            	if(isset($data['MultiConfigName']) && !empty($data['MultiConfigName']))
+            		$data['ConfigName'] .= '@Multi@'.$data['MultiConfigName'];
             	
                 if($this->_model->edit($data)){
                     $msg = str_replace(array("{subject}"),array("Configs"),'success/The {subject} has been updated successfully.');
@@ -127,9 +156,12 @@ class ConfigsController extends Zend_Controller_Action
                  }
                  $this->view->message = array($msg);
            }
+        }else{
+        	//$form->changeModeToUpdate($multiData);
         }
-            
-        $form->populate($row->toArray());
+        $dataForm = $row->toArray();
+        if(!empty($multiName)) $dataForm['ConfigName'] = $multiName;
+        $form->populate($dataForm);
         $this->view->form = $form;
         $this->view->showAllUrl = 'show-configs';
         $this->_helper->viewRenderer->setRender('add-configs');
@@ -203,6 +235,24 @@ class ConfigsController extends Zend_Controller_Action
         /*Assign varible to view*/
         $this->view->paginator = $paginator;
         $this->view->assign($params);
+    }
+    
+
+
+    /**
+     * Add record Configs
+     * @param array $formData
+     * @return
+     * @author
+     */
+    public function ajaxAddMultiConfigsAction() {
+    	$this->_helper->layout->disableLayout();
+    	
+    	$this->view->multi = $this->_request->getParam('multi',null);
+    	$form = new Application_Form_Core_MultiConfigs();
+    	 
+    	$this->view->form = $form;
+    	$this->view->showAllUrl = 'show-configs';
     }
     
    /**
