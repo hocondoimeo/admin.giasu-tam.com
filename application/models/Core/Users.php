@@ -35,13 +35,11 @@ class Application_Model_Core_Users extends Base_Db_Table_Abstract {
          /* Define field to search */
         $this->searchFields = array(
             "UserId"                       => "Users.UserId                   = '{{param}}'",
-            "Password"                     => "Users.Password                 LIKE '%{{param}}%'",
             "Email"                        => "Users.Email                    LIKE '%{{param}}%'",
             "LastName"                     => "Users.LastName                 LIKE '%{{param}}%'",
             "FirstName"                    => "Users.FirstName                LIKE '%{{param}}%'",
             "UserName"                     => "Users.UserName                 LIKE '%{{param}}%'",
-            "IsDisabled"                   => "Users.IsDisabled               = '{{param}}'",
-            "LastLogin"                    => "Users.LastLogin                = '{{param}}'",
+            //"LastLogin"                    => "Users.LastLogin                = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

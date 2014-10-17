@@ -35,16 +35,10 @@ class Application_Model_Core_Menus extends Base_Db_Table_Abstract {
          /* Define field to search */
         $this->searchFields = array(
             "MenuId"                       => "Menus.MenuId                   = '{{param}}'",
-            "ParentMenuId"                 => "Menus.ParentMenuId             = '{{param}}'",
             "MenuName"                     => "Menus.MenuName                 LIKE '%{{param}}%'",
             "MenuCode"                     => "Menus.MenuCode                 LIKE '%{{param}}%'",
-            "MenuUrl"                      => "Menus.MenuUrl                  LIKE '%{{param}}%'",
             "ClassName"                    => "Menus.ClassName                LIKE '%{{param}}%'",
             "Position"                     => "Menus.Position                 = '{{param}}'",
-            "IsDisabled"                   => "Menus.IsDisabled               = '{{param}}'",
-            "LastUpdatedBy"                => "Menus.LastUpdatedBy            = '{{param}}'",
-            "LastUpdated"                  => "Menus.LastUpdated              = '{{param}}'",
-            "CreatedDate"                  => "Menus.CreatedDate              = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

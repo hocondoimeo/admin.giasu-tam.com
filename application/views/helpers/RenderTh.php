@@ -19,6 +19,14 @@ class Zend_View_Helper_RenderTh extends Zend_View_Helper_Abstract
     function renderTh($nameDb, $displayName = "", $option = "" ) {
         $displayName = (!empty($displayName))? $displayName : $nameDb;
     	$nameDb = str_replace(' ', '',$nameDb);
+		$ajax = explode('@ajax@', $displayName);
+		$loadPage = "href='"; $loadPage1 = '';
+		if(count($ajax) > 1){
+			$displayName = $ajax[1];
+			$nameDb =  str_replace(' ', '',$ajax[1]);
+			$loadPage = 'href="#" onClick=\'loadPage("';
+			$loadPage1 = '")';
+		}
         $nameDbSort = $nameDb. '_Sort';
         $ascActive  = (strtolower($this->view->$nameDbSort) == 'asc')  ? "active" : '';
         $descActive = (strtolower($this->view->$nameDbSort) == 'desc') ? "active" : '';
@@ -30,10 +38,10 @@ class Zend_View_Helper_RenderTh extends Zend_View_Helper_Abstract
                         $option
                     </div>
                     <div class='pull-right' style='position:absolute; right:0px; top:0px; width:15px;'>
-                        <a class = '$ascActive' href='" . $this->removeParams($nameDb, $ascActive ? '' : 'asc') . "'   title='Sort up'  >
+                        <a class = '$ascActive' ".$loadPage.$this->removeParams($nameDb, $ascActive ? '' : 'asc').$loadPage1."'   title='Sort up'  >
                             <span class='glyphicon glyphicon-chevron-up'></span>
                         </a>
-                        <a class = '$descActive' href='" . $this->removeParams($nameDb, $descActive ? '' : 'desc') . "'  title='Sort down'  >
+                        <a class = '$descActive' ".$loadPage.$this->removeParams($nameDb, $descActive ? '' : 'desc').$loadPage1."'  title='Sort down'  >
                             <span class='glyphicon glyphicon-chevron-down'></span>
                         </a>
                     </div>

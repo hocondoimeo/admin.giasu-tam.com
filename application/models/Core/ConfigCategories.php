@@ -37,8 +37,6 @@ class Application_Model_Core_ConfigCategories extends Base_Db_Table_Abstract {
             "ConfigCategoryId"             => "ConfigCategories.ConfigCategoryId = '{{param}}'",
             "ConfigCategoryName"           => "ConfigCategories.ConfigCategoryName LIKE '%{{param}}%'",
             "ConfigCategoryCode"           => "ConfigCategories.ConfigCategoryCode LIKE '%{{param}}%'",
-            "CreatedDate"                  => "ConfigCategories.CreatedDate   = '{{param}}'",
-            "IsDisabled"                   => "ConfigCategories.IsDisabled    = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

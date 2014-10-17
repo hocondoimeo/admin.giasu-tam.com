@@ -38,10 +38,6 @@ class Application_Model_Core_Configs extends Base_Db_Table_Abstract {
             "ConfigName"                   => "Configs.ConfigName             LIKE '%{{param}}%'",
             "ConfigCode"                   => "Configs.ConfigCode             LIKE '%{{param}}%'",
             "ConfigValue"                  => "Configs.ConfigValue            LIKE '%{{param}}%'",
-            "ConfigCategoryId"             => "Configs.ConfigCategoryId       = '{{param}}'",
-            "IsDisabled"                   => "Configs.IsDisabled             = '{{param}}'",
-            "LastUpdated"                  => "Configs.LastUpdated            = '{{param}}'",
-            "LastUpdatedBy"                => "Configs.LastUpdatedBy          = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

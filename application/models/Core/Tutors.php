@@ -36,21 +36,10 @@ class Application_Model_Core_Tutors extends Base_Db_Table_Abstract {
         $this->searchFields = array(
             "TutorId"                      => "Tutors.TutorId                 = '{{param}}'",
             "UserName"                     => "Tutors.UserName                LIKE '%{{param}}%'",
-            "Gender"                       => "Tutors.Gender                  = '{{param}}'",
-            "Birthday"                     => "Tutors.Birthday                LIKE '%{{param}}%'",
             "Email"                        => "Tutors.Email                   LIKE '%{{param}}%'",
-            "Address"                      => "Tutors.Address                 LIKE '%{{param}}%'",
             "Phone"                        => "Tutors.Phone                   = '{{param}}'",
-            "Level"                        => "Tutors.Level                   = '{{param}}'",
             "University"                   => "Tutors.University              LIKE '%{{param}}%'",
             "Subject"                      => "Tutors.Subject                 LIKE '%{{param}}%'",
-            "Graduation"                   => "Tutors.Graduation              LIKE '%{{param}}%'",
-            "Career"                       => "Tutors.Career                  = '{{param}}'",
-            "Introduction"                 => "Tutors.Introduction            LIKE '%{{param}}%'",
-            "CreatedDate"                  => "Tutors.CreatedDate             = '{{param}}'",
-            "IsDisabled"                   => "Tutors.IsDisabled              = '{{param}}'",
-            "Avatar"                       => "Tutors.Avatar                  LIKE '%{{param}}%'",
-            "Status"                       => "Tutors.Status                  = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

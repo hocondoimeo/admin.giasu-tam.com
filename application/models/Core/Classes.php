@@ -35,20 +35,10 @@ class Application_Model_Core_Classes extends Base_Db_Table_Abstract {
          /* Define field to search */
         $this->searchFields = array(
             "ClassId"                      => "Classes.ClassId                = '{{param}}'",
-            "ClassAddress"                 => "Classes.ClassAddress           LIKE '%{{param}}%'",
             "ClassContact"                 => "Classes.ClassContact           LIKE '%{{param}}%'",
-            "ClassCost"                    => "Classes.ClassCost              = '{{param}}'",
             "ClassDaysOfWeek"              => "Classes.ClassDaysOfWeek        = '{{param}}'",
             "ClassTime"                    => "Classes.ClassTime              LIKE '%{{param}}%'",
             "ClassRequire"                 => "Classes.ClassRequire           LIKE '%{{param}}%'",
-            "ClassTutors"                  => "Classes.ClassTutors            LIKE '%{{param}}%'",
-            "ClassSubjects"                => "Classes.ClassSubjects          LIKE '%{{param}}%'",
-            "ClassMember"                  => "Classes.ClassMember            = '{{param}}'",
-            "ClassStatus"                  => "Classes.ClassStatus            = '{{param}}'",
-            "CreatedDate"                  => "Classes.CreatedDate            = '{{param}}'",
-            "IsDisabled"                   => "Classes.IsDisabled             = '{{param}}'",
-            "LastUpdated"                  => "Classes.LastUpdated            = '{{param}}'",
-            "LastUpdatedBy"                => "Classes.LastUpdatedBy          = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 
@@ -62,7 +52,7 @@ class Application_Model_Core_Classes extends Base_Db_Table_Abstract {
             "ClassRequire_Sort"            => "Classes.ClassRequire           {{param}}",
             "ClassTutors_Sort"             => "Classes.ClassTutors            {{param}}",
             "ClassSubjects_Sort"           => "Classes.ClassSubjects          {{param}}",
-            "ClassMember_Sort"             => "Classes.ClassMember            {{param}}",
+            "GradeId_Sort"             => "Classes.GradeId            {{param}}",
             "ClassStatus_Sort"             => "Classes.ClassStatus            {{param}}",
             "CreatedDate_Sort"             => "Classes.CreatedDate            {{param}}",
             "IsDisabled_Sort"              => "Classes.IsDisabled             {{param}}",

@@ -10,7 +10,7 @@ class Zend_View_Helper_RenderPaging extends Zend_View_Helper_Abstract
      * @param Zend_Paginator $paginator
      * @return string
      */
-    function renderPaging($paginator) {
+    function renderPaging($paginator, $ajax = '') {
         $options = array(
             '5' => '5', '10' => '10', '20' => '20', '50' => '50',
             '100' => '100', '200' => '200',
@@ -26,7 +26,10 @@ class Zend_View_Helper_RenderPaging extends Zend_View_Helper_Abstract
         }
         
         $selectElement = new Zend_Form_Element_Select('perpage');
-        $selectElement->setAttrib('onchange', 'CommonV2.filter(this.value, \'perpage\');');
+		if(empty($ajax))
+			$selectElement->setAttrib('onchange', 'CommonV2.filter(this.value, \'perpage\');');
+		else
+			$selectElement->setAttrib('onchange', 'loadPage(\''.$ajax.'\'+this.value);');
         $selectElement->setAttrib('class', 'input-mini');
         $selectElement->addMultiOptions($options);
         $selectElement->setDecorators(array('ViewHelper'));        

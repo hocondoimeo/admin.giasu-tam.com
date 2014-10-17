@@ -36,9 +36,6 @@ class Application_Model_Core_Contacts extends Base_Db_Table_Abstract {
         $this->searchFields = array(
             "ContactId"                    => "Contacts.ContactId             = '{{param}}'",
             "ContactName"                  => "Contacts.ContactName           LIKE '%{{param}}%'",
-            "ContactContent"               => "Contacts.ContactContent        LIKE '%{{param}}%'",
-            "CreatedDate"                  => "Contacts.CreatedDate           = '{{param}}'",
-            "IsDisabled"                   => "Contacts.IsDisabled            = '{{param}}'",
             "UserId"                       => "Contacts.UserId                = '{{param}}'",
             "ContactPhone"                 => "Contacts.ContactPhone          LIKE '%{{param}}%'",
             "ContactTitle"                 => "Contacts.ContactTitle          LIKE '%{{param}}%'",

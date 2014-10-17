@@ -36,13 +36,7 @@ class Application_Model_Core_News extends Base_Db_Table_Abstract {
         $this->searchFields = array(
             "NewsId"                       => "News.NewsId                    = '{{param}}'",
             "Title"                        => "News.Title                     LIKE '%{{param}}%'",
-            "Summary"                      => "News.Summary                   LIKE '%{{param}}%'",
-            "UserId"                      => "News.UserId                   = '{{param}}'",
-            "Content"                      => "News.Content                   LIKE '%{{param}}%'",
-            "ImageUrl"                     => "News.ImageUrl                  LIKE '%{{param}}%'",
-            "CreatedDate"                  => "News.CreatedDate               = '{{param}}'",
-            "IsPrivate"                    => "News.IsPrivate                 = '{{param}}'",
-            "NewsCategoryId"               => "News.NewsCategoryId            = '{{param}}'",
+            //"CreatedDate"                  => "News.CreatedDate               = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

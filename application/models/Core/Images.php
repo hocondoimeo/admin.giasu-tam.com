@@ -37,12 +37,6 @@ class Application_Model_Core_Images extends Base_Db_Table_Abstract {
             "ImageId"                      => "Images.ImageId                 = '{{param}}'",
             "ImageCode"                    => "Images.ImageCode               LIKE '%{{param}}%'",
             "ImageName"                    => "Images.ImageName               LIKE '%{{param}}%'",
-            "ImageDesc"                    => "Images.ImageDesc               LIKE '%{{param}}%'",
-            "RecommendWidth"               => "Images.RecommendWidth          = '{{param}}'",
-            "RecommendHeight"              => "Images.RecommendHeight         = '{{param}}'",
-            "Section"                      => "Images.Section                 LIKE '%{{param}}%'",
-            "LastUpdated"                  => "Images.LastUpdated             = '{{param}}'",
-            "LastUpdatedBy"                => "Images.LastUpdatedBy           = '{{param}}'",
         );
         $this->searchFields['All'] = implode(" OR ", $this->searchFields);
 

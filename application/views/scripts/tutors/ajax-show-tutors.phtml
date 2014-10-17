@@ -16,27 +16,15 @@
 
 $typeSearchs = array(
     'All' => 'All',
-    //'TutorId'                      => $this->text('TutorId', false),
     'UserName'                     => $this->text('UserName', false),
-    //'Gender'                       => $this->text('Gender', false),
-    //'Birthday'                     => $this->text('Birthday', false),
     'Email'                        => $this->text('Email', false),
-    //'Address'                      => $this->text('Address', false),
     'Phone'                        => $this->text('Phone', false),
-    //'Level'                        => $this->text('Level', false),
     'University'                   => $this->text('University', false),
     'Subject'                      => $this->text('Subject', false),
-    //'Graduation'                   => $this->text('Graduation', false),
-    //'Career'                       => $this->text('Career', false),
-    //'Introduction'                 => $this->text('Introduction', false),
-    //'CreatedDate'                  => $this->text('CreatedDate', false),
-    //'IsDisabled'                   => $this->text('IsDisabled', false),
-    //'Avatar'                       => $this->text('Avatar', false),
-    //'Status'                       => $this->text('Status', false),
 );
 $buttons = array();
-echo $this->searchBar($typeSearchs, null, $buttons);
-
+$url = $this->url(array('controller'=>'tutors','action'=>'ajax-show-tutors', 'keywords' => '', 'fieldsearch' => ''));
+echo $this->searchBar($typeSearchs, 'ajax', $buttons, null, $url);
 ?>
 <div class="tutor-title">
 	<?php echo $this->text($controller) ?>
@@ -47,14 +35,14 @@ echo $this->searchBar($typeSearchs, null, $buttons);
 
             <thead>
                 <tr>
-                    <?php $this->renderTh('Tutor Id'); ?>
-                    <?php $this->renderTh('Status'); ?>
-                    <?php $this->renderTh('User Name'); ?>
-                    <?php $this->renderTh('Email'); ?>
-                    <?php $this->renderTh('Phone'); ?>
-                    <?php $this->renderTh('Level'); ?>
-                    <?php $this->renderTh('Subject'); ?>
-                    <?php $this->renderTh('Career'); ?>
+                    <?php $this->renderTh('@ajax@Tutor Id'); ?>
+                    <?php $this->renderTh('@ajax@Status'); ?>
+                    <?php $this->renderTh('@ajax@User Name'); ?>
+                    <?php $this->renderTh('@ajax@Email'); ?>
+                    <?php $this->renderTh('@ajax@Phone'); ?>
+                    <?php $this->renderTh('@ajax@Level'); ?>
+                    <?php $this->renderTh('@ajax@Subject'); ?>
+                    <?php $this->renderTh('@ajax@Career'); ?>
                     <?php //$this->renderTh('Avatar'); ?>
                     
                     <th style="vertical-align: middle;">Actions</th>
@@ -74,7 +62,7 @@ echo $this->searchBar($typeSearchs, null, $buttons);
                 <?php endif; ?>
             </tbody>
 
-            <?php echo $this->renderPaging($this->paginator); ?>
+            <?php echo $this->renderPaging($this->paginator, $this->url(array('controller'=>'tutors','action'=>'ajax-show-tutors','perpage'=>''))); ?>
         </table>
 
         <?php echo $this->paginationControl($this->paginator, 'Sliding', 'tutors/_partial/show-tutors-pagination.phtml'); ?>
@@ -109,5 +97,28 @@ $("input[type=checkbox][class=modal-checkbox]").each(function() {
 			}
     	});
 	});        
-});                    
+});                   
+$('.btn-search').click(function() {
+	var sq = $('.search-query').val();
+	var fs = $('#fieldsearch').val();
+	var url =  '<?php echo $_SERVER['REQUEST_URI'] ?>';
+	curl = url.split('keywords');
+	if(curl.length > 1){
+		url = replaceParam(url, 'keywords', sq)+'/';
+		url = replaceParam(url, 'fieldsearch', fs);
+	}else{
+		url = "<?php echo $this->url(array('controller'=>'tutors','action'=>'ajax-show-tutors'));?>";
+		url += '/keywords/'+sq+'/fieldsearch/'+fs;
+	}
+	loadPage(url);
+}); 
+function replaceParam(url, paramName, paramValue){
+	var pattern = new RegExp('('+paramName+'/).*?(&|$)') 
+        var newUrl = url.replace(pattern,'$1' + paramValue + '$2');
+        var n=url.indexOf(paramName);
+        if(n == -1){
+            newUrl = newUrl + paramName + '/' + paramValue; 
+        }
+		return newUrl;
+}
 </script>

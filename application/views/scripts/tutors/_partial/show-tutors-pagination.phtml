@@ -1,14 +1,13 @@
 <?php $allParams = Zend_Controller_Front::getInstance()->getRequest()->getParams();
     $tutors = (isset($allParams['ctutors']) && $allParams['ctutors'])? '/ctutors/'.$allParams['ctutors']: '';
     $cpage = (isset($allParams['page']) && $allParams['page'])? '/cate/'.$allParams['page']: '1';
-
+	$perpage = (isset($allParams['perpage']) && $allParams['perpage'])? '/perpage/'.$allParams['perpage']: '10';
+	if ($this->pageCount):
 ?>
-<?php if ($this->pageCount): ?>
-
 <ul class="pagination controls-buttons">
 <!-- Previous page link -->
 <?php if (isset($this->previous)): ?>
-  <li><a href="#lastest-news-content" onclick="loadPage('<?php echo '/tutors/ajax-show-tutors/page/'.$this->previous.$tutors; ?>','<?php echo $this->previous.$tutors;?>')">
+  <li><a href="#lastest-news-content" onclick="loadPage('<?php echo '/tutors/ajax-show-tutors/page/'.$this->previous.$tutors.$perpage; ?>','<?php echo $this->previous.$tutors.$perpage;?>')">
     «
   </a> </li>
 <?php else: ?>
@@ -18,7 +17,7 @@
 <!-- Numbered page links -->
 <?php foreach ($this->pagesInRange as $page): ?>
   <?php if ($page != $this->current): ?>
-    <li><a href='#lastest-news-content' onclick="loadPage('<?php echo '/tutors/ajax-show-tutors/page/'.$page.$tutors; ?>','<?php echo $page.$tutors;?>')">
+    <li><a href='#lastest-news-content' onclick="loadPage('<?php echo '/tutors/ajax-show-tutors/page/'.$page.$tutors.$perpage; ?>','<?php echo $page.$tutors.$perpage;?>')">
         <?php echo $page; ?>
     </a></li>
   <?php else: ?>
@@ -28,7 +27,7 @@
 
 <!-- Next page link -->
 <?php if (isset($this->next)): ?>
-  <li><a href="#lastest-news-content" onclick="loadPage('<?php echo '/tutors/ajax-show-tutors/page/'.$this->next.$tutors; ?>','<?php echo $this->next.$tutors;?>')">
+  <li><a href="#lastest-news-content" onclick="loadPage('<?php echo '/tutors/ajax-show-tutors/page/'.$this->next.$tutors.$perpage; ?>','<?php echo $this->next.$tutors.$perpage;?>')">
     »
   </a></li>
 <?php else: ?>
